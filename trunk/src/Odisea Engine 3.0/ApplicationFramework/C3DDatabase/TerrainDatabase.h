@@ -23,7 +23,7 @@ class TerrainDatabase
     void LoadGameData(const GameFileDescriptor &descriptor);
     void ControllerVisibility(const Tuple4i &range, bool visible);
     void Draw(unsigned int level, TileGraphVisitor *visitor);
-    void Cull(TileGraphVisitor *visitor);
+    void Cull(TileGraphVisitor *visitor);//name change: Accept
   
   private:
     void SetupSpatialIndexStructure(void);
