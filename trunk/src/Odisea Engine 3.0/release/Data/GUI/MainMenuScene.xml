@@ -3,7 +3,7 @@
 	<Controller>
 		
 		<Command 	type 	 = "change"
-							source = "NewMap"
+							source = "LoadMap"
 							target = "NewMapScene"/>
 		
 		<Command 	type 	 = "deactivate"
