@@ -66,16 +66,11 @@ unsigned int TileGraph::Integrate(unsigned int level, Tuple2f *coords, unsigned 
 TileModelNode* TileGraph::ModelGraph(unsigned int level, unsigned int index)
 {
   TileModelNode       *tileModelNode = m_ManagedTileModelNodes.Create();
-  //TileModelController *controller    = m_ManagedTileModelControllers.Create();
   TextureCoordsNode   *texCoordsNode = m_AttatchmentPoints[level].m_AggregateNodes[index];
-  
-  //tileModelNode->SetController(controller);
-  //controller->SetTileModelNode(tileModelNode);
   
   tileModelNode->Attach(texCoordsNode);
   texCoordsNode->Reveal();
   
-  //return controller;
   return tileModelNode;
 }
 

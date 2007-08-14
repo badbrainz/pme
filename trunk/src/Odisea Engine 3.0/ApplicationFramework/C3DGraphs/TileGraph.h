@@ -27,7 +27,7 @@ class TileGraph
     void                  Initialize(unsigned int levels);
     void                  Render(unsigned int level, TileGraphVisitor *visitor);
     unsigned int          Integrate(unsigned int level, Tuple2f *coords, unsigned int texID);
-    TileModelNode*  ModelGraph(unsigned int level, unsigned int index);
+    TileModelNode*        ModelGraph(unsigned int level, unsigned int index);
 
   private:
     GraphNode*            CheckForRepeat(GraphNode* node, unsigned int identifier);
