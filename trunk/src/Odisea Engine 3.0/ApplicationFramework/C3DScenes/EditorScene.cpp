@@ -13,13 +13,15 @@ SpatialIndexVisitor debugVisitor;
 
 EditorScene::EditorScene(const String &name) : Scene(name)
 {
-  mouseLocked = false;
+  m_bMouseLocked  = false;
+  m_bDebugView    = true;
 }
 
 bool EditorScene::Initialize()
 {
   Scene::Initialize();
-  m_pFpsCounter = (GUILabel*) m_Gui.getWidgetByCallbackString("FpsCounter");
+  m_pFpsCounter  = (GUILabel*) m_Gui.getWidgetByCallbackString("FpsCounter");
+  m_UserControls = (GUIPanel*) m_Gui.getWidgetByCallbackString("EditorPanel");
   
   m_Camera.setViewerPosition(Tuple3f(0,4,8));
   m_Camera.setFocusPosition(Tuple3f(0,0,-8));
@@ -58,7 +60,9 @@ void EditorScene::Update(const FrameInfo &frameInfo)
 
   //m_Grid.Draw();
   
-  terrainDatabase.Cull(&debugVisitor);
+  if (m_bDebugView)
+    terrainDatabase.Cull(&debugVisitor);
+  
   terrainDatabase.Cull(&visibilityVisitor);
   
   terrainDatabase.Draw(0, &baseVisitor);
@@ -85,49 +89,46 @@ void EditorScene::actionPerformed(GUIEvent &evt)
     if (button->isClicked())
       m_SceneController.Execute(callbackString);
   }
+  
+  if (widgetType == CHECK_BOX)
+  {
+    GUICheckBox *checkBox = (GUICheckBox*) sourceRectangle;
+    
+    if (checkBox->isClicked())
+      if (callbackString == "Debug")
+        m_bDebugView = checkBox->isChecked();
+  }
 }
 
 void EditorScene::HandleMouseEvent(MouseEvent evt, int extraInfo)
 {
-  m_Gui.checkMouseEvents(evt, extraInfo);
-
-  ///design pattern: "Strategy"
   switch (extraInfo)
   {
     case DRAGGED:
-      m_Camera.lockMouse(!mouseLocked);
+      m_Camera.lockMouse(!m_bMouseLocked);
       m_Camera.setMouseInfo(evt.getX(), evt.getY());
     break;
     
     case RELEASED:
-      mouseLocked = true;
-      //m_Camera.lockMouse(false);
+      m_bMouseLocked = false;
     break;
     
     case CLICKED:
-      mouseLocked = false;
+      if (m_UserControls)
+      {
+        const Tuple4i &windowBounds = m_UserControls->getWindowBounds();
+        m_bMouseLocked  = (evt.getY() >= windowBounds.y) && (evt.getY() <= windowBounds.w) &&
+                          (evt.getX() >= windowBounds.x) && (evt.getX() <= windowBounds.z);
+      }
     break;
     
     case MOVED:
       m_Camera.lockMouse(false);
       m_Camera.setMouseInfo(evt.getX(), evt.getY());
     break;
-    
-    /*/
-    case DRAGGED:
-      m_Camera.lockMouse(true);
-      m_Camera.setMouseInfo(evt.getX(), evt.getY());
-    break;
-    
-    case RELEASED:
-      m_Camera.lockMouse(false);
-    break;
-    
-    case MOVED:
-      m_Camera.setMouseInfo(evt.getX(), evt.getY());
-    break;
-    //*/
   }
+
+  m_Gui.checkMouseEvents(evt, extraInfo);
 }
 
 void EditorScene::HandleKeyEvent(KeyEvent evt, int extraInfo)
