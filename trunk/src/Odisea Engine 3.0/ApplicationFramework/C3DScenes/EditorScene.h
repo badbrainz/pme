@@ -24,13 +24,16 @@ class EditorScene : public Scene
 
   private:
     GUILabel   *m_pFpsCounter;
+    GUIPanel   *m_UserControls;
+    
     Frustum     m_Frustum;
     Camera      m_Camera;
     Grid        m_Grid;
 
     PveObject   m_PveObject;
     
-    bool        mouseLocked;
+    bool        m_bMouseLocked,
+                m_bDebugView;
 };
 
 #endif
