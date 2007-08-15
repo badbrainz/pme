@@ -3,13 +3,13 @@
 
 bool PveObject::LoadFromFile(const String &filePath)
 {
-  inputFile.open(filePath, std::ofstream::in|std::ofstream::binary);
+  m_InputFile.open(filePath, std::ofstream::in|std::ofstream::binary);
   ReadHeader();InitializeMemoryBlock();
   //SkipTileArray();
   ReadTileChunk();
   ReadVertexChunk();
   ReadColorChunk();
-  inputFile.close();
+  m_InputFile.close();
 
   ComputeHeightRatio();
   BuildTerrainVertexField();
@@ -27,25 +27,25 @@ bool PveObject::LoadFromFile(const String &filePath)
 
 void PveObject::ReadHeader(void)
 {
-  inputFile.seekg(4, std::ios::cur);
-  inputFile.read((char*)&tilesPerX, 4);
-  inputFile.read((char*)&tilesPerY, 4);
-  inputFile.read((char*)&maxHeight, 4);
-  inputFile.read((char*)&minHeight, 4);
+  m_InputFile.seekg(4, std::ios::cur);
+  m_InputFile.read((char*)&m_uiTilesPerX, 4);
+  m_InputFile.read((char*)&m_uiTilesPerY, 4);
+  m_InputFile.read((char*)&m_fMaxHeight,  4);
+  m_InputFile.read((char*)&m_fMinHeight,  4);
 }
 
 void PveObject::ReadVertexChunk(void)
 {
-  unsigned int size = (tilesPerX*2+1)*(tilesPerY*2+1)*sizeof(unsigned char);
-  m_pCompressedYBuffer = (unsigned char*) memoryBlock.GetRange(size);
-  inputFile.read((char*)m_pCompressedYBuffer, size);
+  unsigned int size = (m_uiTilesPerX*2+1)*(m_uiTilesPerY*2+1)*sizeof(unsigned char);
+  m_pCompressedYBuffer = (unsigned char*) m_MemoryBlock.GetRange(size);
+  m_InputFile.read((char*)m_pCompressedYBuffer, size);
 }
 
 void PveObject::ReadColorChunk(void)
 {
-  unsigned int size = (tilesPerX*2+1)*(tilesPerY*2+1)*sizeof(Tuple4ub);
-  m_pColorBuffer = (Tuple4ub*) memoryBlock.GetRange(size);
-  inputFile.read((char*)m_pColorBuffer, size);
+  unsigned int size = (m_uiTilesPerX*2+1)*(m_uiTilesPerY*2+1)*sizeof(Tuple4ub);
+  m_pColorBuffer = (Tuple4ub*) m_MemoryBlock.GetRange(size);
+  m_InputFile.read((char*)m_pColorBuffer, size);
 }
 
 void PveObject::ReadTileChunk(void)
@@ -55,24 +55,24 @@ void PveObject::ReadTileChunk(void)
   unsigned char   maxTileHeight,
                   extra;
 
-  tileSet = (Tile*) memoryBlock.GetRange(tilesPerX*tilesPerY*sizeof(Tile));
+  m_pTileSet = (Tile*) m_MemoryBlock.GetRange(m_uiTilesPerX*m_uiTilesPerY*sizeof(Tile));
 
-  for(unsigned int a = 0; a < tilesPerX*tilesPerY; a++)
+  for(unsigned int a = 0; a < m_uiTilesPerX*m_uiTilesPerY; a++)
   {
-    inputFile.read((char*)&textureID, 4);
-    inputFile.read((char*)&flags, 2);
-    inputFile.read((char*)&maxTileHeight, 1);
-    inputFile.read((char*)&extra, 1);
+    m_InputFile.read((char*)&textureID, 4);
+    m_InputFile.read((char*)&flags, 2);
+    m_InputFile.read((char*)&maxTileHeight, 1);
+    m_InputFile.read((char*)&extra, 1);
 
-    tileSet[a].SetPrimaryTextureID(textureID[0]);
-    tileSet[a].SetSecondaryTextureID(textureID[1]);
-    tileSet[a].SetFlags(flags);
-    tileSet[a].SetMaxHeight(maxTileHeight);
-    tileSet[a].SetExtra(extra);
+    m_pTileSet[a].SetPrimaryTextureID(textureID[0]);
+    m_pTileSet[a].SetSecondaryTextureID(textureID[1]);
+    m_pTileSet[a].SetFlags(flags);
+    m_pTileSet[a].SetMaxHeight(maxTileHeight);
+    m_pTileSet[a].SetExtra(extra);
   }
 }
 
 void PveObject::SkipTileArray(void)
 {
-  inputFile.seekg(sizeof(Tile)*tilesPerX*tilesPerY, std::ios::cur);
+  m_InputFile.seekg(sizeof(Tile)*m_uiTilesPerX*m_uiTilesPerY, std::ios::cur);
 }
