@@ -82,10 +82,10 @@ class PveObject
 /**
  *block memory
  */
-    VirtualMemory				memoryBlock;
-    Tile               *tileSet;
-    TileIndexSet       *tileIndexSet;
-    TileVertexBlock    *tileVertexBlock;//interleaved data -> faster access.
+    VirtualMemory				m_MemoryBlock;
+    Tile               *m_pTileSet;
+    TileIndexSet       *m_pTileIndexSet;
+    TileVertexBlock    *m_pTileVertexBlock;//interleaved data -> faster access.
     unsigned char  		 *m_pCompressedYBuffer;
     Tuple3f        		 *m_pUncompressedVerts;
     Tuple4ub    	 		 *m_pColorBuffer;
@@ -95,15 +95,15 @@ class PveObject
     Tuple3f             m_TempVertexBuffer[9];
     Tuple4ub    	 		  m_TempColorBuffer[9];
     
-    unsigned int    		tilesPerX,
-                        tilesPerY;
+    unsigned int    		m_uiTilesPerX,
+                        m_uiTilesPerY;
     
-    float           		heightRatio,
-                        maxHeight,
-                        minHeight,
-                        elevate;
+    float           		m_fHeightRatio,
+                        m_fMaxHeight,
+                        m_fMinHeight,
+                        m_fElevate;
     
-    std::ifstream				inputFile;
+    std::ifstream				m_InputFile;
     
     ///this has changed to a block of memory.
     //TileVertexSet      *tileVertexSet;

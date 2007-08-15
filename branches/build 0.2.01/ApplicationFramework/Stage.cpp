@@ -38,7 +38,7 @@ bool Stage::Initialize()
   SceneManager::AddScene(new EditorScene("EditorScene")		 );
   SceneManager::AddScene(new NewMapScene("NewMapScene")		 );
   SceneManager::AddScene(new MainMenuScene("MainMenuScene"));
-  SceneManager::SetScene("EditorScene");
+  SceneManager::SetScene("MainMenuScene");
   
   m_Window.setVisible(true);
   m_Window.update();
