@@ -5,7 +5,6 @@
 #include "../C3DTerrain/Tile.h"
 #include "Tools/Logger.h"
 #include <fstream>
-//#include <vector>
 
 struct TileIndexSet
 {
@@ -83,12 +82,12 @@ class PveObject
  *block memory
  */
     VirtualMemory				m_MemoryBlock;
-    Tile               *m_pTileSet;
-    TileIndexSet       *m_pTileIndexSet;
-    TileVertexBlock    *m_pTileVertexBlock;//interleaved data -> faster access.
-    unsigned char  		 *m_pCompressedYBuffer;
     Tuple3f        		 *m_pUncompressedVerts;
+    unsigned char  		 *m_pCompressedYBuffer;
+    TileVertexBlock    *m_pTileVertexBlock;
+    TileIndexSet       *m_pTileIndexSet;
     Tuple4ub    	 		 *m_pColorBuffer;
+    Tile               *m_pTileSet;
 /** 
  */
     
@@ -104,14 +103,6 @@ class PveObject
                         m_fElevate;
     
     std::ifstream				m_InputFile;
-    
-    ///this has changed to a block of memory.
-    //TileVertexSet      *tileVertexSet;
-    //TileColorSet       *tileColorSet;
-    
-    ///stl container uses more memory than the custom memory manager.
-    //std::vector <TileIndexSet> tileIndexSet;
-    //std::vector <TileVertexBlock> tileVertexBlock;
 };
 
 #endif
