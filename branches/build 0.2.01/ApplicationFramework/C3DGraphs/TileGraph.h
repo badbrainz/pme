@@ -34,12 +34,12 @@ class TileGraph
     GraphNode*            CheckForRepeat(GraphNode* node, unsigned int identifier);
   
   private:
-    ResourceManager <TileModelController, 1e3>  m_ManagedTileModelControllers;
+    ResourceManager <TileModelController, 1e5>  m_ManagedTileModelControllers;
     ResourceManager <TextureCoordsNode,   1e2>  m_ManagedTextureCoordsNodes;
-    ResourceManager <TileModelNode,       1e3>  m_ManagedTileModelNodes;
-    ResourceManager <IndicesNode,          10>  m_ManagedIndicesNodes;
-    ResourceManager <TextureNode,          10>  m_ManagedTextureNodes;
-    ResourceManager <GraphNode,            10>  m_ManagedGraphNodes;
+    ResourceManager <TileModelNode,       1e5>  m_ManagedTileModelNodes;
+    ResourceManager <IndicesNode,          10,5>  m_ManagedIndicesNodes;
+    ResourceManager <TextureNode,          10,5>  m_ManagedTextureNodes;
+    ResourceManager <GraphNode,            10,5>  m_ManagedGraphNodes;
     
     Array    <AttachmentPoint> m_AttatchmentPoints;
     ArrayPtr <GraphNode>       m_Levels;

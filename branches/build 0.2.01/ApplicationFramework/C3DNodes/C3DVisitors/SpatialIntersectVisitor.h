@@ -6,6 +6,7 @@
 class Ray3D;
 class SpatialIndexNode;
 class SpatialIndexCell;
+class BoundsDescriptor;
 
 class SpatialIntersectVisitor : public TileGraphVisitor
 {

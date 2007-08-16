@@ -5,7 +5,7 @@
 #include <iostream>
 #include <stack>
 
-const int cellSize = 8;
+const int cellSize = 4;
 
 template <class T>
 inline int ceilPowerOfTwo(T x)
