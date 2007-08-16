@@ -37,6 +37,11 @@ void TerrainDatabase::LoadGameData(const GameFileDescriptor &descriptor)
   SetupGraphStructure();
   SetupCellDataStructures();ComputeCellBoundaries();
   SetupSpatialIndexStructure();ComputeTreeBoundaries();
+  
+  m_ManagedTileModelControllers.FlushUnusedResources();
+  m_ManagedBranches.FlushUnusedResources();
+  m_ManagedCells.FlushUnusedResources();
+  m_TileGraph.Trim();
 }
 
 void TerrainDatabase::SetupGraphStructure(void)

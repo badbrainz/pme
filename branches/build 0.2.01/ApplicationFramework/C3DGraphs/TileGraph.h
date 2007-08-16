@@ -24,6 +24,7 @@ class TileGraph
     ~TileGraph();
   
   public:
+    void                  Trim();
     void                  Initialize(unsigned int levels);
     void                  Render(unsigned int level, TileGraphVisitor *visitor);
     unsigned int          Integrate(unsigned int level, Tuple2f *coords, unsigned int texID);
@@ -33,15 +34,15 @@ class TileGraph
     GraphNode*            CheckForRepeat(GraphNode* node, unsigned int identifier);
   
   private:
-    ResourceManager <TileModelController> m_ManagedTileModelControllers;
-    ResourceManager <TextureCoordsNode>   m_ManagedTextureCoordsNodes;
-    ResourceManager <TileModelNode>       m_ManagedTileModelNodes;
-    ResourceManager <IndicesNode>         m_ManagedIndicesNodes;
-    ResourceManager <TextureNode>         m_ManagedTextureNodes;
-    ResourceManager <GraphNode>           m_ManagedGraphNodes;
+    ResourceManager <TileModelController, 1e3>  m_ManagedTileModelControllers;
+    ResourceManager <TextureCoordsNode,   1e2>  m_ManagedTextureCoordsNodes;
+    ResourceManager <TileModelNode,       1e3>  m_ManagedTileModelNodes;
+    ResourceManager <IndicesNode,          10>  m_ManagedIndicesNodes;
+    ResourceManager <TextureNode,          10>  m_ManagedTextureNodes;
+    ResourceManager <GraphNode,            10>  m_ManagedGraphNodes;
     
-    Array    <AttachmentPoint>            m_AttatchmentPoints;
-    ArrayPtr <GraphNode>                  m_Levels;
+    Array    <AttachmentPoint> m_AttatchmentPoints;
+    ArrayPtr <GraphNode>       m_Levels;
 };
 
 #endif

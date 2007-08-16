@@ -131,7 +131,7 @@ void TileGraphRendererVisitor::Visit(TileModelNode* node)
   glVertexPointer(3, GL_FLOAT, 0, controller->GetVertices());
   glColorPointer(4, GL_UNSIGNED_BYTE, 0, controller->GetColors());
 
-  glDrawElements(GL_TRIANGLE_FAN, 10, GL_UNSIGNED_INT, m_pIndices);
+  glDrawElements(GL_TRIANGLE_FAN, 5, GL_UNSIGNED_INT, m_pIndices);
   
   UnTransformTextureMatrix();
 }

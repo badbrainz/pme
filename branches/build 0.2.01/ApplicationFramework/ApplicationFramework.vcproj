@@ -352,6 +352,10 @@
 			Name="C3DMemory"
 			>
 			<File
+				RelativePath=".\C3DMemory\GenericPool.h"
+				>
+			</File>
+			<File
 				RelativePath=".\C3Dmemory\MemChunkDescriptor.cpp"
 				>
 			</File>
