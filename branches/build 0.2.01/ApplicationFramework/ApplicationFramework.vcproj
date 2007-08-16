@@ -327,6 +327,14 @@
 				RelativePath=".\C3DGeometry\Grid.h"
 				>
 			</File>
+			<File
+				RelativePath=".\C3DGeometry\Ray3D.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\C3DGeometry\Ray3D.h"
+				>
+			</File>
 		</Filter>
 		<Filter
 			Name="C3DTerrain"
@@ -520,6 +528,14 @@
 				</File>
 				<File
 					RelativePath=".\C3DNodes\C3DVisitors\SpatialIndexVisitor.h"
+					>
+				</File>
+				<File
+					RelativePath=".\C3DNodes\C3DVisitors\SpatialIntersectVisitor.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\C3DNodes\C3DVisitors\SpatialIntersectVisitor.h"
 					>
 				</File>
 				<File

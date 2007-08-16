@@ -10,6 +10,18 @@ bool Scene::Initialize()
 	if (!IOXMLObject::loadXMLSettings(String(ioname) + ".xml"))
     return Logger::writeErrorLog(String("could not initialize ") + ioname);
 
+  glEnable(GL_DEPTH_TEST);
+  glDepthFunc(GL_LEQUAL);
+  glDepthMask(GL_TRUE);
+  
+  glEnable(GL_CULL_FACE);
+  glCullFace(GL_BACK);
+  
+  glClearColor(0,0,0,0);
+  glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+  
+  glHint(GL_PERSPECTIVE_CORRECTION_HINT, GL_NICEST);
+  
 	m_Gui.setGUIEventListener(this);
 	m_Gui.setVisible(true);
   m_bInitialized = true;
@@ -86,7 +98,7 @@ void Scene::SetPerspective(WindowEvent evt, bool wEvt)
   
   glMatrixMode(GL_PROJECTION);
   glLoadIdentity();
-  gluPerspective(90.0f, (float)width/height, 0.1f, 1500.0f);
+  gluPerspective(60.0f, (float)width/height, 0.1f, 1500.0f);
 
   glMatrixMode(GL_MODELVIEW);
   glLoadIdentity();

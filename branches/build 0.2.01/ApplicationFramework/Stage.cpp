@@ -25,15 +25,6 @@ bool Stage::Initialize()
     return Logger::writeErrorLog(String("could not initialize ") + ioname);
   
   srand((unsigned)time(0));
-
-  glClearColor(0,0,0,0);
-  glEnable(GL_DEPTH_TEST);
-  glDepthFunc(GL_LEQUAL);
-  glDepthMask(GL_TRUE);
-  glEnable(GL_CULL_FACE);
-  glCullFace(GL_BACK);
-  glHint(GL_PERSPECTIVE_CORRECTION_HINT, GL_NICEST);
-  glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
   
   SceneManager::AddScene(new EditorScene("EditorScene")    );
   SceneManager::AddScene(new NewMapScene("NewMapScene")    );
