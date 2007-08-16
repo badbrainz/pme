@@ -53,14 +53,14 @@
   </Panel>
 		
 		<Panel name           = "EditorPanel"
-					 layout         = "CEN_YAXIS"
+					 layout         = "YAXIS"
 					 anchorPoint		= "CORNERLU"
 					 drawBounds     = "true"
 					 drawBackground = "true"
 					 clipSize 			= "0">
 			
 			<Position x = "-10" y = "10" />
-			<Interval x = "18" y = "18" />
+			<Interval x = "8" y = "8" />
 			<BGColor      x =  "50" y =  "50" z = "50" />
 			<BordersColor x = "0.2" y = "0.2" z = "0.2" />
 			
@@ -71,18 +71,16 @@
 				<Text string = "Back"	/>
 			</Button>
 			
-			<Button callbackString = "btn1" minAlpha = "0.4">
-				<Color 				x = "0" 	y = "0.4" 	z = "0" />
-				<BordersColor x = "0" 	y = "1" 		z = "0" />
-				<Dimensions 	x = "100" y = "24" 						/>
-				<Text string = "btn1"	/>
-			</Button>
-			
 			<Separator ratio = "1.0" />
 			
-			<CheckBox callbackString = "Debug" checked = "true">
+			<CheckBox callbackString = "Debug" checked = "false">
 				<Color x = "0" 	y = "0.6" 	z = "0" />
-				<Text string = "Debug view" />
+				<Text string = "Enable debug view" />
+			</CheckBox>
+			
+			<CheckBox callbackString = "Picking" checked = "false">
+				<Color x = "0" 	y = "0.6" 	z = "0" />
+				<Text string = "Enable picking" />
 			</CheckBox>
 			
 		</Panel>
