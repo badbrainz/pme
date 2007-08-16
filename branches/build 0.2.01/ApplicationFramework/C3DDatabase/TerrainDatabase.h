@@ -39,9 +39,9 @@ class TerrainDatabase
     
     TileGraph m_TileGraph;
     
-    ResourceManager <TileModelController> m_ManagedTileModelControllers;
-    ResourceManager <SpatialIndexNode>    m_ManagedBranches;
-    ResourceManager <SpatialIndexCell>    m_ManagedCells;
+    ResourceManager <TileModelController, 1e3> m_ManagedTileModelControllers;
+    ResourceManager <SpatialIndexNode,    1e2> m_ManagedBranches;
+    ResourceManager <SpatialIndexCell,    1e2> m_ManagedCells;
     
     ArrayPtr <TileModelController>  m_Controllers;
     ArrayPtr <SpatialIndexNode>     m_SpatialIndexCells;//managed

@@ -35,8 +35,8 @@ bool Stage::Initialize()
   glHint(GL_PERSPECTIVE_CORRECTION_HINT, GL_NICEST);
   glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
   
-  SceneManager::AddScene(new EditorScene("EditorScene")		 );
-  SceneManager::AddScene(new NewMapScene("NewMapScene")		 );
+  SceneManager::AddScene(new EditorScene("EditorScene")    );
+  SceneManager::AddScene(new NewMapScene("NewMapScene")    );
   SceneManager::AddScene(new MainMenuScene("MainMenuScene"));
   SceneManager::SetScene("MainMenuScene");
   

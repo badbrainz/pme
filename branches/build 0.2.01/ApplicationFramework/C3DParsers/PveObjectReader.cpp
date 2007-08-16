@@ -4,8 +4,8 @@
 bool PveObject::LoadFromFile(const String &filePath)
 {
   m_InputFile.open(filePath, std::ofstream::in|std::ofstream::binary);
-  ReadHeader();InitializeMemoryBlock();
-  //SkipTileArray();
+  ReadHeader();
+  InitializeMemoryBlock();
   ReadTileChunk();
   ReadVertexChunk();
   ReadColorChunk();

@@ -7,13 +7,7 @@ unsigned int nodeIndices1[5]  = {6,0,2,8,6};
 unsigned int nodeIndices2[6]  = {4,6,0,2,8,6};
 unsigned int nodeIndices3[10] = {4,3,6,7,8,5,2,1,0,3};
 
-TileGraph::TileGraph() : 
-m_ManagedGraphNodes(100),
-m_ManagedTextureNodes(100),
-m_ManagedIndicesNodes(100),
-m_ManagedTileModelNodes(100),
-m_ManagedTextureCoordsNodes(100),
-m_ManagedTileModelControllers(100)
+TileGraph::TileGraph()
 {
 };
 
@@ -21,19 +15,29 @@ void TileGraph::Initialize(unsigned int levels)
 {
   IndicesNode *indicesNode = 0;
   GraphNode   *graphNode   = 0;
-  
+
   for (unsigned int i = 0; i < levels; i++)
   {
     graphNode   = m_ManagedGraphNodes.Create();
     indicesNode = m_ManagedIndicesNodes.Create();
     
     m_Levels.append(graphNode);
-    indicesNode->SetIndices(nodeIndices);
+    indicesNode->SetIndices(nodeIndices1);
     indicesNode->Attach(graphNode);
     
     AttachmentPoint ap;
     m_AttatchmentPoints.append(ap);
   }
+}
+
+void TileGraph::Trim()
+{
+  m_ManagedTileModelControllers.FlushUnusedResources();
+  m_ManagedTextureCoordsNodes.FlushUnusedResources();
+  m_ManagedTileModelNodes.FlushUnusedResources();
+  m_ManagedIndicesNodes.FlushUnusedResources();
+  m_ManagedTextureNodes.FlushUnusedResources();
+  m_ManagedGraphNodes.FlushUnusedResources();
 }
 
 void TileGraph::Render(unsigned int level, TileGraphVisitor *visitor)
