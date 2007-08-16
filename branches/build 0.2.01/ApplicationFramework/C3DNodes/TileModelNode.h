@@ -2,11 +2,10 @@
 #define TILEMODELNODE
 
 #include "GraphNode.h"
-//#include "../C3DTerrain/Tile.h"
 
 class TileModelController;
 
-class TileModelNode : public GraphNode//, public Tile
+class TileModelNode : public GraphNode
 {
   public:
      TileModelNode();
