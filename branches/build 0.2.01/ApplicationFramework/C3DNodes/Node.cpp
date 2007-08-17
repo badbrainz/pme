@@ -1,20 +1,26 @@
-#include "GraphNode.h"
+#include "Node.h"
 #include "C3DVisitors/TileGraphVisitor.h"
+#include "C3DVisitors/SpatialIndexVisitor.h"
 
-GraphNode::GraphNode()
+Node::Node()
 {
 	m_ParentLink.SetChildNode(this);
 	m_ChildLink.SetParentNode(this);
 }
 
-void GraphNode::Accept(TileGraphVisitor* visitor)
+void Node::Accept(SpatialIndexVisitor* visitor)
 {
   visitor->Visit(this);
 }
 
-void GraphNode::Attach(GraphNode *node)
+void Node::Accept(TileGraphVisitor* visitor)
 {
-	GraphNodeLink *pLink = &node->m_ChildLink;
+  visitor->Visit(this);
+}
+
+void Node::Attach(Node *node)
+{
+	NodeLink *pLink = &node->m_ChildLink;
 	m_ParentLink.SetParentNode(node);
 	m_ParentLink.SetPreviousLink(pLink->GetPreviousLink());
 	m_ParentLink.SetNextLink(pLink);
@@ -22,7 +28,7 @@ void GraphNode::Attach(GraphNode *node)
 	pLink->SetPreviousLink(&m_ParentLink);
 }
 
-void GraphNode::Detach()
+void Node::Detach()
 {
 	m_ParentLink.SetParentNode(0);
 	m_ParentLink.GetPreviousLink()->SetNextLink(m_ParentLink.GetNextLink());
@@ -31,7 +37,7 @@ void GraphNode::Detach()
 	m_ParentLink.SetNextLink(&m_ParentLink);
 }
 
-void GraphNode::Hide()
+void Node::Hide()
 {
   m_ParentLink.GetPreviousLink()->SetNextLink(m_ParentLink.GetNextLink());
   m_ParentLink.GetNextLink()->SetPreviousLink(m_ParentLink.GetPreviousLink());
@@ -39,12 +45,12 @@ void GraphNode::Hide()
   m_ParentLink.SetNextLink(&m_ParentLink);
 }
 
-void GraphNode::Reveal()
+void Node::Reveal()
 {
   if (m_ParentLink.GetPreviousLink() == &m_ParentLink && m_ParentLink.GetNextLink() == &m_ParentLink)
   {
-    GraphNodeLink *lastChild = m_ParentLink.GetParentNode()->m_ChildLink.GetPreviousLink();
-    GraphNodeLink *nullChild = &m_ParentLink.GetParentNode()->m_ChildLink;
+    NodeLink *lastChild = m_ParentLink.GetParentNode()->m_ChildLink.GetPreviousLink();
+    NodeLink *nullChild = &m_ParentLink.GetParentNode()->m_ChildLink;
     m_ParentLink.SetPreviousLink(lastChild);
     m_ParentLink.SetNextLink(nullChild);
     nullChild->SetPreviousLink(&m_ParentLink);
@@ -52,27 +58,27 @@ void GraphNode::Reveal()
   }
 }
 
-GraphNode* GraphNode::GetParentNode()
+Node* Node::GetParentNode()
 {
 	return m_ParentLink.GetParentNode();
 }
 
-GraphNode* GraphNode::GetPreviousSibling()
+Node* Node::GetPreviousSibling()
 {
 	return m_ParentLink.GetPreviousLink()->GetChildNode();
 }
 
-GraphNode* GraphNode::GetNextSibling()
+Node* Node::GetNextSibling()
 {
 	return m_ParentLink.GetNextLink()->GetChildNode();
 }
 
-GraphNode* GraphNode::GetFirstChild()
+Node* Node::GetFirstChild()
 {
 	return m_ChildLink.GetNextLink()->GetChildNode();
 }
 
-GraphNode* GraphNode::GetLastChild()
+Node* Node::GetLastChild()
 {
 	return m_ChildLink.GetPreviousLink()->GetChildNode();
 }

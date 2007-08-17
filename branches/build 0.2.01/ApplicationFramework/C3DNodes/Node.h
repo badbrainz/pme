@@ -1,34 +1,36 @@
-#ifndef GRAPHNODE
-#define GRAPHNODE
+#ifndef NODE
+#define NODE
 
-#include "GraphNodeLink.h"
+#include "NodeLink.h"
 
+class SpatialIndexVisitor;
 class TileGraphVisitor;
 
-class GraphNode
+class Node
 {
   public:
-    GraphNode();
-    virtual ~GraphNode(){}
+    Node();
+    virtual ~Node(){}
     
+    virtual void Accept(SpatialIndexVisitor* visitor);
     virtual void Accept(TileGraphVisitor* visitor);
   
   public:
     void	        Detach();
-    void					Attach(GraphNode *node);
+    void					Attach(Node *node);
     
     void          Hide();
     void          Reveal();
     
-    GraphNode*    GetParentNode();
-    GraphNode*    GetPreviousSibling();
-    GraphNode*    GetNextSibling();
-    GraphNode*    GetFirstChild();
-    GraphNode*    GetLastChild();
+    Node*         GetParentNode();
+    Node*         GetPreviousSibling();
+    Node*         GetNextSibling();
+    Node*         GetFirstChild();
+    Node*         GetLastChild();
   
   protected:
-    GraphNodeLink m_ParentLink;
-    GraphNodeLink m_ChildLink;
+    NodeLink m_ParentLink;
+    NodeLink m_ChildLink;
 };
 
 #endif
