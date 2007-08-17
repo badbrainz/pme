@@ -476,6 +476,14 @@
 				>
 			</File>
 			<File
+				RelativePath=".\C3DNodes\SpatialIndexBaseNode.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\C3DNodes\SpatialIndexBaseNode.h"
+				>
+			</File>
+			<File
 				RelativePath=".\C3DNodes\SpatialIndexCell.cpp"
 				>
 			</File>

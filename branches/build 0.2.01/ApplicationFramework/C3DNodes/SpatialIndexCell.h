@@ -1,13 +1,20 @@
 #ifndef SPATIALINDEXCELL
 #define SPATIALINDEXCELL
 
-#include "SpatialIndexNode.h"
+#include "SpatialIndexBaseNode.h"
 
-class SpatialIndexCell : public SpatialIndexNode
+class SpatialIndexCell : public SpatialIndexBaseNode
 {
   public:
-    ~SpatialIndexCell(){}
-    virtual void Accept(TileGraphVisitor* visitor);
+     SpatialIndexCell();
+    ~SpatialIndexCell();
+    
+    void Accept(TileGraphVisitor* visitor);
+    void RangeVisibility(bool value);
+    bool RangeVisibility(void);
+  
+  private:
+    bool m_bRangeVisibility;
 };
 
 #endif

@@ -34,8 +34,8 @@ bool EditorScene::Initialize()
   m_Camera.update(0);
   m_Frustum.update();
 
-  gameFileDescriptor.pvePath = MediaPathManager::lookUpMediaPath("MP_4_3.PVE");
-  gameFileDescriptor.ptePath = MediaPathManager::lookUpMediaPath("MP_4_3.PTE");
+  gameFileDescriptor.pvePath = MediaPathManager::lookUpMediaPath("MP_8_1.PVE");
+  gameFileDescriptor.ptePath = MediaPathManager::lookUpMediaPath("MP_8_1.PTE");
   
   terrainDatabase.LoadGameData(gameFileDescriptor);
   
