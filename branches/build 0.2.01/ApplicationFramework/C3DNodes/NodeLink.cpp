@@ -1,6 +1,6 @@
-#include "GraphNodeLink.h"
+#include "NodeLink.h"
 
-GraphNodeLink::GraphNodeLink()
+NodeLink::NodeLink()
 {
 	m_pParentNode 	= 0;
 	m_pChilNode			= 0;
@@ -8,42 +8,42 @@ GraphNodeLink::GraphNodeLink()
 	m_pNextLink 		= this;
 }
 
-void GraphNodeLink::SetParentNode(GraphNode *node)
+void NodeLink::SetParentNode(Node *node)
 {
 	m_pParentNode = node;
 }
 
-void GraphNodeLink::SetChildNode(GraphNode *node)
+void NodeLink::SetChildNode(Node *node)
 {
 	m_pChilNode = node;
 }
 
-GraphNode *GraphNodeLink::GetParentNode()
+Node *NodeLink::GetParentNode()
 {
 	return m_pParentNode;
 }
 
-GraphNode *GraphNodeLink::GetChildNode()
+Node *NodeLink::GetChildNode()
 {
 	return m_pChilNode;
 }
 
-void GraphNodeLink::SetPreviousLink(GraphNodeLink *link)
+void NodeLink::SetPreviousLink(NodeLink *link)
 {
 	m_pPreviousLink = link;
 }
 
-void GraphNodeLink::SetNextLink(GraphNodeLink *link)
+void NodeLink::SetNextLink(NodeLink *link)
 {
 	m_pNextLink = link;
 }
 
-GraphNodeLink *GraphNodeLink::GetPreviousLink()
+NodeLink *NodeLink::GetPreviousLink()
 {
 	return m_pPreviousLink;
 }
 
-GraphNodeLink *GraphNodeLink::GetNextLink()
+NodeLink *NodeLink::GetNextLink()
 {
 	return m_pNextLink;
 }

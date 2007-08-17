@@ -1,29 +1,29 @@
-#ifndef GRAPHNODELINK
-#define GRAPHNODELINK
+#ifndef NODELINK
+#define NODELINK
 
-class GraphNode;
+class Node;
 
-class GraphNodeLink
+class NodeLink
 {
 	public:
-		GraphNodeLink();
+		NodeLink();
 	
 	public:
-		void				    SetParentNode(GraphNode *node);
-		void				    SetChildNode(GraphNode *node);
-		GraphNode*      GetParentNode();
-		GraphNode*      GetChildNode();
+		void				    SetParentNode(Node *node);
+		void				    SetChildNode(Node *node);
+		Node*           GetParentNode();
+		Node*           GetChildNode();
 		
-		void				    SetPreviousLink(GraphNodeLink *link);
-		void				    SetNextLink(GraphNodeLink *link);
-		GraphNodeLink*  GetPreviousLink();
-		GraphNodeLink*  GetNextLink();
+		void				    SetPreviousLink(NodeLink *link);
+		void				    SetNextLink(NodeLink *link);
+		NodeLink*       GetPreviousLink();
+		NodeLink*       GetNextLink();
 	
 	private:
-		GraphNode     *m_pParentNode,
+		Node          *m_pParentNode,
 							    *m_pChilNode;
 		
-		GraphNodeLink *m_pPreviousLink,
+		NodeLink      *m_pPreviousLink,
 							    *m_pNextLink;
 };
 
