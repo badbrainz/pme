@@ -22,7 +22,7 @@ void TileGraph::Initialize(unsigned int levels)
     indicesNode = m_ManagedIndicesNodes.Create();
     
     m_Levels.append(graphNode);
-    indicesNode->SetIndices(nodeIndices1);
+    indicesNode->SetIndices(nodeIndices);
     indicesNode->Attach(graphNode);
     
     AttachmentPoint ap;
