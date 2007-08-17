@@ -8,7 +8,7 @@
 #include "../C3DNodes/TileModelNode.h"
 #include "../C3DNodes/IndicesNode.h"
 #include "../C3DNodes/TextureNode.h"
-#include "../C3DNodes/GraphNode.h"
+#include "../C3DNodes/Node.h"
 
 #include "../OC/ocarray.h"
 
@@ -31,7 +31,7 @@ class TileGraph
     TileModelNode*        ModelGraph(unsigned int level, unsigned int index);
 
   private:
-    GraphNode*            CheckForRepeat(GraphNode* node, unsigned int identifier);
+    Node*                 CheckForRepeat(Node* node, unsigned int identifier);
   
   private:
     ResourceManager <TileModelController, 1e5>  m_ManagedTileModelControllers;
@@ -39,10 +39,10 @@ class TileGraph
     ResourceManager <TileModelNode,       1e5>  m_ManagedTileModelNodes;
     ResourceManager <IndicesNode,          10,5>  m_ManagedIndicesNodes;
     ResourceManager <TextureNode,          10,5>  m_ManagedTextureNodes;
-    ResourceManager <GraphNode,            10,5>  m_ManagedGraphNodes;
+    ResourceManager <Node,                 10,5>  m_ManagedGraphNodes;
     
     Array    <AttachmentPoint> m_AttatchmentPoints;
-    ArrayPtr <GraphNode>       m_Levels;
+    ArrayPtr <Node>            m_Levels;
 };
 
 #endif

@@ -25,7 +25,7 @@ void TileGraphRendererVisitor::EnableBlend(bool enable)
   enableBlend = enable;
 }
 
-void TileGraphRendererVisitor::Visit(GraphNode* node)
+void TileGraphRendererVisitor::Visit(Node* node)
 {
   NodeIterator iter(node->GetFirstChild());
   

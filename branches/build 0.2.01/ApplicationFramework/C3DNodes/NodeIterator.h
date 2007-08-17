@@ -1,13 +1,13 @@
 #ifndef NODEITERATOR
 #define NODEITERATOR
 
-class GraphNode;
+class Node;
 
 class NodeIterator
 {
 	public:
 		NodeIterator();
-		NodeIterator(GraphNode* node);
+		NodeIterator(Node* node);
 	
 	public:
 		NodeIterator&		operator ++ ();
@@ -20,10 +20,10 @@ class NodeIterator
 		bool 						operator != (NodeIterator& right);
 		bool 						End();
 		
-		GraphNode*      Current();
+		Node*           Current();
 	
 	protected:
-		GraphNode 	*m_pNode;
+		Node 	*m_pNode;
 };
 
 #endif

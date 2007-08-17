@@ -1,12 +1,12 @@
 #include "SpatialIndexCell.h"
-#include "C3DVisitors/TileGraphVisitor.h"
+#include "C3DVisitors/SpatialIndexVisitor.h"
 
 SpatialIndexCell::SpatialIndexCell()
 {
   m_bRangeVisibility = true;
 }
 
-void SpatialIndexCell::Accept(TileGraphVisitor* visitor)
+void SpatialIndexCell::Accept(SpatialIndexVisitor* visitor)
 {
   visitor->Visit(this);
 }

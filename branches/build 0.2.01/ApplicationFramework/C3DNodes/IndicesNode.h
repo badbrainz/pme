@@ -1,9 +1,9 @@
 #ifndef INDICESNODE
 #define INDICESNODE
 
-#include "GraphNode.h"
+#include "Node.h"
 
-class IndicesNode : public GraphNode
+class IndicesNode : public Node
 {
   public:
      IndicesNode();

@@ -1,11 +1,11 @@
 #include "NodeIterator.h"
-#include "GraphNode.h"
+#include "Node.h"
 
 NodeIterator::NodeIterator() : m_pNode(0)
 {
 }
 
-NodeIterator::NodeIterator(GraphNode* node)
+NodeIterator::NodeIterator(Node* node)
 {
 	m_pNode = node;
 }
@@ -51,7 +51,7 @@ bool NodeIterator::End()
 	return (m_pNode == 0);
 }
 
-GraphNode* NodeIterator::Current()
+Node* NodeIterator::Current()
 {
 	return m_pNode;
 }

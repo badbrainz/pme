@@ -1,9 +1,9 @@
 #ifndef TEXTURENODE
 #define TEXTURENODE
 
-#include "GraphNode.h"
+#include "Node.h"
 
-class TextureNode : public GraphNode
+class TextureNode : public Node
 {
   public:
      TextureNode();

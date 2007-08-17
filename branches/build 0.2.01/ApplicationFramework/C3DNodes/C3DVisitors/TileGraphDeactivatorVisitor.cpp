@@ -9,7 +9,7 @@
 
 #include <iostream>
 
-void TileGraphDeactivatorVisitor::Visit(GraphNode* node)
+void TileGraphDeactivatorVisitor::Visit(Node* node)
 {
   NodeIterator iter(node->GetFirstChild());
   

@@ -1,12 +1,12 @@
 #include "SpatialIndexBaseNode.h"
-#include "C3DVisitors/TileGraphVisitor.h"
+#include "C3DVisitors/SpatialIndexVisitor.h"
 
 SpatialIndexBaseNode::SpatialIndexBaseNode()
 {
   m_Level = 0;
 }
 
-void SpatialIndexBaseNode::Accept(TileGraphVisitor* visitor)
+void SpatialIndexBaseNode::Accept(SpatialIndexVisitor* visitor)
 {
   visitor->Visit(this);
 }

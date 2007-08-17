@@ -444,22 +444,6 @@
 				>
 			</File>
 			<File
-				RelativePath=".\C3DNodes\GraphNode.cpp"
-				>
-			</File>
-			<File
-				RelativePath=".\C3DNodes\GraphNode.h"
-				>
-			</File>
-			<File
-				RelativePath=".\C3DNodes\GraphNodeLink.cpp"
-				>
-			</File>
-			<File
-				RelativePath=".\C3DNodes\GraphNodeLink.h"
-				>
-			</File>
-			<File
 				RelativePath=".\C3DNodes\IndicesNode.cpp"
 				>
 			</File>
@@ -468,11 +452,27 @@
 				>
 			</File>
 			<File
+				RelativePath=".\C3DNodes\Node.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\C3DNodes\Node.h"
+				>
+			</File>
+			<File
 				RelativePath=".\C3DNodes\NodeIterator.cpp"
 				>
 			</File>
 			<File
 				RelativePath=".\C3DNodes\NodeIterator.h"
+				>
+			</File>
+			<File
+				RelativePath=".\C3DNodes\NodeLink.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\C3DNodes\NodeLink.h"
 				>
 			</File>
 			<File
@@ -531,11 +531,11 @@
 				Name="C3DVisitors"
 				>
 				<File
-					RelativePath=".\C3DNodes\C3DVisitors\SpatialIndexVisitor.cpp"
+					RelativePath=".\C3DNodes\C3DVisitors\SpatialIndexDebugVisitor.cpp"
 					>
 				</File>
 				<File
-					RelativePath=".\C3DNodes\C3DVisitors\SpatialIndexVisitor.h"
+					RelativePath=".\C3DNodes\C3DVisitors\SpatialIndexDebugVisitor.h"
 					>
 				</File>
 				<File

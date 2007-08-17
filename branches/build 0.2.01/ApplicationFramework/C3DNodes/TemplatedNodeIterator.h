@@ -1,7 +1,7 @@
 #ifndef TEMPLATEDNODEITERATOR
 #define TEMPLATEDNODEITERATOR
 
-#include "GraphNode.h"
+#include "Node.h"
 
 template <class T>
 class TemplatedNodeIterator
