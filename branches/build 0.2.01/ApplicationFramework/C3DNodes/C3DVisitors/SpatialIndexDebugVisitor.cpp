@@ -1,4 +1,4 @@
-#include "SpatialIndexVisitor.h"
+#include "SpatialIndexDebugVisitor.h"
 
 #include "../SpatialIndexNode.h"
 #include "../SpatialIndexCell.h"
@@ -8,7 +8,7 @@
 #include <gl/glu.h>
 #include <gl/gl.h>
 
-void SpatialIndexVisitor::Visit(SpatialIndexBaseNode *base)
+void SpatialIndexDebugVisitor::Visit(SpatialIndexBaseNode *base)
 {
   //glColor3f(0, 0, 1);
   //base->GetBoundsDescriptor().render(BoundsDescriptor::AABB | BoundsDescriptor::WIRE);
@@ -21,7 +21,7 @@ void SpatialIndexVisitor::Visit(SpatialIndexBaseNode *base)
   }
 }
 
-void SpatialIndexVisitor::Visit(SpatialIndexNode *node)
+void SpatialIndexDebugVisitor::Visit(SpatialIndexNode *node)
 {
   glColor3f(1, 0, 0);
   node->GetBoundsDescriptor().render(BoundsDescriptor::AABB | BoundsDescriptor::WIRE);
@@ -34,7 +34,7 @@ void SpatialIndexVisitor::Visit(SpatialIndexNode *node)
   }
 }
 
-void SpatialIndexVisitor::Visit(SpatialIndexCell *cell)
+void SpatialIndexDebugVisitor::Visit(SpatialIndexCell *cell)
 {
   //glColor3f(0, 1, 0);
   //cell->GetBoundsDescriptor().render(BoundsDescriptor::AABB | BoundsDescriptor::WIRE);
