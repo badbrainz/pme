@@ -23,7 +23,7 @@ class TerrainDatabase
     
     void LoadGameData(const GameFileDescriptor &descriptor);
     void Draw(unsigned int level, TileGraphVisitor *visitor);
-    void Cull(TileGraphVisitor *visitor);//name change: Accept
+    void Cull(SpatialIndexVisitor *visitor);//name change: Accept
     
     void CellVisibility(const Tuple4i &range, bool value);
     void ControllerVisibility(const Tuple4i &range, bool value);
@@ -48,8 +48,8 @@ class TerrainDatabase
     ResourceManager <SpatialIndexCell,    1e2> m_ManagedCells;
     
     ArrayPtr <TileModelController>  m_Controllers;
-    ArrayPtr <SpatialIndexCell> m_SpatialIndexCells;
     ArrayPtr <SpatialIndexBaseNode> m_SpatialIndexBranches;
+    ArrayPtr <SpatialIndexCell>     m_SpatialIndexCells;
     
     SpatialIndexBaseNode *m_pTrunk;
 };

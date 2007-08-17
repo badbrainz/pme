@@ -1,10 +1,10 @@
 #ifndef TEXTURECOORDSNODE
 #define TEXTURECOORDSNODE
 
-#include "GraphNode.h"
+#include "Node.h"
 #include "Math/MathUtils.h"
 
-class TextureCoordsNode : public GraphNode
+class TextureCoordsNode : public Node
 {
   public:
      TextureCoordsNode();
@@ -14,7 +14,7 @@ class TextureCoordsNode : public GraphNode
     
     void SetTextureCoords(Tuple2f *coords);
     Tuple2f* GetTextureCoords();
-  //int id;
+  
   private:
     Tuple2f *texCoords;
 };

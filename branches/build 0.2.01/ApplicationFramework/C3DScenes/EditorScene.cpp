@@ -1,7 +1,7 @@
 #include "EditorScene.h"
 #include "../C3DDatabase/TerrainDatabase.h"
 
-#include "../C3DNODES/C3DVisitors/SpatialIndexVisitor.h"
+#include "../C3DNODES/C3DVisitors/SpatialIndexDebugVisitor.h"
 #include "../C3DNODES/C3DVisitors/SpatialVisibilityVisitor.h"
 #include "../C3DNODES/C3DVisitors/TileGraphRendererVisitor.h"
 #include "../C3DNODES/C3DVisitors/SpatialIntersectVisitor.h"
@@ -11,7 +11,7 @@ GameFileDescriptor gameFileDescriptor;
 SpatialVisibilityVisitor visibilityVisitor;
 TileGraphRendererVisitor baseVisitor;
 TileGraphRendererVisitor blendVisitor;
-SpatialIndexVisitor debugVisitor;
+SpatialIndexDebugVisitor debugVisitor;
 SpatialIntersectVisitor intersectVisitor;
 
 EditorScene::EditorScene(const String &name) : Scene(name)

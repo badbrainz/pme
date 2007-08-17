@@ -14,7 +14,7 @@ TileGraph::TileGraph()
 void TileGraph::Initialize(unsigned int levels)
 {
   IndicesNode *indicesNode = 0;
-  GraphNode   *graphNode   = 0;
+  Node        *graphNode   = 0;
 
   for (unsigned int i = 0; i < levels; i++)
   {
@@ -47,7 +47,7 @@ void TileGraph::Render(unsigned int level, TileGraphVisitor *visitor)
 
 unsigned int TileGraph::Integrate(unsigned int level, Tuple2f *coords, unsigned int texID)
 {
-  GraphNode* start = m_Levels[level]->GetFirstChild()->GetFirstChild();
+  Node* start = m_Levels[level]->GetFirstChild()->GetFirstChild();
   TextureNode *textureNode = (TextureNode*) CheckForRepeat(start, texID);
   
   if (!textureNode)
@@ -78,7 +78,7 @@ TileModelNode* TileGraph::ModelGraph(unsigned int level, unsigned int index)
   return tileModelNode;
 }
 
-GraphNode* TileGraph::CheckForRepeat(GraphNode* node, unsigned int identifier)
+Node* TileGraph::CheckForRepeat(Node* node, unsigned int identifier)
 {
   TemplatedNodeIterator <TextureNode> iter((TextureNode*)node);
   while (!iter.End())

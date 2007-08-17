@@ -1,9 +1,9 @@
 #ifndef BLENDATTRIBUTESNODE
 #define BLENDATTRIBUTESNODE
 
-#include "GraphNode.h"
+#include "Node.h"
 
-class BlendAttributesNode : public GraphNode
+class BlendAttributesNode : public Node
 {
   public:
      BlendAttributesNode();

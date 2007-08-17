@@ -3,7 +3,7 @@
 
 //#include "Visitor.h"
 
-class GraphNode;
+class Node;
 class SpatialIndexNode;
 class SpatialIndexCell;
 class SpatialIndexBaseNode;
@@ -11,7 +11,7 @@ class SpatialIndexBaseNode;
 class SpatialIndexVisitor// : public Visitor
 {
   public:
-    virtual void Visit(GraphNode* node){}
+    virtual void Visit(Node* node){}
     virtual void Visit(SpatialIndexNode *node){}
     virtual void Visit(SpatialIndexCell *cell){}
     virtual void Visit(SpatialIndexBaseNode *node){}

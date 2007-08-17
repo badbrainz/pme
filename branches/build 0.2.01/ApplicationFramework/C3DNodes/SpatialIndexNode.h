@@ -9,7 +9,7 @@ class SpatialIndexNode : public SpatialIndexBaseNode
      SpatialIndexNode();
     ~SpatialIndexNode();
     
-    void Accept(TileGraphVisitor* visitor);
+    void Accept(SpatialIndexVisitor* visitor);
 };
 
 #endif

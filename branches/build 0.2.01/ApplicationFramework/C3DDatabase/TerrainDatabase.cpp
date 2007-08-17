@@ -1,5 +1,6 @@
 #include "TerrainDatabase.h"
 
+#include "../C3DNodes/C3DVisitors/SpatialIndexVisitor.h"
 #include "../C3DNodes/TemplatedNodeIterator.h"
 #include "../C3DTerrain/TileDescriptor.h"
 #include <iostream>
@@ -24,7 +25,7 @@ void TerrainDatabase::Draw(unsigned int level, TileGraphVisitor *visitor)
   m_TileGraph.Render(level, visitor);
 }
 
-void TerrainDatabase::Cull(TileGraphVisitor *visitor)
+void TerrainDatabase::Cull(SpatialIndexVisitor *visitor)
 {
   visitor->Visit(m_pTrunk);
 }

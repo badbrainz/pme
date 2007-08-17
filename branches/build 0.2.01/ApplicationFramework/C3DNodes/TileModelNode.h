@@ -1,11 +1,11 @@
 #ifndef TILEMODELNODE
 #define TILEMODELNODE
 
-#include "GraphNode.h"
+#include "Node.h"
 
 class TileModelController;
 
-class TileModelNode : public GraphNode
+class TileModelNode : public Node
 {
   public:
      TileModelNode();

@@ -9,7 +9,7 @@ class SpatialIndexCell : public SpatialIndexBaseNode
      SpatialIndexCell();
     ~SpatialIndexCell();
     
-    void Accept(TileGraphVisitor* visitor);
+    void Accept(SpatialIndexVisitor* visitor);
     void RangeVisibility(bool value);
     bool RangeVisibility(void);
   

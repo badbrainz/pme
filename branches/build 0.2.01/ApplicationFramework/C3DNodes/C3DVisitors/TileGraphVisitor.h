@@ -3,7 +3,7 @@
 
 //#include "Visitor.h"
 
-class GraphNode;
+class Node;
 class IndicesNode;
 class TextureNode;
 class TileModelNode;
@@ -24,7 +24,7 @@ class TileGraphVisitor// : public Visitor
     //virtual void Visit(TextureCoordsNode* node)   = 0;
     //virtual void Visit(BlendAttributesNode* node) = 0;
     
-    virtual void Visit(GraphNode* node){}
+    virtual void Visit(Node* node){}
     virtual void Visit(TextureNode* node){}
     virtual void Visit(IndicesNode* node){}
     virtual void Visit(TileModelNode* node){}

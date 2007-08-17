@@ -9,7 +9,7 @@ class TileGraphRendererVisitor : public TileGraphVisitor
   public:
     TileGraphRendererVisitor();
     
-    void Visit(GraphNode* node);
+    void Visit(Node* node);
     void Visit(TextureNode* node);
     void Visit(IndicesNode* node);
     void Visit(TileModelNode* node);
