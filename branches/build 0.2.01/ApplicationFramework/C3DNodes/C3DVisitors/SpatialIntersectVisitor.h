@@ -1,7 +1,8 @@
 #ifndef SPATIALINTERSECTVISITOR
 #define SPATIALINTERSECTVISITOR
 
-#include "TileGraphVisitor.h"
+//#include "TileGraphVisitor.h"
+#include "SpatialIndexVisitor.h"
 
 class Ray3D;
 class SpatialIndexBaseNode;
@@ -10,7 +11,7 @@ class SpatialIndexCell;
 class BoundsDescriptor;
 class TerrainDatabase;
 
-class SpatialIntersectVisitor : public TileGraphVisitor
+class SpatialIntersectVisitor : public SpatialIndexVisitor
 {
   public:
     SpatialIntersectVisitor();

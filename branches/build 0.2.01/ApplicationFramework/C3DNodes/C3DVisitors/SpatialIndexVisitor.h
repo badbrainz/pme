@@ -1,18 +1,20 @@
 #ifndef SPATIALINDEXVISITOR
 #define SPATIALINDEXVISITOR
 
-#include "TileGraphVisitor.h"
+//#include "Visitor.h"
 
-class SpatialIndexBaseNode;
+class GraphNode;
 class SpatialIndexNode;
 class SpatialIndexCell;
+class SpatialIndexBaseNode;
 
-class SpatialIndexVisitor : public TileGraphVisitor
+class SpatialIndexVisitor// : public Visitor
 {
   public:
-    void Visit(SpatialIndexBaseNode  *base);
-    void Visit(SpatialIndexNode  *node);
-    void Visit(SpatialIndexCell  *cell);
+    virtual void Visit(GraphNode* node){}
+    virtual void Visit(SpatialIndexNode *node){}
+    virtual void Visit(SpatialIndexCell *cell){}
+    virtual void Visit(SpatialIndexBaseNode *node){}
 };
 
 #endif

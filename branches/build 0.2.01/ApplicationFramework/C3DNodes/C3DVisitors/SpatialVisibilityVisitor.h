@@ -1,6 +1,7 @@
 #pragma once
 
-#include "TileGraphVisitor.h"
+//#include "TileGraphVisitor.h"
+#include "SpatialIndexVisitor.h"
 
 class SpatialIndexBaseNode;
 class SpatialIndexNode;
@@ -8,7 +9,7 @@ class SpatialIndexCell;
 class TerrainDatabase;
 class Frustum;
 
-class SpatialVisibilityVisitor : public TileGraphVisitor
+class SpatialVisibilityVisitor : public SpatialIndexVisitor
 {
   public:
     SpatialVisibilityVisitor(){}
