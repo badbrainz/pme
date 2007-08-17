@@ -15,8 +15,9 @@
 #include <gl/glu.h>
 #include <gl/gl.h>
 
-TileGraphRendererVisitor::TileGraphRendererVisitor() : enableBlend(false)
+TileGraphRendererVisitor::TileGraphRendererVisitor()
 {
+  enableBlend = false;
 }
 
 void TileGraphRendererVisitor::EnableBlend(bool enable)
@@ -106,16 +107,11 @@ void TileGraphRendererVisitor::Visit(TextureCoordsNode* node)
   
   glTexCoordPointer(2, GL_FLOAT, 0, m_pCoords);
   
-  //int i = 0;
-
   while (!iter.End())
   {
     iter.Current()->Accept(this);
     iter++;
-    //i++;
   }
-  
-  //if (i>0) std::cout << i << std::endl;
   
   glDisableClientState(GL_COLOR_ARRAY);
   glDisableClientState(GL_VERTEX_ARRAY);
@@ -130,7 +126,7 @@ void TileGraphRendererVisitor::Visit(TileModelNode* node)
 
   glVertexPointer(3, GL_FLOAT, 0, controller->GetVertices());
   glColorPointer(4, GL_UNSIGNED_BYTE, 0, controller->GetColors());
-  glDrawElements(GL_TRIANGLE_FAN, 5, GL_UNSIGNED_INT, m_pIndices);
+  glDrawElements(GL_TRIANGLE_FAN, 10, GL_UNSIGNED_INT, m_pIndices);
   
   UnTransformTextureMatrix();
 }
