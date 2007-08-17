@@ -34,8 +34,8 @@ bool EditorScene::Initialize()
   m_Camera.update(0);
   m_Frustum.update();
 
-  gameFileDescriptor.pvePath = MediaPathManager::lookUpMediaPath("MP_8_1.PVE");
-  gameFileDescriptor.ptePath = MediaPathManager::lookUpMediaPath("MP_8_1.PTE");
+  gameFileDescriptor.pvePath = MediaPathManager::lookUpMediaPath("MP_4_3.PVE");
+  gameFileDescriptor.ptePath = MediaPathManager::lookUpMediaPath("MP_4_3.PTE");
   
   terrainDatabase.LoadGameData(gameFileDescriptor);
   
@@ -65,7 +65,7 @@ void EditorScene::Update(const FrameInfo &frameInfo)
   m_Camera.update(info->m_Interval);
   m_Frustum.update();
 
-  terrainDatabase.Cull(&visibilityVisitor);
+  terrainDatabase.Cull(&visibilityVisitor);//important: this must be used first.
   terrainDatabase.Draw(0, &baseVisitor);
   terrainDatabase.Draw(1, &blendVisitor);
   

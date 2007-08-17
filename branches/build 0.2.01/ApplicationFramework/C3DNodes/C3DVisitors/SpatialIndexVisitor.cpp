@@ -10,8 +10,8 @@
 
 void SpatialIndexVisitor::Visit(SpatialIndexBaseNode *base)
 {
-  glColor3f(0, 0, 1);
-  base->GetBoundsDescriptor().render(BoundsDescriptor::AABB | BoundsDescriptor::WIRE);
+  //glColor3f(0, 0, 1);
+  //base->GetBoundsDescriptor().render(BoundsDescriptor::AABB | BoundsDescriptor::WIRE);
   
   NodeIterator iter(base->GetFirstChild());
   while (!iter.End())
@@ -23,8 +23,8 @@ void SpatialIndexVisitor::Visit(SpatialIndexBaseNode *base)
 
 void SpatialIndexVisitor::Visit(SpatialIndexNode *node)
 {
-  //glColor3f(1, 0, 0);
-  //node->GetBoundsDescriptor().render(BoundsDescriptor::AABB | BoundsDescriptor::WIRE);
+  glColor3f(1, 0, 0);
+  node->GetBoundsDescriptor().render(BoundsDescriptor::AABB | BoundsDescriptor::WIRE);
 
   NodeIterator iter(node->GetFirstChild());
   while (!iter.End())
