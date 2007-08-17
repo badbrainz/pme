@@ -3,14 +3,16 @@
 
 #include "TileGraphVisitor.h"
 
+class SpatialIndexBaseNode;
 class SpatialIndexNode;
 class SpatialIndexCell;
 
 class SpatialIndexVisitor : public TileGraphVisitor
 {
   public:
-    virtual void Visit(SpatialIndexNode  *node);
-    virtual void Visit(SpatialIndexCell  *cell);
+    void Visit(SpatialIndexBaseNode  *base);
+    void Visit(SpatialIndexNode  *node);
+    void Visit(SpatialIndexCell  *cell);
 };
 
 #endif
