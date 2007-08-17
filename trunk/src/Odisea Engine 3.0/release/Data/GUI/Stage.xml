@@ -10,8 +10,8 @@
 									colorBits		=		 "24"
                   fullscreen  = "false" 
                   centered    =  "true"
-                  height      =   "480"
-                  width       =   "640"
+                  height      =   "600"
+                  width       =   "800"
                   x           =     "0"
                   y           =     "0" />
 		

@@ -15,8 +15,9 @@
 #include <gl/glu.h>
 #include <gl/gl.h>
 
-TileGraphRendererVisitor::TileGraphRendererVisitor() : enableBlend(false)
+TileGraphRendererVisitor::TileGraphRendererVisitor()
 {
+  enableBlend = false;
 }
 
 void TileGraphRendererVisitor::EnableBlend(bool enable)
@@ -93,7 +94,7 @@ void TileGraphRendererVisitor::Visit(TextureNode* node)
   
   glDisable(GL_TEXTURE_2D);
 }
-Tuple2f* coords;
+
 void TileGraphRendererVisitor::Visit(TextureCoordsNode* node)
 {
   NodeIterator iter(node->GetFirstChild());
@@ -102,20 +103,15 @@ void TileGraphRendererVisitor::Visit(TextureCoordsNode* node)
   glEnableClientState(GL_VERTEX_ARRAY);
   glEnableClientState(GL_COLOR_ARRAY);
   
-  coords = node->GetTextureCoords();
+  m_pCoords = node->GetTextureCoords();
   
-  glTexCoordPointer(2, GL_FLOAT, 0, coords);
+  glTexCoordPointer(2, GL_FLOAT, 0, m_pCoords);
   
-  bool i = false;
-
   while (!iter.End())
   {
-    i = true;
     iter.Current()->Accept(this);
     iter++;
   }
-  
-  //if(i) std::cout << "rendering" << std::endl;
   
   glDisableClientState(GL_COLOR_ARRAY);
   glDisableClientState(GL_VERTEX_ARRAY);
@@ -130,7 +126,6 @@ void TileGraphRendererVisitor::Visit(TileModelNode* node)
 
   glVertexPointer(3, GL_FLOAT, 0, controller->GetVertices());
   glColorPointer(4, GL_UNSIGNED_BYTE, 0, controller->GetColors());
-
   glDrawElements(GL_TRIANGLE_FAN, 10, GL_UNSIGNED_INT, m_pIndices);
   
   UnTransformTextureMatrix();
@@ -141,42 +136,40 @@ void TileGraphRendererVisitor::TransformTextureMatrix(unsigned short flags)
   glMatrixMode(GL_TEXTURE);
   glPushMatrix();
   
+  ///bad area!
   //*/
   if (flags & TileFlags::TEXTURE_MIRRORX)
   {
-    glTranslatef(coords[4].x, coords[4].y, 0);
+    glTranslatef(m_pCoords[4].x, m_pCoords[4].y, 0);
     glScalef(-1,1,1);
-    glTranslatef(-coords[4].x, -coords[4].y, 0);
+    glTranslatef(-m_pCoords[4].x, -m_pCoords[4].y, 0);
   }
   if (flags & TileFlags::TEXTURE_MIRRORY)
   {
-    glTranslatef(coords[4].x, coords[4].y, 0);
+    glTranslatef(m_pCoords[4].x, m_pCoords[4].y, 0);
     glScalef(1,-1,1);
-    glTranslatef(-coords[4].x, -coords[4].y, 0);
+    glTranslatef(-m_pCoords[4].x, -m_pCoords[4].y, 0);
   }
   //*/
+  
   //*/
   if (flags & TileFlags::TEXTURE_ROTATE90)
   {
-    glTranslatef(coords[4].x, coords[4].y, 0);
+    glTranslatef(m_pCoords[4].x, m_pCoords[4].y, 0);
     glRotatef(90.0f,0,0,1);
-    glTranslatef(-coords[4].x, -coords[4].y, 0);
+    glTranslatef(-m_pCoords[4].x, -m_pCoords[4].y, 0);
   }
-  //*/
-  //*/
   else if (flags & TileFlags::TEXTURE_ROTATE180)
   {
-    glTranslatef(coords[4].x, coords[4].y, 0);
+    glTranslatef(m_pCoords[4].x, m_pCoords[4].y, 0);
     glRotatef(180.0f,0,0,1);
-    glTranslatef(-coords[4].x, -coords[4].y, 0);
+    glTranslatef(-m_pCoords[4].x, -m_pCoords[4].y, 0);
   }
-  //*/
-  //*/
   else if (flags & TileFlags::TEXTURE_ROTATE270)
   {
-    glTranslatef(coords[4].x, coords[4].y, 0);
+    glTranslatef(m_pCoords[4].x, m_pCoords[4].y, 0);
     glRotatef(270.0f,0,0,1);
-    glTranslatef(-coords[4].x, -coords[4].y, 0);
+    glTranslatef(-m_pCoords[4].x, -m_pCoords[4].y, 0);
   }
   //*/
 

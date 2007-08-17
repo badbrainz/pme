@@ -3,14 +3,14 @@
 
 #include "Scene.h"
 #include "Renderer/Renderer.h"
-#include "../C3DGeometry/Grid.h"
 #include "../C3DParsers/PveObject.h"
+#include "../C3DGeometry/Ray3D.h"
 
 class EditorScene : public Scene
 {
   public:
-  	EditorScene(const String &name = "EditorScene");
-  	virtual ~EditorScene();
+    EditorScene(const String &name = "EditorScene");
+    virtual ~EditorScene();
   
   public:
     virtual void actionPerformed(GUIEvent &evt);
@@ -28,12 +28,14 @@ class EditorScene : public Scene
     
     Frustum     m_Frustum;
     Camera      m_Camera;
-    Grid        m_Grid;
-
+    
     PveObject   m_PveObject;
     
     bool        m_bMouseLocked,
+                m_bPickingEnabled,
                 m_bDebugView;
+    
+    Ray3D       m_Ray;
 };
 
 #endif

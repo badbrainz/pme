@@ -11,7 +11,7 @@ void SpatialIndexNode::Accept(TileGraphVisitor* visitor)
   visitor->Visit(this);
 }
 
-void SpatialIndexNode::SetBoundsDescriptor(const BoundsDescriptor &descriptor)
+/*void SpatialIndexNode::SetBoundsDescriptor(const BoundsDescriptor &descriptor)
 {
   m_BoundsDescriptor = descriptor;
 }
@@ -44,7 +44,7 @@ BoundsDescriptor &SpatialIndexNode::GetBoundsDescriptor(void)
 Tuple4i &SpatialIndexNode::GetRange()
 {
   return m_Range;
-}
+}*/
 
 SpatialIndexNode::~SpatialIndexNode()
 {

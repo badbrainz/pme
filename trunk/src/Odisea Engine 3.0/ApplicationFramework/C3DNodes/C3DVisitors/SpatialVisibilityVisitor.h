@@ -2,6 +2,7 @@
 
 #include "TileGraphVisitor.h"
 
+class SpatialIndexBaseNode;
 class SpatialIndexNode;
 class SpatialIndexCell;
 class TerrainDatabase;
@@ -13,8 +14,9 @@ class SpatialVisibilityVisitor : public TileGraphVisitor
     SpatialVisibilityVisitor(){}
     void SetFrustum(Frustum *frustumpointer);
     void SetTerrain(TerrainDatabase *terrain);
-
-    void Visit(SpatialIndexNode  *base);
+    
+    void Visit(SpatialIndexBaseNode  *base);
+    void Visit(SpatialIndexNode  *node);
     void Visit(SpatialIndexCell  *cell);
 
   private:

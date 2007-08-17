@@ -6,17 +6,17 @@ PveObject::PveObject()
 {
   m_pUncompressedVerts = 0;
   m_pCompressedYBuffer = 0;
+  m_pTileVertexBlock   = 0;
   m_pColorBuffer       = 0;
-  tileVertexBlock      = 0;
-  tileIndexSet         = 0;
-  tileSet              = 0;
+  m_pTileIndexSet      = 0;
+  m_pTileSet           = 0;
   
-  tilesPerX            = 0;
-  tilesPerY            = 0;
-  maxHeight            = 0.0f;
-  minHeight            = 0.0f;
-  elevate              = 1.0f;
-  heightRatio          = 1.0f;
+  m_uiTilesPerX        = 0;
+  m_uiTilesPerY        = 0;
+  m_fHeightRatio       = 1.0f;
+  m_fMaxHeight         = 0.0f;
+  m_fMinHeight         = 0.0f;
+  m_fElevate           = 1.0f;
 }
 
 ///buffers
@@ -32,9 +32,9 @@ const Tuple3f *PveObject::GetVertexBufferChunk(int tileIndex)
   
   for(int b = 0; b < 9; b++)
   {
-    index = tileIndexSet[ tileIndex ].indices[ b ];
+    index = m_pTileIndexSet[ tileIndex ].indices[ b ];
     m_TempVertexBuffer[ b ].z = m_pUncompressedVerts[ index ].x;
-    m_TempVertexBuffer[ b ].y = m_pUncompressedVerts[ index ].y * elevate;
+    m_TempVertexBuffer[ b ].y = m_pUncompressedVerts[ index ].y * m_fElevate;
     m_TempVertexBuffer[ b ].x = m_pUncompressedVerts[ index ].z;
   }
 
@@ -51,7 +51,7 @@ const Tuple4ub *PveObject::GetColorBufferChunk(int tileIndex)
   unsigned int index;
   for(int b = 0; b < 9; b++)
   {
-    index = tileIndexSet[ tileIndex ].indices[ b ];
+    index = m_pTileIndexSet[ tileIndex ].indices[ b ];
     m_TempColorBuffer[ b ] = m_pColorBuffer[ index ];
   }
 
@@ -61,22 +61,22 @@ const Tuple4ub *PveObject::GetColorBufferChunk(int tileIndex)
 ///tiles
 Tile *PveObject::GetTile(int tileIndex)
 {
-  return &tileSet[tileIndex];
+  return &m_pTileSet[tileIndex];
 }
 
 const unsigned int *PveObject::GetTileVertexIndices(int tileIndex)
 {
-  return tileIndexSet[tileIndex].indices;
+  return m_pTileIndexSet[tileIndex].indices;
 }
 
 Tuple3f *PveObject::GetTileVertexChunk(int tileIndex)
 {
-  return tileVertexBlock[tileIndex].vertices;
+  return m_pTileVertexBlock[tileIndex].vertices;
 }
 
 Tuple4ub *PveObject::GetTileColorChunk(int tileIndex)
 {
-  return tileVertexBlock[tileIndex].colors;
+  return m_pTileVertexBlock[tileIndex].colors;
 }
 
 ///accessors
@@ -92,24 +92,22 @@ Tuple4ub *PveObject::GetTileColorChunk(int tileIndex)
 
 float PveObject::GetMaxHeight(void)
 {
-  return maxHeight;
+  return m_fMaxHeight;
 }
 
 float PveObject::GetMinHeight(void)
 {
-  return minHeight;
+  return m_fMinHeight;
 }
 
 float PveObject::ComputeMaxTileHeight(unsigned int index)
 {
-  float max,
+  float max = -100,
         element;
-
-  max = -100;
 
   for(int i = 0; i < 9; i++)
   {
-    element = m_pUncompressedVerts[tileIndexSet[index].indices[i]].y;
+    element = m_pUncompressedVerts[m_pTileIndexSet[index].indices[i]].y;
     max     =  max > element ? max : element;
   }
 
@@ -123,7 +121,7 @@ float PveObject::ComputeMinTileHeight(unsigned int index)
 
   for(int i = 0; i < 9; i++)
   {
-    element = m_pUncompressedVerts[tileIndexSet[index].indices[i]].y;
+    element = m_pUncompressedVerts[m_pTileIndexSet[index].indices[i]].y;
     min     =  min > element ? element : min;
   }
 
@@ -132,33 +130,33 @@ float PveObject::ComputeMinTileHeight(unsigned int index)
 
 void PveObject::ComputeHeightRatio(void)
 {
-  heightRatio = (maxHeight-minHeight) / 255.0f;
+  m_fHeightRatio = (m_fMaxHeight-m_fMinHeight) / 255.0f;
 }
 
 float PveObject::GetHeightRatio(void)
 {
-  return heightRatio;
+  return m_fHeightRatio;
 }
 
 unsigned int PveObject::GetTilesPerX(void)
 {
-  return tilesPerX;
+  return m_uiTilesPerX;
 }
 
 unsigned int PveObject::GetTilesPerY(void)
 {
-  return tilesPerY;
+  return m_uiTilesPerY;
 }
 
 void PveObject::SetElevation(float elevation)
 {
-  elevate = elevation;
+  m_fElevate = elevation;
 }
 
 PveObject::~PveObject()
 {
-  //memoryBlock.PrintMemoryBlock("memory.pba");
-  //memoryBlock.PrintMemoryProfile("memory.txt");
+  //m_MemoryBlock.PrintMemoryBlock("memory.pba");
+  //m_MemoryBlock.PrintMemoryProfile("memory.txt");
 }
 
 /*void PveObject::ComputeTileMinHeights(void)

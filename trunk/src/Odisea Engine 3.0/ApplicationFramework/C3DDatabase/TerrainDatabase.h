@@ -4,6 +4,7 @@
 #include "../C3DGraphs/TileGraph.h"
 #include "../C3DParsers/PveObject.h"
 #include "../C3DParsers/PteObject.h"
+#include "../C3DNodes/SpatialIndexNode.h"
 #include "../C3DNodes/SpatialIndexCell.h"
 #include "../C3DControllers/TileModelController.h"
 
@@ -21,9 +22,11 @@ class TerrainDatabase
     ~TerrainDatabase();
     
     void LoadGameData(const GameFileDescriptor &descriptor);
-    void ControllerVisibility(const Tuple4i &range, bool visible);
     void Draw(unsigned int level, TileGraphVisitor *visitor);
     void Cull(TileGraphVisitor *visitor);//name change: Accept
+    
+    void CellVisibility(const Tuple4i &range, bool value);
+    void ControllerVisibility(const Tuple4i &range, bool value);
   
   private:
     void SetupSpatialIndexStructure(void);
@@ -39,15 +42,16 @@ class TerrainDatabase
     
     TileGraph m_TileGraph;
     
-    ResourceManager <TileModelController> m_ManagedTileModelControllers;
-    ResourceManager <SpatialIndexNode>    m_ManagedBranches;
-    ResourceManager <SpatialIndexCell>    m_ManagedCells;
+    ResourceManager <TileModelController, 1e5> m_ManagedTileModelControllers;
+    ResourceManager <SpatialIndexBaseNode,1e2> m_ManagedBases;
+    ResourceManager <SpatialIndexNode,    1e2> m_ManagedNodes;
+    ResourceManager <SpatialIndexCell,    1e2> m_ManagedCells;
     
     ArrayPtr <TileModelController>  m_Controllers;
-    ArrayPtr <SpatialIndexNode>     m_SpatialIndexCells;//managed
-    ArrayPtr <SpatialIndexNode>     m_SpatialIndexBranches;//managed
+    ArrayPtr <SpatialIndexCell> m_SpatialIndexCells;
+    ArrayPtr <SpatialIndexBaseNode> m_SpatialIndexBranches;
     
-    SpatialIndexNode *m_pTrunk;
+    SpatialIndexBaseNode *m_pTrunk;
 };
 
 #endif

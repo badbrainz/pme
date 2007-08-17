@@ -1,8 +1,10 @@
 #include "EditorScene.h"
 #include "../C3DDatabase/TerrainDatabase.h"
+
 #include "../C3DNODES/C3DVisitors/SpatialIndexVisitor.h"
 #include "../C3DNODES/C3DVisitors/SpatialVisibilityVisitor.h"
 #include "../C3DNODES/C3DVisitors/TileGraphRendererVisitor.h"
+#include "../C3DNODES/C3DVisitors/SpatialIntersectVisitor.h"
 
 TerrainDatabase terrainDatabase;
 GameFileDescriptor gameFileDescriptor;
@@ -10,11 +12,13 @@ SpatialVisibilityVisitor visibilityVisitor;
 TileGraphRendererVisitor baseVisitor;
 TileGraphRendererVisitor blendVisitor;
 SpatialIndexVisitor debugVisitor;
+SpatialIntersectVisitor intersectVisitor;
 
 EditorScene::EditorScene(const String &name) : Scene(name)
 {
-  m_bMouseLocked  = false;
-  m_bDebugView    = true;
+  m_bMouseLocked    = false;
+  m_bDebugView      = false;
+  m_bPickingEnabled = false;
 }
 
 bool EditorScene::Initialize()
@@ -38,8 +42,11 @@ bool EditorScene::Initialize()
   visibilityVisitor.SetFrustum(&m_Frustum);
   visibilityVisitor.SetTerrain(&terrainDatabase);
   terrainDatabase.Cull(&visibilityVisitor);
-  
   blendVisitor.EnableBlend(true);
+  
+  intersectVisitor.SetRay(&m_Ray);
+  
+  glPolygonOffset(-1, -1);
   
   return true;
 }
@@ -58,15 +65,19 @@ void EditorScene::Update(const FrameInfo &frameInfo)
   m_Camera.update(info->m_Interval);
   m_Frustum.update();
 
-  //m_Grid.Draw();
+  terrainDatabase.Cull(&visibilityVisitor);//important: this must be used first.
+  terrainDatabase.Draw(0, &baseVisitor);
+  terrainDatabase.Draw(1, &blendVisitor);
   
   if (m_bDebugView)
     terrainDatabase.Cull(&debugVisitor);
   
-  terrainDatabase.Cull(&visibilityVisitor);
-  
-  terrainDatabase.Draw(0, &baseVisitor);
-  terrainDatabase.Draw(1, &blendVisitor);
+  if (m_bPickingEnabled)
+  {
+    glEnable(GL_POLYGON_OFFSET_LINE);
+    terrainDatabase.Cull(&intersectVisitor);
+    glDisable(GL_POLYGON_OFFSET_LINE);
+  }
 
   if (m_pFpsCounter)
     m_pFpsCounter->setLabelString(String("Current FPS: ") + int(info->m_Fps));
@@ -95,8 +106,10 @@ void EditorScene::actionPerformed(GUIEvent &evt)
     GUICheckBox *checkBox = (GUICheckBox*) sourceRectangle;
     
     if (checkBox->isClicked())
-      if (callbackString == "Debug")
-        m_bDebugView = checkBox->isChecked();
+    {
+      if (callbackString == "Debug")   {m_bDebugView      = checkBox->isChecked();return;}
+      if (callbackString == "Picking") {m_bPickingEnabled = checkBox->isChecked();return;}
+    }
   }
 }
 
@@ -125,6 +138,9 @@ void EditorScene::HandleMouseEvent(MouseEvent evt, int extraInfo)
     case MOVED:
       m_Camera.lockMouse(false);
       m_Camera.setMouseInfo(evt.getX(), evt.getY());
+      
+      if (m_bPickingEnabled)
+        m_Ray.Set(m_Camera.getViewerPosition(), Renderer::getWorldCoords(Tuple3f((float)evt.getX(),(float)evt.getYInverse(),1)));
     break;
   }
 

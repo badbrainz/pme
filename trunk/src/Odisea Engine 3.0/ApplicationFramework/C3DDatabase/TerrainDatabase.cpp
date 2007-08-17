@@ -5,7 +5,7 @@
 #include <iostream>
 #include <stack>
 
-const int cellSize = 8;
+const int cellSize = 4;
 
 template <class T>
 inline int ceilPowerOfTwo(T x)
@@ -37,6 +37,12 @@ void TerrainDatabase::LoadGameData(const GameFileDescriptor &descriptor)
   SetupGraphStructure();
   SetupCellDataStructures();ComputeCellBoundaries();
   SetupSpatialIndexStructure();ComputeTreeBoundaries();
+  
+  m_ManagedTileModelControllers.FlushUnusedResources();
+  m_ManagedBases.FlushUnusedResources();
+  m_ManagedNodes.FlushUnusedResources();
+  m_ManagedCells.FlushUnusedResources();
+  m_TileGraph.Trim();
 }
 
 void TerrainDatabase::SetupGraphStructure(void)
@@ -117,7 +123,7 @@ void TerrainDatabase::SetupCellDataStructures(void)
     zOff = clamp(int(cellSize*x+(cellSize-1)), 0, int(tilesPerX-1));
     wOff = clamp(int(cellSize*y+(cellSize-1)), 0, int(tilesPerY-1));
     
-    SpatialIndexNode *index = m_ManagedCells.Create();
+    SpatialIndexCell *index = m_ManagedCells.Create();
     index->SetRange(Tuple4i(xOff,yOff,zOff,wOff));
     m_SpatialIndexCells.append(index);
   }
@@ -177,9 +183,9 @@ void TerrainDatabase::ComputeCellBoundaries(void)
 
 void TerrainDatabase::SetupSpatialIndexStructure(void)
 {
-  SpatialIndexNode   *pointer   = 0,
+  SpatialIndexBaseNode   *pointer   = 0,
                      *branch    = 0;
-  SpatialIndexNode   *cell      = 0;
+  SpatialIndexBaseNode   *cell      = 0;
 
   unsigned int        logarithm = 0,
                       boundary  = 0,
@@ -197,7 +203,7 @@ void TerrainDatabase::SetupSpatialIndexStructure(void)
   Tuple4i branchRange,
           terrainRange;
 
-  std::stack <SpatialIndexNode*> treestack;
+  std::stack <SpatialIndexBaseNode*> treestack;
 
   tilesPerX = m_PveObject.GetTilesPerX();
   tilesPerY = m_PveObject.GetTilesPerY();
@@ -210,7 +216,7 @@ void TerrainDatabase::SetupSpatialIndexStructure(void)
   power     = ceilLogBaseTwo((float)boundary+1);
   logarithm = ceilPowerOfTwo((float)boundary+1);
 
-  m_pTrunk = m_ManagedBranches.Create();
+  m_pTrunk = m_ManagedBases.Create();
   m_pTrunk->SetRange(terrainRange);
   
   BoundsDescriptor descriptor;
@@ -245,7 +251,7 @@ void TerrainDatabase::SetupSpatialIndexStructure(void)
         point.z = clamp(point.x+offset-1, point.x, terrainRange.z);
         point.w = clamp(point.y+offset-1, point.y, terrainRange.w);
         
-        branch = m_ManagedBranches.Create();///create a "branch" node instead
+        branch = m_ManagedNodes.Create();
         branch->SetLevel(level+1);
         branch->SetRange(point);
         branch->Attach(pointer);
@@ -271,11 +277,11 @@ void TerrainDatabase::ComputeTreeBoundaries(void)
   unsigned int tilesPerX = m_PveObject.GetTilesPerX();
   unsigned int cellsPerX = (int) ceil((float)tilesPerX/cellSize);
 
-  SpatialIndexNode     *branchpointer = 0;
+  SpatialIndexBaseNode     *branchpointer = 0;
   Tuple4i               branchrange;
   BoundsDescriptor      descriptor;
   
-  std::stack <SpatialIndexNode*> treestack;
+  std::stack <SpatialIndexBaseNode*> treestack;
   treestack.push(m_pTrunk);
 
   while (!treestack.empty())
@@ -287,13 +293,13 @@ void TerrainDatabase::ComputeTreeBoundaries(void)
     descriptor.reset();
     descriptor.computeBounds(Tuple3f(1e3,1e3,1e3),Tuple3f(-1e3,-1e3,-1e3));
     
-    TemplatedNodeIterator <SpatialIndexNode> iter((SpatialIndexNode*)branchpointer->GetFirstChild());
+    TemplatedNodeIterator <SpatialIndexBaseNode> iter((SpatialIndexBaseNode*)branchpointer->GetFirstChild());
     while (!iter.End())
     {
       for (int y = branchrange.y; y <= branchrange.w; y++)
       for (int x = branchrange.x; x <= branchrange.z; x++)
       {
-        SpatialIndexNode *cell = m_SpatialIndexCells[y * cellsPerX + x];
+        SpatialIndexBaseNode *cell = m_SpatialIndexCells[y * cellsPerX + x];
         descriptor += cell->GetBoundsDescriptor();
       }
       iter.Current()->UpdateBounds(descriptor);
@@ -303,13 +309,29 @@ void TerrainDatabase::ComputeTreeBoundaries(void)
   }
 }
 
-void TerrainDatabase::ControllerVisibility(const Tuple4i &range, bool visible)
+void TerrainDatabase::ControllerVisibility(const Tuple4i &range, bool value)
 {
   unsigned int tilesPerX = m_PveObject.GetTilesPerX();
   for (int y = range.y; y <= range.w; y++)
   for (int x = range.x; x <= range.z; x++)
-    m_Controllers[y*tilesPerX+x]->SetVisible(visible);
+    m_Controllers[y*tilesPerX+x]->SetVisible(value);
 }
+
+void TerrainDatabase::CellVisibility(const Tuple4i &range, bool value)
+{
+  SpatialIndexCell *cell;
+  unsigned int cellsPerX = (int) ceil((float)m_PveObject.GetTilesPerX()/cellSize);
+  for (int y = range.y; y <= range.w; y++)
+  for (int x = range.x; x <= range.z; x++)
+  {
+    cell = m_SpatialIndexCells[y*cellsPerX+x];
+    if (cell->RangeVisibility() == value)
+      continue;
+    ControllerVisibility(cell->GetRange(), value);
+    cell->RangeVisibility(value);
+  }
+}
+
 
 TerrainDatabase::~TerrainDatabase()
 {
