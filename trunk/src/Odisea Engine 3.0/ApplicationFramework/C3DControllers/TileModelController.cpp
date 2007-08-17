@@ -3,6 +3,17 @@
 #include "../C3DTerrain/Tile.h"
 #include "../C3DNodes/TileModelNode.h"
 
+void TileModelController::SwitchTemp(Tuple4ub *temp)
+{
+  m_TempColors = m_Colors;
+  m_Colors = temp;
+}
+
+void TileModelController::SwitchBack()
+{
+  m_Colors = m_TempColors;
+}
+
 void TileModelController::SetModel(Tile *tile)
 {
   m_pTileModel = tile;
@@ -26,6 +37,7 @@ Tuple3f* TileModelController::GetVertices()
 void TileModelController::SetColors(Tuple4ub *colors)
 {
   m_Colors = colors;
+  m_TempColors = m_Colors;
 }
 
 Tuple4ub* TileModelController::GetColors()
@@ -40,13 +52,11 @@ void TileModelController::SetVisible(bool value)
   {
     for (unsigned int i = 0; i < length; i++)
     m_ModelNodes[i]->Reveal();
-    //m_pNode->Reveal();
   }
   else
   {
     for (unsigned int j = 0; j < length; j++)
     m_ModelNodes[j]->Hide();
-    //m_pNode->Hide();
   }
 }
 

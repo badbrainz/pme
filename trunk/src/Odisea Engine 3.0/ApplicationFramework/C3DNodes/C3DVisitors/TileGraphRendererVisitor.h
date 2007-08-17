@@ -2,6 +2,7 @@
 #define TILEGRAPHRENDERERVISITOR
 
 #include "TileGraphVisitor.h"
+#include "Math/MathUtils.h"
 
 class TileGraphRendererVisitor : public TileGraphVisitor
 {
@@ -23,6 +24,7 @@ class TileGraphRendererVisitor : public TileGraphVisitor
   
   private:
     unsigned int *m_pIndices;
+    Tuple2f      *m_pCoords;
     bool          enableBlend;
 };
 

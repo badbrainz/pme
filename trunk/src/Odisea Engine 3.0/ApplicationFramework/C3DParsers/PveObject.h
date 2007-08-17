@@ -5,7 +5,6 @@
 #include "../C3DTerrain/Tile.h"
 #include "Tools/Logger.h"
 #include <fstream>
-//#include <vector>
 
 struct TileIndexSet
 {
@@ -50,7 +49,7 @@ class PveObject
     Tuple4ub           *GetTileColorChunk(int tileIndex);
     const Tuple4ub     *GetColorBufferChunk(int tileIndex);
     const Tuple3f      *GetVertexBuffer(void);
-    const Tuple4ub  	 *GetColorBuffer(void);
+    const Tuple4ub     *GetColorBuffer(void);
     
     //void                SetColorBufferChunk(int tileIndex, const Tuple4ub *colors);
     void                SetElevation(float elevation);
@@ -67,7 +66,7 @@ class PveObject
     void                SkipTileArray(void);
     void                BuildTerrainVertexField(void);
     void                BuildTileVertexBlock(void);
-    void								InitializeMemoryBlock(void);
+    void                InitializeMemoryBlock(void);
     void                SetupTileIndices(void);
     
     void                ComputeHeightRatio(void);
@@ -82,36 +81,28 @@ class PveObject
 /**
  *block memory
  */
-    VirtualMemory				memoryBlock;
-    Tile               *tileSet;
-    TileIndexSet       *tileIndexSet;
-    TileVertexBlock    *tileVertexBlock;//interleaved data -> faster access.
-    unsigned char  		 *m_pCompressedYBuffer;
-    Tuple3f        		 *m_pUncompressedVerts;
-    Tuple4ub    	 		 *m_pColorBuffer;
+    VirtualMemory       m_MemoryBlock;
+    Tuple3f            *m_pUncompressedVerts;
+    unsigned char      *m_pCompressedYBuffer;
+    TileVertexBlock    *m_pTileVertexBlock;
+    TileIndexSet       *m_pTileIndexSet;
+    Tuple4ub           *m_pColorBuffer;
+    Tile               *m_pTileSet;
 /** 
  */
     
     Tuple3f             m_TempVertexBuffer[9];
-    Tuple4ub    	 		  m_TempColorBuffer[9];
+    Tuple4ub            m_TempColorBuffer[9];
     
-    unsigned int    		tilesPerX,
-                        tilesPerY;
+    unsigned int        m_uiTilesPerX,
+                        m_uiTilesPerY;
     
-    float           		heightRatio,
-                        maxHeight,
-                        minHeight,
-                        elevate;
+    float               m_fHeightRatio,
+                        m_fMaxHeight,
+                        m_fMinHeight,
+                        m_fElevate;
     
-    std::ifstream				inputFile;
-    
-    ///this has changed to a block of memory.
-    //TileVertexSet      *tileVertexSet;
-    //TileColorSet       *tileColorSet;
-    
-    ///stl container uses more memory than the custom memory manager.
-    //std::vector <TileIndexSet> tileIndexSet;
-    //std::vector <TileVertexBlock> tileVertexBlock;
+    std::ifstream       m_InputFile;
 };
 
 #endif

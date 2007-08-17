@@ -30,12 +30,17 @@ class TileModelController
     
     void AddTileModelNode(TileModelNode *node);
     TileModelNode *GetTileModelNode(unsigned int index);
+    
+    ///
+    void SwitchTemp(Tuple4ub *temp);
+    void SwitchBack();
   
   private:
     TileModelNode *m_pNode;
     Tile          *m_pTileModel;
     Tuple3f       *m_Vertices;
     Tuple4ub      *m_Colors;
+    Tuple4ub      *m_TempColors;
     
     ArrayPtr <TileModelNode> m_ModelNodes;
 };

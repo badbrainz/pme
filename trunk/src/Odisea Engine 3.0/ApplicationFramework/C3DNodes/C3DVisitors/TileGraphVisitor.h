@@ -10,6 +10,7 @@ class TileModelNode;
 class TextureCoordsNode;
 class BlendAttributesNode;
 
+class SpatialIndexBaseNode;
 class SpatialIndexNode;
 class SpatialIndexCell;
 
@@ -30,6 +31,7 @@ class TileGraphVisitor
     virtual void Visit(TextureCoordsNode* node){}
     virtual void Visit(BlendAttributesNode* node){}
     
+    virtual void Visit(SpatialIndexBaseNode  *node){}
     virtual void Visit(SpatialIndexNode  *node){}
     virtual void Visit(SpatialIndexCell  *cell){}
 };
