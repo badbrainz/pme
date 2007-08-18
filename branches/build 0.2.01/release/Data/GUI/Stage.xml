@@ -4,14 +4,14 @@
 							enabled 		= "false" 
 							logFilePath	= "Profile.txt" />
 
-  <Window title = "C3D Engine 2.0">
+  <Window title = "Odisea Engine 2.0">
 
     <DisplayMode  colorDepth  =    "32"
 									colorBits		=		 "24"
                   fullscreen  = "false" 
                   centered    =  "true"
-                  height      =   "600"
-                  width       =   "800"
+                  height      =   "480"
+                  width       =   "640"
                   x           =     "0"
                   y           =     "0" />
 		
