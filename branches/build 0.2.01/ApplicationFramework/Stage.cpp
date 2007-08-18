@@ -26,8 +26,8 @@ bool Stage::Initialize()
   
   srand((unsigned)time(0));
   
-  //SceneManager::AddScene(new EditorScene("EditorScene")    );
-  //SceneManager::AddScene(new NewMapScene("NewMapScene")    );
+  SceneManager::AddScene(new EditorScene("EditorScene")    );
+  SceneManager::AddScene(new NewMapScene("NewMapScene")    );
   SceneManager::AddScene(new MainMenuScene("MainMenuScene"));
   SceneManager::SetScene("MainMenuScene");
   
@@ -165,6 +165,13 @@ void Stage::Destroy()
   
   TexturesManager::flushAllTextures();
   SceneManager::DestroyAllScenes();
+
+  if(m_Window.isFullscreen())
+  {
+    Logger::writeInfoLog("Restoring task bar");
+    HWND taskBarHandle = FindWindow("Shell_traywnd", "");
+    SetWindowPos(taskBarHandle, 0, 0, 0, 0, 0, SWP_SHOWWINDOW);
+  }
 }
 
 Stage::~Stage()
