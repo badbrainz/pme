@@ -26,8 +26,8 @@ bool Stage::Initialize()
   
   srand((unsigned)time(0));
   
-  SceneManager::AddScene(new EditorScene("EditorScene")    );
-  SceneManager::AddScene(new NewMapScene("NewMapScene")    );
+  //SceneManager::AddScene(new EditorScene("EditorScene")    );
+  //SceneManager::AddScene(new NewMapScene("NewMapScene")    );
   SceneManager::AddScene(new MainMenuScene("MainMenuScene"));
   SceneManager::SetScene("MainMenuScene");
   
