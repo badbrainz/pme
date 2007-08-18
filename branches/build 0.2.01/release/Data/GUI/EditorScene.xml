@@ -31,26 +31,26 @@
          drawBounds     = "true"
          anchorPoint    = "CORNERLU"
          drawBackground = "true"> 
-		
-    <BGColor      x =  "50" y =  "50" z = "50" />
-    <BordersColor x = "216" y = "169" z =  "0" />
-		
-    <Position x = "10" y = "10"/>
-    <Interval y = "2" />
-		
-    <Label name = "Title">    
-      <Text string = "FPS Monitor">
-         <Color r = "255" g = "180" b = "40" />
-       </Text>
-    </Label>
-		
-    <Separator ratio = "1.0" />
-		
-    <Label name = "FpsCounter">
-			<Text string = "Current FPS: 0" />
-		</Label>
-		
-  </Panel>
+			
+			<BGColor      x =  "50" y =  "50" z = "50" />
+			<BordersColor x = "216" y = "169" z =  "0" />
+			
+			<Position x = "10" y = "10"/>
+			<Interval y = "2" />
+			
+			<Label name = "Title">    
+				<Text string = "FPS Monitor">
+					 <Color r = "255" g = "180" b = "40" />
+				 </Text>
+			</Label>
+			
+			<Separator ratio = "1.0" />
+			
+			<Label name = "FpsCounter">
+				<Text string = "Current FPS: 0" />
+			</Label>
+			
+		</Panel>
 		
 		<Panel name           = "EditorPanel"
 					 layout         = "YAXIS"
