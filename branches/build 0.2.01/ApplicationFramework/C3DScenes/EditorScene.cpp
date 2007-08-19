@@ -55,6 +55,7 @@ bool EditorScene::Initialize()
     m_TileSet.LoadTileSet(&pteObject);
   
   m_Gui.addWidget(m_TileSet.GetGuiComponent());
+  m_Gui.forceUpdate(true);
 
   return true;
 }
@@ -131,7 +132,7 @@ void EditorScene::HandleMouseEvent(MouseEvent evt, int extraInfo)
   switch (extraInfo)
   {
     case DRAGGED:
-      m_Camera.lockMouse(!m_bMouseLocked);
+      m_Camera.lockMouse(!m_bMouseLocked/* && !m_TileSet.IsVisible()*/);
       m_Camera.setMouseInfo(evt.getX(), evt.getY());
     break;
     
@@ -142,9 +143,17 @@ void EditorScene::HandleMouseEvent(MouseEvent evt, int extraInfo)
     case CLICKED:
       if (m_UserControls)
       {
-        const Tuple4i &windowBounds = m_UserControls->getWindowBounds();
-        m_bMouseLocked  = (evt.getY() >= windowBounds.y) && (evt.getY() <= windowBounds.w) &&
-                          (evt.getX() >= windowBounds.x) && (evt.getX() <= windowBounds.z);
+        const Tuple4i &windowBounds  = m_UserControls->getWindowBounds();
+        const Tuple4i &tilesetBounds = m_TileSet.GetGuiBounds();
+        m_bMouseLocked  = ((evt.getY() >= windowBounds.y)  &&
+                           (evt.getY() <= windowBounds.w)  &&
+                           (evt.getX() >= windowBounds.x)  &&
+                           (evt.getX() <= windowBounds.z)) ||
+                          ((m_TileSet.IsVisible())         &&
+                           (evt.getY() >= tilesetBounds.y) && 
+                           (evt.getY() <= tilesetBounds.w) &&
+                           (evt.getX() >= tilesetBounds.x) &&
+                           (evt.getX() <= tilesetBounds.z));
       }
     break;
     
