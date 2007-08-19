@@ -10,6 +10,8 @@
 bool PteObject::LoadFromFile(const String &filePath)
 {
   m_InputFile.open(filePath, std::ofstream::in|std::ofstream::binary);
+  if (!m_InputFile.is_open())
+    return Logger::writeErrorLog(String("could not open ") + filePath);
 
   ReadHeader();
   for(unsigned int i = 0; i < m_TexturePageCount; i++)
