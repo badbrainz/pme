@@ -103,26 +103,6 @@
 			
 		</Panel>
 		
-		<Panel 	name	 					= "TileSet"
-						layout 					= "YAXIS"
-						drawBounds     	= "false"
-						drawBackground 	= "false"
-						clipSize				= "0"> 
-			
-			<Interval y = "2" x = "2" />
-			
-			<TabbedPanel callbackString = "TilePages">
-				
-				<TabButtonsBordersColor  x = "0" 	 y = "1" 	 z = "0" 	/>
-				<TabButtonsColor         x = "0" 	 y = "0.4" z = "0" 	/>
-				<BordersColor            x = "0.2" y = "0.2" z = "0.2"/>
-				<BGColor                 x = "50"  y = "50"  z = "50" />
-				
-				<Panel name = "0" visible="false"></Panel>
-			</TabbedPanel>
-			
-		</Panel>
-		
 		<TexCoordsDesc xStart = "201" yStart = "2" xEnd = "233" yEnd = "34" type = "SLIDER"/>
 		<TexCoordsDesc xStart = "167" yStart = "2" xEnd = "199" yEnd = "34" type = "CHECK_BOX"/>
 		<TexCoordsDesc xStart = "131" yStart = "1" xEnd = "165" yEnd = "35" type = "CHECK_BOX_MARK"/>
