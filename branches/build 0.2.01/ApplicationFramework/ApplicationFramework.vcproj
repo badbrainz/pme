@@ -640,6 +640,26 @@
 				>
 			</File>
 		</Filter>
+		<Filter
+			Name="C3DGuiComponents"
+			>
+			<File
+				RelativePath=".\C3DGuiComponents\TabbedPanel.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\C3DGuiComponents\TabbedPanel.h"
+				>
+			</File>
+			<File
+				RelativePath=".\C3DGuiComponents\TileSet.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\C3DGuiComponents\TileSet.h"
+				>
+			</File>
+		</Filter>
 	</Files>
 	<Globals>
 	</Globals>
