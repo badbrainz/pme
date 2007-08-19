@@ -51,7 +51,7 @@ bool EditorScene::Initialize()
   glPolygonOffset(-1, -1);
   
   PteObject pteObject;
-  if (pteObject.LoadFromFile(gameFileDescriptor.ptePath)))//warning: loaded twice
+  if (pteObject.LoadFromFile(gameFileDescriptor.ptePath))//warning: loaded twice
     m_TileSet.LoadTileSet(&pteObject);
   
   m_Gui.addWidget(m_TileSet.GetGuiComponent());
@@ -106,7 +106,11 @@ void EditorScene::actionPerformed(GUIEvent &evt)
     GUIButton *button = (GUIButton*) sourceRectangle;
     
     if (button->isClicked())
+    {
       m_SceneController.Execute(callbackString);
+      
+      return;
+    }
   }
   
   if (widgetType == CHECK_BOX)
@@ -115,8 +119,9 @@ void EditorScene::actionPerformed(GUIEvent &evt)
     
     if (checkBox->isClicked())
     {
-      if (callbackString == "Debug")   {m_bDebugView      = checkBox->isChecked();return;}
-      if (callbackString == "Picking") {m_bPickingEnabled = checkBox->isChecked();return;}
+      if (callbackString == "Debug")          {m_bDebugView      = checkBox->isChecked();return;}
+      if (callbackString == "Picking")        {m_bPickingEnabled = checkBox->isChecked();return;}
+      if (callbackString == "DisplayTileset") {m_TileSet.SetVisible(checkBox->isChecked());return;}
     }
   }
 }
