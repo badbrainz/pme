@@ -21,6 +21,10 @@ class EditorScene : public Scene
     virtual bool Initialize();
     virtual void BeginScene();
     virtual void Update(const FrameInfo &frameInfo);
+    
+    void DrawFullScreenQuad(int width, int height);
+    GUIButton* CreateButton(const String& name, const Texture& texture, const Tuple4f& rectangle);
+    GUIPanel* CreatePanel(const String& name);
 
   private:
     GUILabel   *m_pFpsCounter;
@@ -36,6 +40,7 @@ class EditorScene : public Scene
                 m_bDebugView;
     
     Ray3D       m_Ray;
+    Texture texture;//cant be used without loading a texture
 };
 
 #endif
