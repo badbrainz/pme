@@ -13,7 +13,7 @@ bool TileSet::LoadTileSet(PteObject* pteObject)
   tabpanel->getMainPanel()->setClipSize(0);
   tabpanel->getMainPanel()->setBordersColor(Tuple3f(0.2f,0.2f,0.2f));
   tabpanel->getMainPanel()->setBGColor(Tuple4f(50.0f,50.0f,50.0f,0.75f));
-  //*/
+
   m_Texture.create2DShell("TexturePage", 256, 256, GL_RGBA8, GL_RGBA, GL_CLAMP_TO_EDGE, GL_CLAMP_TO_EDGE);
 
   glViewport(0, 0, 256, 256);
@@ -100,11 +100,7 @@ bool TileSet::LoadTileSet(PteObject* pteObject)
   tabPanel1->addWidget(panelThree);
   tabPanel1->addWidget(panelFour);
   tabpanel->addPanel(tabPanel1);
-  //*/
-  //GUIButton* button = new GUIButton("dave");
-  //GUIPanel* panel = new GUIPanel("davepanel");
-  //panel->addWidget(button);
-  //tabpanel->addPanel(panel);
+
   m_Gui.addWidget(tabpanel);
   
   return true;
@@ -141,4 +137,13 @@ void TileSet::DrawFullScreenQuad(int width, int height)
   glTexCoord2f(1.0f, 1.0f); glVertex2i(width, 0     );
   glTexCoord2f(1.0f, 0.0f); glVertex2i(width, height);
   glEnd();
+}
+
+void TileSet::SetVisible(bool visible)
+{
+  m_Gui.setVisible(visible);
+}
+
+void TileSet::actionPerformed(GUIEvent &evt)
+{
 }

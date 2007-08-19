@@ -13,6 +13,10 @@ class TileSet
     bool        LoadTileSet(PteObject* pteObject);
     GUIPanel*   GetGuiComponent();
   
+  public:
+    void        actionPerformed(GUIEvent &evt);
+    void        SetVisible(bool visible);
+  
   private:
     void        DrawFullScreenQuad(int width, int height);
     
