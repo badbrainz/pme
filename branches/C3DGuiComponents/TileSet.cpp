@@ -6,6 +6,7 @@
 bool TileSet::LoadTileSet(PteObject* pteObject)
 {
   m_Gui.setCallbackString("TileSet");
+  //m_Gui.setGUIEventListener(this);
   
   TabbedPanel* tilesetpanel = new TabbedPanel("TileSet");
   tilesetpanel->setTabButtonsBordersColor(Tuple3f(0,1,0));
@@ -18,17 +19,16 @@ bool TileSet::LoadTileSet(PteObject* pteObject)
   
   for (int i = 0; i < (int)pteObject->GetTexturePageCount(); i++)
   {
-    Texture texture;
-    //m_TexturePages.append(texture);
+    Texture *texture = m_ManagedTextures.Create();
     String texturename = String("TexturePage") + i;
-    texture.create2DShell(texturename, 256, 256, GL_RGBA8, GL_RGBA, GL_CLAMP_TO_EDGE, GL_CLAMP_TO_EDGE);
+    texture->create2DShell(texturename, 256, 256, GL_RGBA8, GL_RGBA, GL_CLAMP_TO_EDGE, GL_CLAMP_TO_EDGE);
     
     glViewport(0, 0, 256, 256);
     
     Renderer::enter2DMode();
       pteObject->ActivateTexture(i);
       DrawFullScreenQuad(256, 256);
-      texture.copyCurrentBuffer();
+      texture->copyCurrentBuffer();
       pteObject->DeactivateTexture();
     Renderer::exit2DMode();
     
@@ -43,8 +43,15 @@ bool TileSet::LoadTileSet(PteObject* pteObject)
       for (int x = 0; x < 4; x++)
       {
         String buttonname = String("TileTexture") + i; buttonname += (y*4+x);
-        GUIButton *button = CreateTileButton(buttonname, texture, Tuple4f(xOff*x, yOff*y, xOff*(x+1), yOff*(y+1)));
+        GUIButton *button = CreateTileButton(buttonname, *texture, Tuple4f(xOff*x, yOff*y, xOff*(x+1), yOff*(y+1)));
         panel->addWidget(button);
+        
+        TextureTileDescriptor descriptor;
+        descriptor.texture      = texture;
+        descriptor.pageIndex    = i;
+        descriptor.coordsIndex  = y*4+x;
+        descriptor.coords = Tuple4f(xOff*x, yOff*y, xOff*(x+1), yOff*(y+1));
+        m_TextureInfoList[buttonname] = descriptor;
       }
       
       tabpanel->addWidget(panel);
@@ -52,7 +59,6 @@ bool TileSet::LoadTileSet(PteObject* pteObject)
     
     tilesetpanel->addPanel(tabpanel);
     tilesetpanel->getTabButton(i)->setLabelString(String() + i);
-    //m_TexturePages.push_back(texture);
   }
   
   m_Gui.addWidget(tilesetpanel);
@@ -115,9 +121,20 @@ const Tuple4i& TileSet::GetGuiBounds()
 
 bool TileSet::IsVisible()
 {
-    return m_Gui.isVisible();
+  return m_Gui.isVisible();
 }
 
-void TileSet::actionPerformed(GUIEvent &evt)
+const TextureTileDescriptor* TileSet::GetTileInfo(const String& name)
 {
+  std::map <String, TextureTileDescriptor>::const_iterator iter = m_TextureInfoList.find(name);
+  
+  if (iter != m_TextureInfoList.end())
+    return &iter->second;
+  else
+    return 0;
 }
+
+/*void TileSet::actionPerformed(GUIEvent &evt)
+{
+  m_pListener
+}*/

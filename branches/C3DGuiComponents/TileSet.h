@@ -4,20 +4,31 @@
 #include "GUI/GUIUtils.h"
 #include "Tools/Logger.h"
 #include "Appearance/Appearance.h"
+#include "../C3DManagers/ResourceManager.h"
 //#include "../OC/ocarray.h"
-//#include <vector>
+#include <map>
 
 class PteObject;
 
-class TileSet
+struct TextureTileDescriptor
+{
+  Texture *texture;
+  unsigned int pageIndex;
+  unsigned int coordsIndex;
+  Tuple4f      coords;
+};
+
+class TileSet// : public GUIEventListener
 {
   public:
     bool            LoadTileSet(PteObject* pteObject);
     GUIPanel*       GetGuiComponent();
-    void            actionPerformed(GUIEvent &evt);
+    //void            actionPerformed(GUIEvent &evt);
     void            SetVisible(bool visible);
     bool            IsVisible();
     const Tuple4i&  GetGuiBounds();
+    
+    const TextureTileDescriptor* GetTileInfo(const String& name);
   
   private:
     void            DrawFullScreenQuad(int width, int height);
@@ -29,7 +40,9 @@ class TileSet
     GUIPanel        m_Gui;
     Texture         m_Texture;
     //Array <Texture> m_TexturePages;
-    //std::vector <Texture> m_TexturePages;
+    //Array <Texture> m_TexturePages;
+    std::map <String, TextureTileDescriptor> m_TextureInfoList;
+    ResourceManager <Texture, 20>  m_ManagedTextures;
 };
 
 #endif
