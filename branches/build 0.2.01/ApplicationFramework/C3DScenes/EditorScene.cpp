@@ -13,7 +13,7 @@ TileGraphRendererVisitor baseVisitor;
 TileGraphRendererVisitor blendVisitor;
 SpatialIndexDebugVisitor debugVisitor;
 SpatialIntersectVisitor intersectVisitor;
-
+PteObject pteObject;
 EditorScene::EditorScene(const String &name) : Scene(name)
 {
   m_bMouseLocked    = false;
@@ -25,8 +25,9 @@ bool EditorScene::Initialize()
 {
   Scene::Initialize();
   
-  m_pFpsCounter  = (GUILabel*) m_Gui.getWidgetByCallbackString("FpsCounter");
-  m_UserControls = (GUIPanel*) m_Gui.getWidgetByCallbackString("EditorPanel");
+  m_pFpsCounter  = (GUILabel*)  m_Gui.getWidgetByCallbackString("FpsCounter");
+  m_UserControls = (GUIPanel*)  m_Gui.getWidgetByCallbackString("EditorPanel");
+  m_TileButton   = (GUIButton*) m_Gui.getWidgetByCallbackString("ActiveTileTexture");
   
   m_Camera.setViewerPosition(Tuple3f(0,4,8));
   m_Camera.setFocusPosition(Tuple3f(0,0,-8));
@@ -50,7 +51,6 @@ bool EditorScene::Initialize()
   
   glPolygonOffset(-1, -1);
   
-  PteObject pteObject;
   if (pteObject.LoadFromFile(gameFileDescriptor.ptePath))//warning: loaded twice
     m_TileSet.LoadTileSet(&pteObject);
   
@@ -110,6 +110,14 @@ void EditorScene::actionPerformed(GUIEvent &evt)
     {
       m_SceneController.Execute(callbackString);
       
+      //hmm...
+      const TextureTileDescriptor *descriptor = m_TileSet.GetTileInfo(callbackString);
+      if (descriptor)
+      {
+        m_TileButton->setTextureRectangle(descriptor->coords);
+        m_TileButton->setTexture(*descriptor->texture);
+        m_Gui.forceUpdate(true);
+      }
       return;
     }
   }
@@ -120,9 +128,9 @@ void EditorScene::actionPerformed(GUIEvent &evt)
     
     if (checkBox->isClicked())
     {
-      if (callbackString == "Debug")          {m_bDebugView      = checkBox->isChecked();return;}
-      if (callbackString == "Picking")        {m_bPickingEnabled = checkBox->isChecked();return;}
-      if (callbackString == "DisplayTileset") {m_TileSet.SetVisible(checkBox->isChecked());return;}
+      if (callbackString == "Debug")          {m_bDebugView      = checkBox->isChecked();}
+      if (callbackString == "Picking")        {m_bPickingEnabled = checkBox->isChecked();}
+      if (callbackString == "DisplayTileset") {m_TileSet.SetVisible(checkBox->isChecked());}
     }
   }
 }

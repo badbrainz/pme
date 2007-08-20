@@ -14,18 +14,19 @@ class EditorScene : public Scene
     virtual ~EditorScene();
   
   public:
-    virtual void actionPerformed(GUIEvent &evt);
+    virtual void  actionPerformed(GUIEvent &evt);
 
-    virtual void HandleMouseEvent(MouseEvent evt, int extraInfo);
-    virtual void HandleKeyEvent(KeyEvent evt, int extraInfo);
+    virtual void  HandleMouseEvent(MouseEvent evt, int extraInfo);
+    virtual void  HandleKeyEvent(KeyEvent evt, int extraInfo);
     
-    virtual bool Initialize();
-    virtual void BeginScene();
-    virtual void Update(const FrameInfo &frameInfo);
+    virtual bool  Initialize();
+    virtual void  BeginScene();
+    virtual void  Update(const FrameInfo &frameInfo);
 
   private:
     GUILabel   *m_pFpsCounter;
     GUIPanel   *m_UserControls;
+    GUIButton  *m_TileButton;
     
     Frustum     m_Frustum;
     Camera      m_Camera;
