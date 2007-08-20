@@ -1,25 +1,34 @@
-#include "TileSet.h"
+//#include "TileSet.h"
+#include "TabbedPanel.h"
 #include "Renderer/Renderer.h"
 #include "../C3DParsers/PteObject.h"
-#include "TabbedPanel.h"
+#include "../C3DScenes/EditorScene.h"
+TileSet::TileSet()
+{
+}
 
 bool TileSet::LoadTileSet(PteObject* pteObject)
 {
-  m_Gui.setCallbackString("TileSet");
-  //m_Gui.setGUIEventListener(this);
+  float xOff = .25, yOff = .25;
   
-  TabbedPanel* tilesetpanel = new TabbedPanel("TileSet");
+  TabbedPanel *tilesetpanel;
+  GUIPanel    *tabpanel;
+  Texture     *texture;
+  GUIButton   *button;
+  GUIPanel    *panel;
+
+  m_Gui = new GUIPanel("TileSet");
+  
+  tilesetpanel = new TabbedPanel("TileSet");
   tilesetpanel->setTabButtonsBordersColor(Tuple3f(0,1,0));
   tilesetpanel->setTabButtonsColor(Tuple3f(0,0.4f,0));
   tilesetpanel->getMainPanel()->setClipSize(0);
   tilesetpanel->getMainPanel()->setBordersColor(Tuple3f(0.2f,0.2f,0.2f));
   tilesetpanel->getMainPanel()->setBGColor(Tuple4f(50.0f,50.0f,50.0f,0.75f));
   
-  float xOff = .25, yOff = .25;
-  
   for (int i = 0; i < (int)pteObject->GetTexturePageCount(); i++)
   {
-    Texture *texture = m_ManagedTextures.Create();
+    texture = m_ManagedTextures.Create();
     String texturename = String("TexturePage") + i;
     texture->create2DShell(texturename, 256, 256, GL_RGBA8, GL_RGBA, GL_CLAMP_TO_EDGE, GL_CLAMP_TO_EDGE);
     
@@ -33,24 +42,29 @@ bool TileSet::LoadTileSet(PteObject* pteObject)
     Renderer::exit2DMode();
     
     String tabpanelname = String("TilePage") + i;
-    GUIPanel *tabpanel = CreateTilePage(tabpanelname);
+    tabpanel = CreateTilePage(tabpanelname);
     
     for (int y = 0; y < 4; y++)
     {
       String panelname = String("TileRow") + i; panelname += (y);
-      GUIPanel *panel = CreateTileRow(panelname);
+      panel = CreateTileRow(panelname);
+      panel->setInterval(3,2);
       
       for (int x = 0; x < 4; x++)
       {
+        Tuple4f rectangle(xOff*x, yOff*y, xOff*(x+1), yOff*(y+1));
+
         String buttonname = String("TileTexture") + i; buttonname += (y*4+x);
-        GUIButton *button = CreateTileButton(buttonname, *texture, Tuple4f(xOff*x, yOff*y, xOff*(x+1), yOff*(y+1)));
+        button = CreateTileButton(buttonname, *texture, rectangle);
+        button->setClipSize(0);
+
         panel->addWidget(button);
         
-        TextureTileDescriptor descriptor;
+        TextureTileDescriptor descriptor;//use Strategy objects instead
         descriptor.texture      = texture;
         descriptor.pageIndex    = i;
         descriptor.coordsIndex  = y*4+x;
-        descriptor.coords = Tuple4f(xOff*x, yOff*y, xOff*(x+1), yOff*(y+1));
+        descriptor.coords       = rectangle;
         m_TextureInfoList[buttonname] = descriptor;
       }
       
@@ -58,19 +72,20 @@ bool TileSet::LoadTileSet(PteObject* pteObject)
     }
     
     tilesetpanel->addPanel(tabpanel);
+    tilesetpanel->getTabButton(i)->setMinAlpha(0.4f);
     tilesetpanel->getTabButton(i)->setLabelString(String() + i);
   }
-  
-  m_Gui.addWidget(tilesetpanel);
-  m_Gui.forceUpdate(true);
-  m_Gui.setVisible(false);
+
+  m_Gui->addWidget(tilesetpanel);
+  m_Gui->forceUpdate(true);
+  m_Gui->setVisible(false);
   
   return true;
 }
 
 GUIPanel* TileSet::GetGuiComponent()
 {
-  return &m_Gui;
+  return m_Gui;
 }
 
 GUIButton* TileSet::CreateTileButton(const String& name, const Texture& tex, const Tuple4f& rect)
@@ -111,17 +126,17 @@ void TileSet::DrawFullScreenQuad(int width, int height)
 
 void TileSet::SetVisible(bool visible)
 {
-  m_Gui.setVisible(visible);
+  m_Gui->setVisible(visible);
 }
 
 const Tuple4i& TileSet::GetGuiBounds()
 {
-  return m_Gui.getWindowBounds();
+  return m_Gui->getWindowBounds();
 }
 
 bool TileSet::IsVisible()
 {
-  return m_Gui.isVisible();
+  return m_Gui->isVisible();
 }
 
 const TextureTileDescriptor* TileSet::GetTileInfo(const String& name)
@@ -133,8 +148,3 @@ const TextureTileDescriptor* TileSet::GetTileInfo(const String& name)
   else
     return 0;
 }
-
-/*void TileSet::actionPerformed(GUIEvent &evt)
-{
-  m_pListener
-}*/
