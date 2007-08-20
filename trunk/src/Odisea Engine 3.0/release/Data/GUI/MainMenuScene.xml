@@ -1,0 +1,71 @@
+<MainMenuScene>
+	
+	<Controller>
+		
+		<Command 	type 	 = "change"
+							source = "LoadMap"
+							target = "NewMapScene"/>
+		
+		<Command 	type 	 = "deactivate"
+							source = "MainMenuExit"/>
+		
+	</Controller>
+
+	<Panel visible = "false"
+				 name		 = "Main Menu">
+		
+		<Texture  type				= "TEXTURE_2D"
+							path        = "GUIElements.png" 
+							mode        = "MODULATE"
+							mipmap      = "true">
+			
+			<Wrap   s           = "REPEAT"
+							t           = "REPEAT" />
+			
+			<Filter mag         = "LINEAR" 
+							min         = "LINEAR_MIPMAP_LINEAR" />
+			
+		</Texture>
+		
+		<Font path = "ArialSmall.tga" />
+		
+		<Panel name           = "MainMenuPanel"
+					 layout         = "CEN_YAXIS"
+					 drawBounds     = "true"
+					 clipSize 			= "0">
+			
+			<Interval x = "10" y = "10" />
+			<BordersColor x = "0.2" y = "0.2" z = "0.2" />
+			
+			<Button callbackString = "NewMap" minAlpha = "0.4">
+				<Color 				x = "0" 	y = "0.4" 	z = "0" />
+				<BordersColor x = "0" 	y = "1" 		z = "0" />
+				<Dimensions 	x = "100" y = "24" 						/>
+				<Text string = "New Map" />
+			</Button>
+			
+			<Button callbackString = "LoadMap" minAlpha = "0.4">
+				<Color 				x = "0" 	y = "0.4" 	z = "0" />
+				<BordersColor x = "0" 	y = "1" 		z = "0" />
+				<Dimensions 	x = "100" y = "24"						/>
+				<Text string = "Load Map" />
+			</Button>
+			
+			<Button callbackString = "MainMenuExit" minAlpha = "0.4">
+				<Color 				x = "0" 	y = "0.4" 	z = "0" />
+				<BordersColor x = "0" 	y = "1" 		z = "0" />
+				<Dimensions 	x = "100" y = "24" 						/>
+				<Text string = "Exit" />
+			</Button>
+			
+		</Panel>
+		
+		<TexCoordsDesc xStart = "201" yStart = "2" xEnd = "233" yEnd = "34" type = "SLIDER"/>
+		<TexCoordsDesc xStart = "167" yStart = "2" xEnd = "199" yEnd = "34" type = "CHECK_BOX"/>
+		<TexCoordsDesc xStart = "131" yStart = "1" xEnd = "165" yEnd = "35" type = "CHECK_BOX_MARK"/>
+		<TexCoordsDesc xStart =   "1" yStart = "1" xEnd =  "65" yEnd = "66" type = "RADIO_BUTTON"/>
+		<TexCoordsDesc xStart =  "66" yStart = "2" xEnd = "130" yEnd = "66" type = "CHECK_RB_MARK"/>
+		
+	</Panel>
+	
+</MainMenuScene>
