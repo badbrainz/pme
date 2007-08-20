@@ -48,7 +48,7 @@ bool TileSet::LoadTileSet(PteObject* pteObject)
     {
       String panelname = String("TileRow") + i; panelname += (y);
       panel = CreateTileRow(panelname);
-      panel->setInterval(3,2);
+      panel->setInterval(4,2);
       
       for (int x = 0; x < 4; x++)
       {
