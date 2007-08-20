@@ -1,0 +1,27 @@
+<Stage> 
+
+	<Benchmark 	duration 		= "20" 
+							enabled 		= "false" 
+							logFilePath	= "Profile.txt" />
+
+  <Window title = "Odisea Engine 2.0">
+
+    <DisplayMode  colorDepth  =    "32"
+									colorBits		=		 "24"
+                  fullscreen  = "false" 
+                  centered    =  "true"
+                  height      =   "480"
+                  width       =   "640"
+                  x           =     "0"
+                  y           =     "0" />
+		
+		<GLCaps       accumulation =    "0"
+                  samples      =    "0"
+                  stencil      =    "0" 
+                  alpha        =    "0"
+                  depth        =   "24"
+                  color        =   "32" />
+
+  </Window> 
+  
+</Stage>
