@@ -30,27 +30,78 @@
 		
 		<Font path = "ArialSmall.tga" />
 		
-		<Panel name           = "NewMapPanel"
-					 layout         = "CEN_YAXIS"
-					 drawBounds     = "true"
-					 clipSize 			= "0">
+		<Panel	name						= "NewMapViewer"
+						layout 					= "CEN_YAXIS" 
+						drawBounds 			= "true" 
+						clipSize 				= "0"
+						drawBackground 	= "true">
 			
-			<Interval x = "10" y = "10" />
 			<BordersColor x = "0.2" y = "0.2" z = "0.2" />
+			<BGColor      x =  "50" y =  "50" z = "50" />
 			
-			<Button callbackString = "Editor" minAlpha = "0.4">
-				<Color 				x = "0" 	y = "0.4" 	z = "0" />
-				<BordersColor x = "0" 	y = "1" 		z = "0" />
-				<Dimensions 	x = "100" y = "24" 						/>
-				<Text string = "Enter" />
-			</Button>
+			<Label name = "PreviewMapName">    
+				<Text string = "MP_4_3" />
+			</Label>
 			
-			<Button callbackString = "NewMapBack" minAlpha = "0.4">
-				<Color 				x = "0" 	y = "0.4" 	z = "0" />
-				<BordersColor x = "0" 	y = "1" 		z = "0" />
-				<Dimensions 	x = "100" y = "24" 						/>
-				<Text string = "Back" />
-			</Button>
+			<Panel 	name 						= "MapPreviewPanel"
+							layout					= "XAXIS"
+							drawBackground 	= "false">
+				
+				<Interval x = "5" />
+				
+				<Button callbackString = "PreviewLeft" minAlpha = "0.4" clipSize = "0">
+					<Color 				x = "0" 	y = "0.4" 	z = "0" />
+					<BordersColor x = "0" 	y = "1" 		z = "0" />
+					<Dimensions 	x = "25" y = "25" 						/>
+					<Text string = "<" />
+				</Button>
+				
+				<Button drawBounds = "false" callbackString = "PreviewSurface" active = "false" clipSize = "0" minAlpha = "1">
+					<Texture  type				= "TEXTURE_2D"
+										path        = "mp_4_3.tga" 
+										mode        = "MODULATE"
+										mipmap      = "true">
+						<Wrap   s           = "REPEAT"
+										t           = "REPEAT" />
+						<Filter mag         = "LINEAR" 
+										min         = "LINEAR_MIPMAP_LINEAR" />
+					</Texture>
+					<Color 				x = "1" 	y = "1" 	z = "1" />
+					<Dimensions 	x = "180" y = "112"   			/>
+				</Button>
+				
+				<Button callbackString = "PreviewRight" minAlpha = "0.4" clipSize = "0">
+					<Color 				x = "0" 	y = "0.4" 	z = "0" />
+					<BordersColor x = "0" 	y = "1" 		z = "0" />
+					<Dimensions 	x = "25" y = "25" 						/>
+					<Text string = ">" />
+				</Button>
+				
+			</Panel>
+			
+			<Separator ratio = "1.0" />
+			
+			<Panel name				= "NewMapOptionsPanel"
+						 layout			= "XAXIS"
+						 drawBounds	= "false">
+				
+				<Interval x = "10" y = "10" />
+				
+				<Button callbackString = "NewMapBack" minAlpha = "0.4">
+					<Color 				x = "0" 	y = "0.4" 	z = "0" />
+					<BordersColor x = "0" 	y = "1" 		z = "0" />
+					<Dimensions 	x = "100" y = "24" 						/>
+					<Text string = "Back" />
+				</Button>
+				
+				<Button callbackString = "Editor" minAlpha = "0.4">
+					<Color 				x = "0" 	y = "0.4" 	z = "0" />
+					<BordersColor x = "0" 	y = "1" 		z = "0" />
+					<Dimensions 	x = "100" y = "24" 						/>
+					<Text string = "Enter" />
+				</Button>
+				
+			</Panel>
 			
 		</Panel>
 		
