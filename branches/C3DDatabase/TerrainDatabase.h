@@ -27,6 +27,9 @@ class TerrainDatabase
     
     void CellVisibility(const Tuple4i &range, bool value);
     void ControllerVisibility(const Tuple4i &range, bool value);
+
+    unsigned int GetTextureCount();
+    unsigned int GetTextureID(unsigned int index);
   
   private:
     void SetupSpatialIndexStructure(void);

@@ -30,6 +30,16 @@ void TerrainDatabase::Cull(SpatialIndexVisitor *visitor)
   visitor->Visit(m_pTrunk);
 }
 
+unsigned int TerrainDatabase::GetTextureCount()
+{
+  return m_PteObject.GetTexturePageCount();
+}
+
+unsigned int TerrainDatabase::GetTextureID(unsigned int index)
+{
+  return m_PteObject.GetTexturePageID(index);
+}
+
 void TerrainDatabase::LoadGameData(const GameFileDescriptor &descriptor)
 {
   m_PveObject.LoadFromFile(descriptor.pvePath);
