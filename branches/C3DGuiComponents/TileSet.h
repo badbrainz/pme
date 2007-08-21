@@ -10,8 +10,9 @@ class EditorScene;
 #include <map>
 
 class PteObject;
+class TabbedPanel;
 
-struct TextureTileDescriptor
+struct TextureTileInfo
 {
   Texture *texture;
   unsigned int pageIndex;
@@ -27,12 +28,14 @@ class TileSet
 
   public:
     bool            LoadTileSet(PteObject* pteObject);
+    bool            CreateTileSet(unsigned int textureID);
+
     GUIPanel*       GetGuiComponent();
     void            SetVisible(bool visible);
     bool            IsVisible();
     const Tuple4i&  GetGuiBounds();
     
-    const TextureTileDescriptor* GetTileInfo(const String& name);
+    const TextureTileInfo* GetTileInfo(const String& name);
   
   private:
     void            DrawFullScreenQuad(int width, int height);
@@ -42,12 +45,13 @@ class TileSet
     GUIPanel*       CreateTileRow(const String& name);
   
   protected:
-    GUIPanel       *m_Gui;
-    
-    std::map        <String, TextureTileDescriptor> m_TextureInfoList;
-    ResourceManager <Texture, 20>                   m_ManagedTextures;
-    
-    EditorScene* m_pListener;
+    GUIPanel       *m_pGui;
+    TabbedPanel    *m_pTilesetpanel;
+
+    int             m_uiTilePageCount;
+
+    std::map        <String, TextureTileInfo> m_TextureInfoList;
+    ResourceManager <Texture, 20>             m_ManagedTextures;
 };
 
 #endif

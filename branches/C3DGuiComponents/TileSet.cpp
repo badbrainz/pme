@@ -5,6 +5,83 @@
 #include "../C3DScenes/EditorScene.h"
 TileSet::TileSet()
 {
+  m_uiTilePageCount = 0;
+
+  m_pGui          = new GUIPanel("TileSet");
+  m_pTilesetpanel = new TabbedPanel("TileSetPanel");
+
+  m_pTilesetpanel->setTabButtonsBordersColor(Tuple3f(0,1,0));
+  m_pTilesetpanel->setTabButtonsColor(Tuple3f(0,0.4f,0));
+  m_pTilesetpanel->getMainPanel()->setClipSize(0);
+  m_pTilesetpanel->getMainPanel()->setBordersColor(Tuple3f(0.2f,0.2f,0.2f));
+  m_pTilesetpanel->getMainPanel()->setBGColor(Tuple4f(50.0f,50.0f,50.0f,0.75f));
+
+  m_pGui->addWidget(m_pTilesetpanel);
+  m_pGui->setVisible(false);
+}
+
+bool TileSet::CreateTileSet(unsigned int textureID)
+{
+  float xOff = .25, yOff = .25;
+  
+  GUIPanel    *newTabpanel;
+  Texture     *newTexture;
+  GUIButton   *newButton;
+  GUIPanel    *newPanel;
+  
+  newTexture = m_ManagedTextures.Create();
+  String texturename = String("TexturePage") + m_uiTilePageCount;
+  newTexture->create2DShell(texturename, 256, 256, GL_RGBA8, GL_RGBA, GL_CLAMP_TO_EDGE, GL_CLAMP_TO_EDGE);
+  
+  glViewport(0, 0, 256, 256);
+  
+  Renderer::enter2DMode();
+    glEnable(GL_TEXTURE_2D);
+    glBindTexture(GL_TEXTURE_2D, textureID);
+    DrawFullScreenQuad(256, 256);
+    newTexture->copyCurrentBuffer();
+    glDisable(GL_TEXTURE_2D);
+  Renderer::exit2DMode();
+  
+  String tabpanelname = String("TilePage") + m_uiTilePageCount;///"TilePage_page#"
+  newTabpanel = CreateTilePage(tabpanelname);
+  
+  for (int y = 0; y < 4; y++)
+  {
+    String panelname = String("TileRow") + m_uiTilePageCount; panelname += y;///"TileRow_page#_row#"
+    newPanel = CreateTileRow(panelname);
+    newPanel->setInterval(4,2);
+    
+    for (int x = 0; x < 4; x++)
+    {
+      Tuple4f rectangle(xOff*x, yOff*y, xOff*(x+1), yOff*(y+1));
+
+      String buttonname = String("TileTexture") + m_uiTilePageCount; buttonname += (y*4+x);///"TileTexture_page#_buttonindex"
+      newButton = CreateTileButton(buttonname, *newTexture, rectangle);
+      newButton->setClipSize(0);
+
+      newPanel->addWidget(newButton);
+      
+      TextureTileInfo info;
+      info.texture      = newTexture;
+      info.pageIndex    = m_uiTilePageCount;
+      info.coordsIndex  = y*4+x;
+      info.coords       = rectangle;
+      m_TextureInfoList[buttonname] = info;
+    }
+    
+    newTabpanel->addWidget(newPanel);
+  }
+  
+  m_pTilesetpanel->addPanel(newTabpanel);
+  m_pTilesetpanel->getTabButton(m_uiTilePageCount)->setMinAlpha(0.4f);
+  m_pTilesetpanel->getTabButton(m_uiTilePageCount)->setLabelString(String() + m_uiTilePageCount);
+
+  m_pGui->forceUpdate(true);
+  
+  ++m_uiTilePageCount;
+
+  return true;
 }
 
 bool TileSet::LoadTileSet(PteObject* pteObject)
@@ -17,7 +94,7 @@ bool TileSet::LoadTileSet(PteObject* pteObject)
   GUIButton   *button;
   GUIPanel    *panel;
 
-  m_Gui = new GUIPanel("TileSet");
+  m_pGui = new GUIPanel("TileSet");
   
   tilesetpanel = new TabbedPanel("TileSet");
   tilesetpanel->setTabButtonsBordersColor(Tuple3f(0,1,0));
@@ -60,12 +137,12 @@ bool TileSet::LoadTileSet(PteObject* pteObject)
 
         panel->addWidget(button);
         
-        TextureTileDescriptor descriptor;//use Strategy objects instead
-        descriptor.texture      = texture;
-        descriptor.pageIndex    = i;
-        descriptor.coordsIndex  = y*4+x;
-        descriptor.coords       = rectangle;
-        m_TextureInfoList[buttonname] = descriptor;
+        TextureTileInfo info;//use Strategy objects instead
+        info.texture      = texture;
+        info.pageIndex    = i;
+        info.coordsIndex  = y*4+x;
+        info.coords       = rectangle;
+        m_TextureInfoList[buttonname] = info;
       }
       
       tabpanel->addWidget(panel);
@@ -76,16 +153,16 @@ bool TileSet::LoadTileSet(PteObject* pteObject)
     tilesetpanel->getTabButton(i)->setLabelString(String() + i);
   }
 
-  m_Gui->addWidget(tilesetpanel);
-  m_Gui->forceUpdate(true);
-  m_Gui->setVisible(false);
+  m_pGui->addWidget(tilesetpanel);
+  m_pGui->forceUpdate(true);
+  m_pGui->setVisible(false);
   
   return true;
 }
 
 GUIPanel* TileSet::GetGuiComponent()
 {
-  return m_Gui;
+  return m_pGui;
 }
 
 GUIButton* TileSet::CreateTileButton(const String& name, const Texture& tex, const Tuple4f& rect)
@@ -126,22 +203,22 @@ void TileSet::DrawFullScreenQuad(int width, int height)
 
 void TileSet::SetVisible(bool visible)
 {
-  m_Gui->setVisible(visible);
+  m_pGui->setVisible(visible);
 }
 
 const Tuple4i& TileSet::GetGuiBounds()
 {
-  return m_Gui->getWindowBounds();
+  return m_pGui->getWindowBounds();
 }
 
 bool TileSet::IsVisible()
 {
-  return m_Gui->isVisible();
+  return m_pGui->isVisible();
 }
 
-const TextureTileDescriptor* TileSet::GetTileInfo(const String& name)
+const TextureTileInfo* TileSet::GetTileInfo(const String& name)
 {
-  std::map <String, TextureTileDescriptor>::const_iterator iter = m_TextureInfoList.find(name);
+  std::map <String, TextureTileInfo>::const_iterator iter = m_TextureInfoList.find(name);
   
   if (iter != m_TextureInfoList.end())
     return &iter->second;

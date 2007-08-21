@@ -13,7 +13,7 @@ TileGraphRendererVisitor baseVisitor;
 TileGraphRendererVisitor blendVisitor;
 SpatialIndexDebugVisitor debugVisitor;
 SpatialIntersectVisitor intersectVisitor;
-PteObject pteObject;
+
 EditorScene::EditorScene(const String &name) : Scene(name)
 {
   m_bMouseLocked    = false;
@@ -51,9 +51,9 @@ bool EditorScene::Initialize()
   
   glPolygonOffset(-1, -1);
   
-  if (pteObject.LoadFromFile(gameFileDescriptor.ptePath))//warning: loaded twice
-    m_TileSet.LoadTileSet(&pteObject);
-  
+  for (unsigned int i = 0; i < terrainDatabase.GetTextureCount(); i++)
+    m_TileSet.CreateTileSet(terrainDatabase.GetTextureID(i));
+
   m_Gui.addWidget(m_TileSet.GetGuiComponent());
   m_Gui.forceUpdate(true);
 
@@ -111,12 +111,15 @@ void EditorScene::actionPerformed(GUIEvent &evt)
       m_SceneController.Execute(callbackString);
       
       //hmm...
-      const TextureTileDescriptor *descriptor = m_TileSet.GetTileInfo(callbackString);
-      if (descriptor)
+      if (m_TileSet.IsVisible())
       {
-        m_TileButton->setTextureRectangle(descriptor->coords);
-        m_TileButton->setTexture(*descriptor->texture);
-        m_Gui.forceUpdate(true);
+        const TextureTileInfo *info = m_TileSet.GetTileInfo(callbackString);
+        if (info)
+        {
+          m_TileButton->setTextureRectangle(info->coords);
+          m_TileButton->setTexture(*info->texture);
+          m_Gui.forceUpdate(true);
+        }
       }
       return;
     }
@@ -140,7 +143,7 @@ void EditorScene::HandleMouseEvent(MouseEvent evt, int extraInfo)
   switch (extraInfo)
   {
     case DRAGGED:
-      m_Camera.lockMouse(!m_bMouseLocked/* && !m_TileSet.IsVisible()*/);
+      m_Camera.lockMouse(!m_bMouseLocked);
       m_Camera.setMouseInfo(evt.getX(), evt.getY());
     break;
     
