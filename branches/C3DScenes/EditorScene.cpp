@@ -6,7 +6,7 @@
 #include "../C3DNODES/C3DVisitors/TileGraphRendererVisitor.h"
 #include "../C3DNODES/C3DVisitors/SpatialIntersectVisitor.h"
 
-TerrainDatabase terrainDatabase;
+//TerrainDatabase terrainDatabase;
 GameFileDescriptor gameFileDescriptor;
 SpatialVisibilityVisitor visibilityVisitor;
 TileGraphRendererVisitor baseVisitor;
@@ -25,6 +25,8 @@ bool EditorScene::Initialize()
 {
   Scene::Initialize();
   
+  glPolygonOffset(-1, -1);
+  
   m_pFpsCounter  = (GUILabel*)  m_Gui.getWidgetByCallbackString("FpsCounter");
   m_UserControls = (GUIPanel*)  m_Gui.getWidgetByCallbackString("EditorPanel");
   m_TileButton   = (GUIButton*) m_Gui.getWidgetByCallbackString("ActiveTileTexture");
@@ -36,28 +38,46 @@ bool EditorScene::Initialize()
   m_Camera.update(0);
   m_Frustum.update();
 
+  /*gameFileDescriptor.pvePath = MediaPathManager::lookUpMediaPath("MP_4_3.PVE");
+  gameFileDescriptor.ptePath = MediaPathManager::lookUpMediaPath("MP_4_3.PTE");
+  
+  m_pTerrainDatabase->LoadGameData(gameFileDescriptor);
+  
+  visibilityVisitor.SetTerrain(m_pTerrainDatabase);
+  visibilityVisitor.SetFrustum(&m_Frustum);
+  intersectVisitor.SetRay(&m_Ray);
+  blendVisitor.EnableBlend(true);
+  
+  m_pTerrainDatabase->Cull(&visibilityVisitor);
+  
+  for (unsigned int i = 0; i < m_pTerrainDatabase->GetTextureCount(); i++)
+    m_TileSet.CreateTileSet(m_pTerrainDatabase->GetTextureID(i));
+
+  m_Gui.addWidget(m_TileSet.GetGuiComponent());
+  m_Gui.forceUpdate(true);*/
+
+  return true;
+}
+
+void EditorScene::InitializeNewMap(const MapDescriptor& descriptor)
+{
   gameFileDescriptor.pvePath = MediaPathManager::lookUpMediaPath("MP_4_3.PVE");
   gameFileDescriptor.ptePath = MediaPathManager::lookUpMediaPath("MP_4_3.PTE");
   
-  terrainDatabase.LoadGameData(gameFileDescriptor);
+  m_pTerrainDatabase->LoadGameData(gameFileDescriptor);
   
+  visibilityVisitor.SetTerrain(m_pTerrainDatabase);
   visibilityVisitor.SetFrustum(&m_Frustum);
-  visibilityVisitor.SetTerrain(&terrainDatabase);
-  terrainDatabase.Cull(&visibilityVisitor);
-  
+  intersectVisitor.SetRay(&m_Ray);
   blendVisitor.EnableBlend(true);
   
-  intersectVisitor.SetRay(&m_Ray);
+  m_pTerrainDatabase->Cull(&visibilityVisitor);
   
-  glPolygonOffset(-1, -1);
-  
-  for (unsigned int i = 0; i < terrainDatabase.GetTextureCount(); i++)
-    m_TileSet.CreateTileSet(terrainDatabase.GetTextureID(i));
+  for (unsigned int i = 0; i < m_pTerrainDatabase->GetTextureCount(); i++)
+    m_TileSet.CreateTileSet(m_pTerrainDatabase->GetTextureID(i));
 
   m_Gui.addWidget(m_TileSet.GetGuiComponent());
   m_Gui.forceUpdate(true);
-
-  return true;
 }
 
 void EditorScene::BeginScene()
@@ -74,17 +94,17 @@ void EditorScene::Update(const FrameInfo &frameInfo)
   m_Camera.update(info->m_Interval);
   m_Frustum.update();
 
-  terrainDatabase.Cull(&visibilityVisitor);//important: this must be used first.
-  terrainDatabase.Draw(0, &baseVisitor);
-  terrainDatabase.Draw(1, &blendVisitor);
+  m_pTerrainDatabase->Cull(&visibilityVisitor);//important: this must be used first.
+  m_pTerrainDatabase->Draw(0, &baseVisitor);
+  m_pTerrainDatabase->Draw(1, &blendVisitor);
   
   if (m_bDebugView)
-    terrainDatabase.Cull(&debugVisitor);
+    m_pTerrainDatabase->Cull(&debugVisitor);
   
   if (m_bPickingEnabled)
   {
     glEnable(GL_POLYGON_OFFSET_LINE);
-    terrainDatabase.Cull(&intersectVisitor);
+    m_pTerrainDatabase->Cull(&intersectVisitor);
     glDisable(GL_POLYGON_OFFSET_LINE);
   }
 

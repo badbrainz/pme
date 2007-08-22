@@ -39,10 +39,10 @@
 			<BordersColor x = "0.2" y = "0.2" z = "0.2" />
 			<BGColor      x =  "50" y =  "50" z = "50" />
 			
-			<Label name = "PreviewMapName">    
-				<Text string = "MP_4_3" />
-			</Label>
-			
+			<Panel name = "MapName">
+				<Label name = "PreviewMapName" />
+			</Panel>
+		
 			<Panel 	name 						= "MapPreviewPanel"
 							layout					= "XAXIS"
 							drawBackground 	= "false">
@@ -57,15 +57,6 @@
 				</Button>
 				
 				<Button drawBounds = "false" callbackString = "PreviewSurface" active = "false" clipSize = "0" minAlpha = "1">
-					<Texture  type				= "TEXTURE_2D"
-										path        = "mp_4_3.tga" 
-										mode        = "MODULATE"
-										mipmap      = "true">
-						<Wrap   s           = "REPEAT"
-										t           = "REPEAT" />
-						<Filter mag         = "LINEAR" 
-										min         = "LINEAR_MIPMAP_LINEAR" />
-					</Texture>
 					<Color 				x = "1" 	y = "1" 	z = "1" />
 					<Dimensions 	x = "180" y = "112"   			/>
 				</Button>
@@ -85,7 +76,7 @@
 						 layout			= "XAXIS"
 						 drawBounds	= "false">
 				
-				<Interval x = "10" y = "10" />
+				<Interval x = "10" y = "10"/>
 				
 				<Button callbackString = "NewMapBack" minAlpha = "0.4">
 					<Color 				x = "0" 	y = "0.4" 	z = "0" />

@@ -7,6 +7,9 @@
 #include "C3DScenes/MainMenuScene.h"
 #include "C3DManagers/SceneManager.h"
 
+#include "C3DDatabase/TerrainDatabase.h"
+TerrainDatabase terrainDatabase;
+
 Stage::Stage(HINSTANCE instance) : IOXMLObject("Stage")
 {
   Logger::initialize();
@@ -26,8 +29,13 @@ bool Stage::Initialize()
   
   srand((unsigned)time(0));
   
-  SceneManager::AddScene(new EditorScene("EditorScene")    );
-  SceneManager::AddScene(new NewMapScene("NewMapScene")    );
+  EditorScene* editorScene = new EditorScene("EditorScene");
+  NewMapScene* newmapScene = new NewMapScene("NewMapScene");
+  editorScene->SetTerrainDatabase(&terrainDatabase);
+  newmapScene->SetTerrainDatabase(&terrainDatabase);
+  
+  SceneManager::AddScene(editorScene);
+  SceneManager::AddScene(newmapScene);
   SceneManager::AddScene(new MainMenuScene("MainMenuScene"));
   SceneManager::SetScene("MainMenuScene");
   

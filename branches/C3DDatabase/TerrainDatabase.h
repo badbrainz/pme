@@ -8,6 +8,8 @@
 #include "../C3DNodes/SpatialIndexCell.h"
 #include "../C3DControllers/TileModelController.h"
 
+#include "PteTextureDatabase.h"
+
 class GameFileDescriptor
 {
   public:
@@ -40,11 +42,14 @@ class TerrainDatabase
     void ComputeTreeBoundaries(void);
   
   private:
-    PveObject m_PveObject;
-    PteObject m_PteObject;
+    PveObject           m_PveObject;
+    PteObject           m_PteObject;
     
-    TileGraph m_TileGraph;
+    TileGraph           m_TileGraph;
     
+    PteTextureDatabase  m_PteTextureDatabase;
+    
+    ResourceManager <PteTextureObject,     20> m_ManagedPteTextureObjects;
     ResourceManager <TileModelController, 1e5> m_ManagedTileModelControllers;
     ResourceManager <SpatialIndexBaseNode,1e2> m_ManagedBases;
     ResourceManager <SpatialIndexNode,    1e2> m_ManagedNodes;

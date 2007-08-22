@@ -7,6 +7,8 @@
 #include "../C3DGeometry/Ray3D.h"
 #include "../C3DGuiComponents/TileSet.h"
 
+class TerrainDatabase;
+
 class EditorScene : public Scene
 {
   public:
@@ -22,6 +24,9 @@ class EditorScene : public Scene
     virtual bool  Initialize();
     virtual void  BeginScene();
     virtual void  Update(const FrameInfo &frameInfo);
+    
+    void InitializeNewMap(const MapDescriptor& descriptor);
+    void SetTerrainDatabase(TerrainDatabase* database){m_pTerrainDatabase = database;}
 
   private:
     GUILabel   *m_pFpsCounter;
@@ -40,6 +45,8 @@ class EditorScene : public Scene
     Ray3D       m_Ray;
     
     TileSet     m_TileSet;
+    
+    TerrainDatabase *m_pTerrainDatabase;
 };
 
 #endif

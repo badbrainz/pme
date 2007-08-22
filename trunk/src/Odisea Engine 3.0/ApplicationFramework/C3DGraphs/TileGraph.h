@@ -37,9 +37,9 @@ class TileGraph
     ResourceManager <TileModelController, 1e5>  m_ManagedTileModelControllers;
     ResourceManager <TextureCoordsNode,   1e2>  m_ManagedTextureCoordsNodes;
     ResourceManager <TileModelNode,       1e5>  m_ManagedTileModelNodes;
-    ResourceManager <IndicesNode,          10,5>  m_ManagedIndicesNodes;
-    ResourceManager <TextureNode,          10,5>  m_ManagedTextureNodes;
-    ResourceManager <Node,                 10,5>  m_ManagedGraphNodes;
+    ResourceManager <IndicesNode,        10,5>  m_ManagedIndicesNodes;
+    ResourceManager <TextureNode,        10,5>  m_ManagedTextureNodes;
+    ResourceManager <Node,               10,5>  m_ManagedGraphNodes;
     
     Array    <AttachmentPoint> m_AttatchmentPoints;
     ArrayPtr <Node>            m_Levels;
