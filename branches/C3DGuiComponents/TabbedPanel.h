@@ -1,8 +1,9 @@
 #ifndef TABBEDPANEL
 #define TABBEDPANEL
 
-class GUIButton;
 #include "GUI/GUIPanel.h"
+
+class GUIButton;
 
 class TabbedPanel : public GUIRectangle, public GUIEventListener
 {

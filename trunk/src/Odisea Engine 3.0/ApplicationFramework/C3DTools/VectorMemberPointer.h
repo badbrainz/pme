@@ -16,18 +16,12 @@ class VectorMemberPointer
     {
       delete [] m_Members;
     }
-
-  public:
+    
     MemberPointer<T>& operator [] (unsigned int index)
     {
       return m_Members[index];
     }
-  
-  protected:	
-    void operator = (const VectorMemberPointer<T> &right)
-    {}
-  
-  public:
+    
     unsigned int Size()
     {
       return m_Size;
@@ -46,6 +40,9 @@ class VectorMemberPointer
     }
   
   protected:	
+    void operator = (const VectorMemberPointer<T> &right)
+    {}
+    
     VectorMemberPointer(const VectorMemberPointer<T> &copy)
     {}
 

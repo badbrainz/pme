@@ -20,30 +20,21 @@ inline int ceilLogBaseTwo(T x)
   return (int)(ceil(log10(x)/log10(2.0f)));
 }
 
-void TerrainDatabase::Draw(unsigned int level, TileGraphVisitor *visitor)
-{
-  m_TileGraph.Render(level, visitor);
-}
-
-void TerrainDatabase::Cull(SpatialIndexVisitor *visitor)
-{
-  visitor->Visit(m_pTrunk);
-}
-
-unsigned int TerrainDatabase::GetTextureCount()
-{
-  return m_PteObject.GetTexturePageCount();
-}
-
-unsigned int TerrainDatabase::GetTextureID(unsigned int index)
-{
-  return m_PteObject.GetTexturePageID(index);
-}
-
 void TerrainDatabase::LoadGameData(const GameFileDescriptor &descriptor)
 {
+  ///begin clean up
+  m_ManagedTileModelControllers.FlushAllResources();
+  m_ManagedBases.FlushAllResources();
+  m_ManagedNodes.FlushAllResources();
+  m_ManagedCells.FlushAllResources();
+  ///end clean up
+  
   m_PveObject.LoadFromFile(descriptor.pvePath);
   m_PteObject.LoadFromFile(descriptor.ptePath);
+  
+  /*PteTextureObject* textureObject = m_ManagedPteTextureObjects.Create();
+  textureObject->LoadFromFile(descriptor.ptePath);
+  m_PteTextureDatabase.AddTextureObject(textureObject);*/
   
   SetupGraphStructure();
   SetupCellDataStructures();ComputeCellBoundaries();
@@ -318,6 +309,26 @@ void TerrainDatabase::ComputeTreeBoundaries(void)
       iter++;
     }
   }
+}
+
+void TerrainDatabase::Draw(unsigned int level, TileGraphVisitor *visitor)
+{
+  m_TileGraph.Render(level, visitor);
+}
+
+void TerrainDatabase::Cull(SpatialIndexVisitor *visitor)
+{
+  visitor->Visit(m_pTrunk);
+}
+
+unsigned int TerrainDatabase::GetTextureCount()
+{
+  return m_PteObject.GetTexturePageCount();
+}
+
+unsigned int TerrainDatabase::GetTextureID(unsigned int index)
+{
+  return m_PteObject.GetTexturePageID(index);
 }
 
 void TerrainDatabase::ControllerVisibility(const Tuple4i &range, bool value)

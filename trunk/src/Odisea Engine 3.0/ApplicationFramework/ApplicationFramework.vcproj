@@ -396,6 +396,14 @@
 				>
 			</File>
 			<File
+				RelativePath=".\C3DParsers\PteTextureObject.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\C3DParsers\PteTextureObject.h"
+				>
+			</File>
+			<File
 				RelativePath=".\C3DParsers\PveObject.cpp"
 				>
 			</File>
@@ -583,6 +591,14 @@
 		<Filter
 			Name="C3DDatabase"
 			>
+			<File
+				RelativePath=".\C3DDatabase\PteTextureDatabase.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\C3DDatabase\PteTextureDatabase.h"
+				>
+			</File>
 			<File
 				RelativePath=".\C3DDatabase\TerrainDatabase.cpp"
 				>

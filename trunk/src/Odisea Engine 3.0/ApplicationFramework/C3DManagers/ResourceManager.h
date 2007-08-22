@@ -17,11 +17,29 @@ template <class T, int size = 1e2, int min = 1e2> class ResourceManager///fuck
       return object;
     }
     
+    void Return(T* object)
+    {
+      m_Pool.release(object);
+    }
+    
     T* Clone(T* copy)
     {
       T* object = new T(*copy);
       AddResource(object);
       return object;
+    }
+    
+    void FlushAllResources()
+    {
+      for (unsigned int i = 0; i < m_Aquired.Size(); i++)
+      {
+        T* object = m_Aquired[i].Release();
+        
+        if (object)
+        {
+          m_Pool.release(object);
+        }
+      }
     }
     
     void FlushUnusedResources(void)

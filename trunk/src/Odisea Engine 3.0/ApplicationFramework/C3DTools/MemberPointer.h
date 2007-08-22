@@ -12,8 +12,7 @@ class MemberPointer
     {
       delete m_pObject;
     }
-
-  public:
+    
     T& operator * ()
     { 
       return *m_pObject; 
@@ -23,12 +22,7 @@ class MemberPointer
     { 
       return m_pObject; 
     }
-  
-  protected:
-    void operator = (const MemberPointer<T>& right)
-    {}
-  
-  public:
+    
     T* Get()
     {
       return m_pObject;
@@ -48,6 +42,9 @@ class MemberPointer
     }
   
   protected:
+    void operator = (const MemberPointer<T>& right)
+    {}
+    
     MemberPointer(const MemberPointer<T>& right)
     {}
   
