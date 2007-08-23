@@ -6,6 +6,22 @@ IndicesNode::IndicesNode()
 {
 }
 
+IndicesNode::IndicesNode(const IndicesNode &copy)
+{
+  m_Indices = copy.m_Indices;
+}
+
+IndicesNode& IndicesNode::operator = (const IndicesNode &right)
+{
+  m_Indices = right.m_Indices;
+  return *this;
+}
+
+bool IndicesNode::operator == (const IndicesNode &right)
+{
+  return (m_Indices == right.m_Indices);
+}
+
 void IndicesNode::Accept(TileGraphVisitor* visitor)
 {
   visitor->Visit(this);

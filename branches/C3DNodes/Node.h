@@ -2,18 +2,24 @@
 #define NODE
 
 #include "NodeLink.h"
+#include "../C3DManagers/ResourceManager.h"
 
 class SpatialIndexVisitor;
 class TileGraphVisitor;
 
-class Node
+class Node : public ManagedResource
 {
   public:
     Node();
     virtual ~Node(){}
     
+    Node(const Node &copy);
+    Node& operator = (const Node &right);
+    
     virtual void Accept(SpatialIndexVisitor* visitor);
     virtual void Accept(TileGraphVisitor* visitor);
+    
+    void Destroy(){}
   
   public:
     void	        Detach();

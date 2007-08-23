@@ -8,6 +8,19 @@ Node::Node()
 	m_ChildLink.SetParentNode(this);
 }
 
+Node::Node(const Node &copy)
+{
+  m_ParentLink = copy.m_ParentLink;
+  m_ChildLink  = copy.m_ChildLink;
+}
+
+Node& Node::operator = (const Node &right)
+{
+  m_ParentLink = right.m_ParentLink;
+  m_ChildLink  = right.m_ChildLink;
+  return *this;
+}
+
 void Node::Accept(SpatialIndexVisitor* visitor)
 {
   visitor->Visit(this);

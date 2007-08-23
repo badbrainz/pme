@@ -23,6 +23,8 @@ class SpatialIndexBaseNode : public Node
     Tuple4i          &GetRange();
     void              SetLevel(int level);
     int               GetLevel();
+    
+    void Destroy(){m_BoundsDescriptor.reset();}
   
   protected:
     BoundsDescriptor  m_BoundsDescriptor;
