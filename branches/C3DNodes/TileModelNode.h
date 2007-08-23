@@ -11,7 +11,13 @@ class TileModelNode : public Node
      TileModelNode();
     ~TileModelNode();
     
+    TileModelNode(const TileModelNode &copy);
+    TileModelNode& operator = (const TileModelNode &right);
+    bool operator == (const TileModelNode &right);
+    
     virtual void Accept(TileGraphVisitor* visitor);
+    
+    void Destroy(){m_pController=0;}
   
   public:
     void SetController(TileModelController *controller);

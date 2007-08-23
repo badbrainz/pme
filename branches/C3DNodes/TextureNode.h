@@ -9,6 +9,10 @@ class TextureNode : public Node
      TextureNode();
     ~TextureNode();
     
+    TextureNode(const TextureNode &copy);
+    TextureNode& operator = (const TextureNode &right);
+    bool operator == (const TextureNode &right);
+    
     virtual void Accept(TileGraphVisitor* visitor);
     
     void SetTextureID(unsigned int id);

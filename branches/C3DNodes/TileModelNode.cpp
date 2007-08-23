@@ -6,6 +6,22 @@ TileModelNode::TileModelNode()
 {
 }
 
+TileModelNode::TileModelNode(const TileModelNode &copy)
+{
+  m_pController = copy.m_pController;
+}
+
+TileModelNode& TileModelNode::operator = (const TileModelNode &right)
+{
+  m_pController = right.m_pController;
+  return *this;
+}
+
+bool TileModelNode::operator == (const TileModelNode &right)
+{
+  return (m_pController == right.m_pController);
+}
+
 void TileModelNode::Accept(TileGraphVisitor* visitor)
 {
   visitor->Visit(this);

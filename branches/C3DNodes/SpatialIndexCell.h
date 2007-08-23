@@ -12,6 +12,8 @@ class SpatialIndexCell : public SpatialIndexBaseNode
     void Accept(SpatialIndexVisitor* visitor);
     void RangeVisibility(bool value);
     bool RangeVisibility(void);
+    
+    void Destroy(){m_bRangeVisibility=true;}
   
   private:
     bool m_bRangeVisibility;
