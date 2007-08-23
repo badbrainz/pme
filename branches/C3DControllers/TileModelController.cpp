@@ -3,6 +3,29 @@
 #include "../C3DTerrain/Tile.h"
 #include "../C3DNodes/TileModelNode.h"
 
+TileModelController::TileModelController()
+{
+  m_pTileModel = 0;
+  m_TempColors = 0;
+  m_Vertices   = 0;
+  m_Colors     = 0;
+  m_pNode      = 0;
+}
+
+TileModelController::TileModelController(const TileModelController& copy)
+{
+  m_pTileModel = copy.m_pTileModel;
+  m_TempColors = copy.m_TempColors;
+  m_Vertices   = copy.m_Vertices;
+  m_Colors     = copy.m_Colors;
+  m_pNode      = copy.m_pNode;
+
+  m_ModelNodes.clear();
+  
+  for (unsigned int i = 0; i < m_ModelNodes.length(); i++)
+    m_ModelNodes.append(copy.m_ModelNodes[i]);
+}
+
 void TileModelController::SwitchTemp(Tuple4ub *temp)
 {
   m_TempColors = m_Colors;
@@ -83,4 +106,18 @@ void TileModelController::AddTileModelNode(TileModelNode *node)
 TileModelNode *TileModelController::GetTileModelNode(unsigned int index)
 {
   return m_ModelNodes[index];
+}
+
+void TileModelController::Destroy()
+{
+  m_pNode       = 0;
+  m_pTileModel  = 0;
+  m_Vertices    = 0;
+  m_Colors      = 0;
+  m_TempColors  = 0;
+  m_ModelNodes.clearFast();
+} 
+
+TileModelController::~TileModelController()
+{
 }
