@@ -37,47 +37,27 @@ bool EditorScene::Initialize()
   m_Camera.setTranslationSpeed(0.05f);
   m_Camera.update(0);
   m_Frustum.update();
-
-  /*gameFileDescriptor.pvePath = MediaPathManager::lookUpMediaPath("MP_4_3.PVE");
-  gameFileDescriptor.ptePath = MediaPathManager::lookUpMediaPath("MP_4_3.PTE");
+  //*/
+  //gameFileDescriptor.pvePath = MediaPathManager::lookUpMediaPath("MP_4_3.PVE");
+  //gameFileDescriptor.ptePath = MediaPathManager::lookUpMediaPath("MP_4_3.PTE");
   
-  m_pTerrainDatabase->LoadGameData(gameFileDescriptor);
+  //m_pTerrainDatabase->LoadGameData(gameFileDescriptor);
   
   visibilityVisitor.SetTerrain(m_pTerrainDatabase);
   visibilityVisitor.SetFrustum(&m_Frustum);
   intersectVisitor.SetRay(&m_Ray);
   blendVisitor.EnableBlend(true);
   
-  m_pTerrainDatabase->Cull(&visibilityVisitor);
+  //m_pTerrainDatabase->Cull(&visibilityVisitor);
   
-  for (unsigned int i = 0; i < m_pTerrainDatabase->GetTextureCount(); i++)
-    m_TileSet.CreateTileSet(m_pTerrainDatabase->GetTextureID(i));
+  //for (unsigned int i = 0; i < m_pTerrainDatabase->GetTextureCount(); i++)
+    //m_TileSet.CreateTileSet(m_pTerrainDatabase->GetTextureID(i));
 
-  m_Gui.addWidget(m_TileSet.GetGuiComponent());
-  m_Gui.forceUpdate(true);*/
+  //m_Gui.addWidget(m_TileSet.GetGuiComponent());
+  //m_Gui.forceUpdate(true);
+  //*/
 
   return true;
-}
-
-void EditorScene::InitializeNewMap(const MapDescriptor& descriptor)
-{
-  gameFileDescriptor.pvePath = MediaPathManager::lookUpMediaPath("MP_4_3.PVE");
-  gameFileDescriptor.ptePath = MediaPathManager::lookUpMediaPath("MP_4_3.PTE");
-  
-  m_pTerrainDatabase->LoadGameData(gameFileDescriptor);
-  
-  visibilityVisitor.SetTerrain(m_pTerrainDatabase);
-  visibilityVisitor.SetFrustum(&m_Frustum);
-  intersectVisitor.SetRay(&m_Ray);
-  blendVisitor.EnableBlend(true);
-  
-  m_pTerrainDatabase->Cull(&visibilityVisitor);
-  
-  for (unsigned int i = 0; i < m_pTerrainDatabase->GetTextureCount(); i++)
-    m_TileSet.CreateTileSet(m_pTerrainDatabase->GetTextureID(i));
-
-  m_Gui.addWidget(m_TileSet.GetGuiComponent());
-  m_Gui.forceUpdate(true);
 }
 
 void EditorScene::BeginScene()
