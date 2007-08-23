@@ -140,7 +140,7 @@ class Array {
     // each one.  Caveat emptor when using clearFast.
     void clear () 
     {
-      for (int ii=0; ii<length(); ii++)
+      for (size_t ii=0; ii<length(); ii++)
 	(&data_[ii])->~T();
       length_ = 0;
     }
@@ -151,7 +151,7 @@ class Array {
     // linear search is done.  Equality is measured by T's operator==.
     bool contains (const T& a) const 
     {
-      for (int ii=0; ii<length(); ii++)
+      for (size_t ii=0; ii<length(); ii++)
 	if (a==data_[ii])
 	  return true;
       return false;
@@ -531,7 +531,7 @@ class ArrayPtr {
     void clearAndDestroy () 
     {
       // Delete old stuff
-      for (int ii=0; ii<length(); ii++)
+      for (size_t ii=0; ii<length(); ii++)
 	delete a_(ii);
       clear();
     }
