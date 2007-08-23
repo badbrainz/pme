@@ -11,6 +11,13 @@ TileGraph::TileGraph()
 {
 };
 
+void TileGraph::Flush()
+{
+  m_AttatchmentPoints.clear();
+  m_Levels.clearFast();
+  m_Nodes.clearAndDestroy();
+}
+
 void TileGraph::Initialize(unsigned int levels)
 {
   IndicesNode *indicesNode = 0;
@@ -18,10 +25,12 @@ void TileGraph::Initialize(unsigned int levels)
 
   for (unsigned int i = 0; i < levels; i++)
   {
-    graphNode   = m_ManagedGraphNodes.Create();
-    indicesNode = m_ManagedIndicesNodes.Create();
+    graphNode   = new Node;
+    indicesNode = new IndicesNode;
     
+    m_Nodes.append(indicesNode);
     m_Levels.append(graphNode);
+    
     indicesNode->SetIndices(nodeIndices);
     indicesNode->Attach(graphNode);
     
@@ -32,12 +41,6 @@ void TileGraph::Initialize(unsigned int levels)
 
 void TileGraph::Trim()
 {
-  m_ManagedTileModelControllers.FlushUnusedResources();
-  m_ManagedTextureCoordsNodes.FlushUnusedResources();
-  m_ManagedTileModelNodes.FlushUnusedResources();
-  m_ManagedIndicesNodes.FlushUnusedResources();
-  m_ManagedTextureNodes.FlushUnusedResources();
-  m_ManagedGraphNodes.FlushUnusedResources();
 }
 
 void TileGraph::Render(unsigned int level, TileGraphVisitor *visitor)
@@ -52,15 +55,17 @@ unsigned int TileGraph::Integrate(unsigned int level, Tuple2f *coords, unsigned 
   
   if (!textureNode)
   {
-    textureNode = m_ManagedTextureNodes.Create();
+    textureNode = new TextureNode;
     textureNode->SetTextureID(texID);
     textureNode->Attach(m_Levels[level]->GetFirstChild());
+    m_Nodes.append(textureNode);
   }
   
-  TextureCoordsNode *texCoordsNode = m_ManagedTextureCoordsNodes.Create();
+  TextureCoordsNode *texCoordsNode = new TextureCoordsNode;
   texCoordsNode->SetTextureCoords(coords);
   texCoordsNode->Attach(textureNode);
   texCoordsNode->Hide();
+  m_Nodes.append(texCoordsNode);
 
   m_AttatchmentPoints[level].m_AggregateNodes.append(texCoordsNode);
 
@@ -69,8 +74,9 @@ unsigned int TileGraph::Integrate(unsigned int level, Tuple2f *coords, unsigned 
 
 TileModelNode* TileGraph::ModelGraph(unsigned int level, unsigned int index)
 {
-  TileModelNode       *tileModelNode = m_ManagedTileModelNodes.Create();
+  TileModelNode       *tileModelNode = new TileModelNode;
   TextureCoordsNode   *texCoordsNode = m_AttatchmentPoints[level].m_AggregateNodes[index];
+  m_Nodes.append(tileModelNode);
   
   tileModelNode->Attach(texCoordsNode);
   texCoordsNode->Reveal();
@@ -92,4 +98,5 @@ Node* TileGraph::CheckForRepeat(Node* node, unsigned int identifier)
 
 TileGraph::~TileGraph()
 {
+  Flush();
 };
