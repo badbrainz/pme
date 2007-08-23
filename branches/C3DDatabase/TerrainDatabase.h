@@ -8,7 +8,7 @@
 #include "../C3DNodes/SpatialIndexCell.h"
 #include "../C3DControllers/TileModelController.h"
 
-#include "PteTextureDatabase.h"
+#include "../C3DScenes/NewMapScene.h"
 
 class GameFileDescriptor
 {
@@ -24,12 +24,14 @@ class TerrainDatabase
     ~TerrainDatabase();
     
     void LoadGameData(const GameFileDescriptor &descriptor);
+    void LoadGameData(const MapDescriptor &descriptor);
+    
     void Draw(unsigned int level, TileGraphVisitor *visitor);
-    void Cull(SpatialIndexVisitor *visitor);//name change: Accept
+    void Cull(SpatialIndexVisitor *visitor);//name change
     
     void CellVisibility(const Tuple4i &range, bool value);
     void ControllerVisibility(const Tuple4i &range, bool value);
-
+    
     unsigned int GetTextureCount();
     unsigned int GetTextureID(unsigned int index);
   
@@ -40,26 +42,18 @@ class TerrainDatabase
     
     void ComputeCellBoundaries(void);
     void ComputeTreeBoundaries(void);
+    
+    void UnloadPreviousMap();
   
   private:
-    PveObject           m_PveObject;
-    PteObject           m_PteObject;
+    PveObject               m_PveObject;
+    PteObject               m_PteObject;
+    TileGraph               m_TileGraph;
+    SpatialIndexBaseNode   *m_pTrunk;
     
-    TileGraph           m_TileGraph;
-    
-    PteTextureDatabase  m_PteTextureDatabase;
-    
-    ResourceManager <PteTextureObject,     20> m_ManagedPteTextureObjects;
-    ResourceManager <TileModelController, 1e5> m_ManagedTileModelControllers;
-    ResourceManager <SpatialIndexBaseNode,1e2> m_ManagedBases;
-    ResourceManager <SpatialIndexNode,    1e2> m_ManagedNodes;
-    ResourceManager <SpatialIndexCell,    1e2> m_ManagedCells;
-    
-    ArrayPtr <TileModelController>  m_Controllers;
     ArrayPtr <SpatialIndexBaseNode> m_SpatialIndexBranches;
+    ArrayPtr <TileModelController>  m_Controllers;
     ArrayPtr <SpatialIndexCell>     m_SpatialIndexCells;
-    
-    SpatialIndexBaseNode *m_pTrunk;
 };
 
 #endif

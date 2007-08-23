@@ -22,29 +22,38 @@ inline int ceilLogBaseTwo(T x)
 
 void TerrainDatabase::LoadGameData(const GameFileDescriptor &descriptor)
 {
-  ///begin clean up
-  m_ManagedTileModelControllers.FlushAllResources();
-  m_ManagedBases.FlushAllResources();
-  m_ManagedNodes.FlushAllResources();
-  m_ManagedCells.FlushAllResources();
-  ///end clean up
-  
   m_PveObject.LoadFromFile(descriptor.pvePath);
   m_PteObject.LoadFromFile(descriptor.ptePath);
-  
-  /*PteTextureObject* textureObject = m_ManagedPteTextureObjects.Create();
-  textureObject->LoadFromFile(descriptor.ptePath);
-  m_PteTextureDatabase.AddTextureObject(textureObject);*/
   
   SetupGraphStructure();
   SetupCellDataStructures();ComputeCellBoundaries();
   SetupSpatialIndexStructure();ComputeTreeBoundaries();
+}
+
+void TerrainDatabase::LoadGameData(const MapDescriptor &descriptor)
+{
+  UnloadPreviousMap();
+
+  const String visuals  = MediaPathManager::lookUpMediaPath(descriptor.mapVisual);
+  const String textures = MediaPathManager::lookUpMediaPath(descriptor.mapTextures);
   
-  m_ManagedTileModelControllers.FlushUnusedResources();
-  m_ManagedBases.FlushUnusedResources();
-  m_ManagedNodes.FlushUnusedResources();
-  m_ManagedCells.FlushUnusedResources();
-  m_TileGraph.Trim();
+  m_PveObject.LoadFromFile(visuals);
+  m_PteObject.LoadFromFile(textures);
+  
+  SetupGraphStructure();
+  SetupCellDataStructures();ComputeCellBoundaries();
+  SetupSpatialIndexStructure();ComputeTreeBoundaries();
+}
+
+void TerrainDatabase::UnloadPreviousMap()
+{
+  m_SpatialIndexBranches.clearAndDestroy();
+  m_SpatialIndexCells.clearAndDestroy();
+  m_Controllers.clearAndDestroy();
+
+  m_PveObject.Flush();
+  m_PteObject.Flush();
+  m_TileGraph.Flush();
 }
 
 void TerrainDatabase::SetupGraphStructure(void)
@@ -88,7 +97,7 @@ void TerrainDatabase::SetupGraphStructure(void)
 		if(-1 == secondaryTexture)
 			secondaryTexture = primaryTexture;
     
-    TileModelController *controller = m_ManagedTileModelControllers.Create();
+    TileModelController *controller = new TileModelController;
     controller->SetVertices(m_PveObject.GetTileVertexChunk(index));
     controller->SetColors(m_PveObject.GetTileColorChunk(index));
     controller->SetModel(tile);
@@ -125,7 +134,7 @@ void TerrainDatabase::SetupCellDataStructures(void)
     zOff = clamp(int(cellSize*x+(cellSize-1)), 0, int(tilesPerX-1));
     wOff = clamp(int(cellSize*y+(cellSize-1)), 0, int(tilesPerY-1));
     
-    SpatialIndexCell *index = m_ManagedCells.Create();
+    SpatialIndexCell *index = new SpatialIndexCell;
     index->SetRange(Tuple4i(xOff,yOff,zOff,wOff));
     m_SpatialIndexCells.append(index);
   }
@@ -218,7 +227,7 @@ void TerrainDatabase::SetupSpatialIndexStructure(void)
   power     = ceilLogBaseTwo((float)boundary+1);
   logarithm = ceilPowerOfTwo((float)boundary+1);
 
-  m_pTrunk = m_ManagedBases.Create();
+  m_pTrunk = new SpatialIndexBaseNode;
   m_pTrunk->SetRange(terrainRange);
   
   BoundsDescriptor descriptor;
@@ -253,7 +262,7 @@ void TerrainDatabase::SetupSpatialIndexStructure(void)
         point.z = clamp(point.x+offset-1, point.x, terrainRange.z);
         point.w = clamp(point.y+offset-1, point.y, terrainRange.w);
         
-        branch = m_ManagedNodes.Create();
+        branch = new SpatialIndexNode;
         branch->SetLevel(level+1);
         branch->SetRange(point);
         branch->Attach(pointer);
