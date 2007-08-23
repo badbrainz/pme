@@ -2,14 +2,19 @@
 #define TILEMODELCONTROLLER
 
 #include "Math/MathUtils.h"
+#include "../C3DManagers/ResourceManager.h"
 #include "../OC/ocarray.h"
 
 class Tile;
 class TileModelNode;
 
-class TileModelController
+class TileModelController : public ManagedResource
 {
   public:
+     TileModelController();
+     TileModelController(const TileModelController& copy);
+    ~TileModelController();
+    
     void  SetModel(Tile *tile);
     Tile* GetModel();
     
@@ -34,6 +39,8 @@ class TileModelController
     ///
     void SwitchTemp(Tuple4ub *temp);
     void SwitchBack();
+    
+    void Destroy();
   
   private:
     TileModelNode *m_pNode;
