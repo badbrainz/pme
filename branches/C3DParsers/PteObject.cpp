@@ -14,6 +14,17 @@ PteObject::PteObject()
   m_MipmapCount       = 0;
 }
 
+void PteObject::Flush()
+{
+  glDeleteTextures(m_TexturesID.length(), m_TexturesID.data());
+  
+  m_SubTextureCoords.clear();
+  m_TexturesID.clear();
+  
+  m_TexturePageCount  = 0;
+  m_MipmapCount       = 0;
+}
+
 void PteObject::GenerateMipmaps(unsigned char *imageData, int level, int width, int height)
 {
   glTexImage2D(GL_TEXTURE_2D,
@@ -59,7 +70,8 @@ void PteObject::DeactivateTexture(void)
 
 unsigned int PteObject::GetTexturePageCount()
 {
-  return m_TexturePageCount;
+  //return m_TexturePageCount;
+  return m_TexturesID.length();
 }
 
 unsigned int PteObject::GetTexturePageID(unsigned int page)

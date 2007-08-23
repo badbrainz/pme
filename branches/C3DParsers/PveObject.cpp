@@ -19,10 +19,45 @@ PveObject::PveObject()
   m_fElevate           = 1.0f;
 }
 
+void PveObject::Flush()
+{
+  if (m_pUncompressedVerts.data())
+  m_pUncompressedVerts.clear();
+  
+  if (m_pCompressedYBuffer.data())
+  m_pCompressedYBuffer.clear();
+  
+  if (m_pTileVertexBlock.data())
+  m_pTileVertexBlock.clear();
+  
+  if (m_pTileIndexSet.data())
+  m_pTileIndexSet.clear();
+  
+  if (m_pColorBuffer.data())
+  m_pColorBuffer.clear();
+  
+  if (m_pTileSet.data())
+  m_pTileSet.clear();
+  
+  m_pUncompressedVerts = 0;
+  m_pCompressedYBuffer = 0;
+  m_pTileVertexBlock   = 0;
+  m_pColorBuffer       = 0;
+  m_pTileIndexSet      = 0;
+  m_pTileSet           = 0;
+  
+  m_uiTilesPerX        = 0;
+  m_uiTilesPerY        = 0;
+  m_fHeightRatio       = 1.0f;
+  m_fMaxHeight         = 0.0f;
+  m_fMinHeight         = 0.0f;
+  m_fElevate           = 1.0f;
+}
+
 ///buffers
 const Tuple3f *PveObject::GetVertexBuffer(void)
 {
-  return m_pUncompressedVerts;
+  return m_pUncompressedVerts.data();
 }
 
 const Tuple3f *PveObject::GetVertexBufferChunk(int tileIndex)
@@ -43,7 +78,7 @@ const Tuple3f *PveObject::GetVertexBufferChunk(int tileIndex)
 
 const Tuple4ub *PveObject::GetColorBuffer(void)
 {
-  return m_pColorBuffer;
+  return m_pColorBuffer.data();
 }
 
 const Tuple4ub *PveObject::GetColorBufferChunk(int tileIndex)
@@ -80,16 +115,6 @@ Tuple4ub *PveObject::GetTileColorChunk(int tileIndex)
 }
 
 ///accessors
-/*void PveObject::SetColorBufferChunk(int tileIndex, const Tuple4ub *colors)
-{
-  unsigned int vertexIndex;
-  for(int b = 0; b < 9; b++)
-  {
-    vertexIndex = tileIndexSet[ tileIndex ].indices[ b ];
-    m_pColorBuffer[ vertexIndex ] = colors[b];
-  }
-}*/
-
 float PveObject::GetMaxHeight(void)
 {
   return m_fMaxHeight;
@@ -155,67 +180,4 @@ void PveObject::SetElevation(float elevation)
 
 PveObject::~PveObject()
 {
-  //m_MemoryBlock.PrintMemoryBlock("memory.pba");
-  //m_MemoryBlock.PrintMemoryProfile("memory.txt");
 }
-
-/*void PveObject::ComputeTileMinHeights(void)
-{
-  unsigned int width  = tilesPerX,
-               height = tilesPerY;
-
-  int arrayWidth      = width  * 2 + 1,
-      arrayHeight     = height * 2 + 1,
-      xOff            = 0,
-      yOff            = 0,
-      index           = 0;
-
-  float oldHeight     = 0,
-        newHeight     = 0;
-
-  // iterate over tiles
-  for(unsigned int a = 0; a < height; a++, yOff += 2, xOff = 0)
-  for(unsigned int b = 0; b < width; b++, xOff += 2, newHeight = 0)
-  {
-    index = a * width + b;
-    
-    // iterate over tile's vertices
-    for(unsigned int y = 0; y < 3; y++)
-    for(unsigned int x = 0; x < 3; x++)
-    {
-      index     = y * arrayWidth + x;
-      newHeight = m_pUncompressedVerts[index].y;
-      newHeight = newHeight < oldHeight ? newHeight : oldHeight;
-    }
-    
-    tileSet[index].SetMinHeight(newHeight);
-  }
-}
-
-void PveObject::ComputeTileMaxHeights(void)
-{
-  unsigned int width  = tilesPerX,
-               height = tilesPerY;
-
-  int arrayWidth      = width  * 2 + 1,
-      arrayHeight     = height * 2 + 1,
-      xOff            = 0,
-      yOff            = 0,
-      index           = 0,
-      vertIndex       = 0;
-
-  float test;
-
-  for(unsigned int a = 0; a < height; a++, yOff += 2, xOff = 0)
-  for(unsigned int b = 0; b < width; b++, xOff += 2, test = 0)
-  {
-    index = a * width + b;
-
-    test = vertexData[tileIndexSet[index].vertexIndices[0]].y;
-
-    for(int c = 0; c < 9; c++)
-      test =  test < vertexData[tileIndexSet[index].vertexIndices[c]].y ? vertexData[tileIndexSet[index].vertexIndices[c]].y : test;
-
-    tileSet[index].SetMaxHeight(test);
-  }
-}*/

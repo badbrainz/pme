@@ -1,8 +1,8 @@
 #ifndef PVEOBJECT
 #define PVEOBJECT
 
-#include "../C3DMemory/VirtualMemory.h"
 #include "../C3DTerrain/Tile.h"
+#include "../OC/ocarray.h"
 #include "Tools/Logger.h"
 #include <fstream>
 
@@ -51,11 +51,12 @@ class PveObject
     const Tuple3f      *GetVertexBuffer(void);
     const Tuple4ub     *GetColorBuffer(void);
     
-    //void                SetColorBufferChunk(int tileIndex, const Tuple4ub *colors);
     void                SetElevation(float elevation);
     
     float               ComputeMaxTileHeight(unsigned int index);
     float               ComputeMinTileHeight(unsigned int index);
+    
+    void Flush();
   
   private:
     void                ReadHeader(void);
@@ -70,26 +71,14 @@ class PveObject
     void                SetupTileIndices(void);
     
     void                ComputeHeightRatio(void);
-    
-    //void                BuildTileColorChunks(void);
-    //void                BuildTileVertexChunks(void);
-    //void                ComputeTileMinHeights(void);
-    //void                ComputeTileMaxHeights(void);
   
   private:
-
-/**
- *block memory
- */
-    VirtualMemory       m_MemoryBlock;
-    Tuple3f            *m_pUncompressedVerts;
-    unsigned char      *m_pCompressedYBuffer;
-    TileVertexBlock    *m_pTileVertexBlock;
-    TileIndexSet       *m_pTileIndexSet;
-    Tuple4ub           *m_pColorBuffer;
-    Tile               *m_pTileSet;
-/** 
- */
+    Array <TileVertexBlock> m_pTileVertexBlock;
+    Array <unsigned char>   m_pCompressedYBuffer;
+    Array <TileIndexSet>    m_pTileIndexSet;
+    Array <Tuple4ub>        m_pColorBuffer;
+    Array <Tuple3f>         m_pUncompressedVerts;
+    Array <Tile>            m_pTileSet;
     
     Tuple3f             m_TempVertexBuffer[9];
     Tuple4ub            m_TempColorBuffer[9];

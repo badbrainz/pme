@@ -4,23 +4,19 @@
 bool PveObject::LoadFromFile(const String &filePath)
 {
   m_InputFile.open(filePath, std::ofstream::in|std::ofstream::binary);
+
   ReadHeader();
-  InitializeMemoryBlock();
+  /*InitializeMemoryBlock();*/
   ReadTileChunk();
   ReadVertexChunk();
   ReadColorChunk();
+
   m_InputFile.close();
 
   ComputeHeightRatio();
   BuildTerrainVertexField();
   SetupTileIndices();
-
-  //BuildTileVertexChunks();
-  //BuildTileColorChunks();
   BuildTileVertexBlock();
-  
-  //ComputeTileMaxHeights();
-  //ComputeTileMinHeights();
   
   return true;
 }
@@ -37,15 +33,15 @@ void PveObject::ReadHeader(void)
 void PveObject::ReadVertexChunk(void)
 {
   unsigned int size = (m_uiTilesPerX*2+1)*(m_uiTilesPerY*2+1)*sizeof(unsigned char);
-  m_pCompressedYBuffer = (unsigned char*) m_MemoryBlock.GetRange(size);
-  m_InputFile.read((char*)m_pCompressedYBuffer, size);
+  m_pCompressedYBuffer.expandTo((m_uiTilesPerX*2+1) * (m_uiTilesPerY*2+1));
+  m_InputFile.read((char*)m_pCompressedYBuffer.data(), size);
 }
 
 void PveObject::ReadColorChunk(void)
 {
   unsigned int size = (m_uiTilesPerX*2+1)*(m_uiTilesPerY*2+1)*sizeof(Tuple4ub);
-  m_pColorBuffer = (Tuple4ub*) m_MemoryBlock.GetRange(size);
-  m_InputFile.read((char*)m_pColorBuffer, size);
+  m_pColorBuffer.expandTo((m_uiTilesPerX*2+1) * (m_uiTilesPerY*2+1));
+  m_InputFile.read((char*)m_pColorBuffer.data(), size);
 }
 
 void PveObject::ReadTileChunk(void)
@@ -55,7 +51,7 @@ void PveObject::ReadTileChunk(void)
   unsigned char   maxTileHeight,
                   extra;
 
-  m_pTileSet = (Tile*) m_MemoryBlock.GetRange(m_uiTilesPerX*m_uiTilesPerY*sizeof(Tile));
+  m_pTileSet.expandTo(m_uiTilesPerX * m_uiTilesPerY);
 
   for(unsigned int a = 0; a < m_uiTilesPerX*m_uiTilesPerY; a++)
   {
