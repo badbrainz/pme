@@ -1,4 +1,5 @@
 #include "NewMapScene.h"
+#include "../C3DDatabase/TerrainDatabase.h"
 
 NewMapScene::NewMapScene(const String &name) : m_MapNames(5), m_MapDescriptorList(20), Scene(name)
 {
@@ -26,15 +27,13 @@ bool NewMapScene::LoadMapNames()
   const char *verified = MediaPathManager::lookUpMediaPath("Mapas.xml");
   
   if (!verified)
-    std::cout << "Couldn't locate the <Mapas> XML file" << std::endl;
-    //return Logger::writeErrorLog(String("Couldn't locate the <Mapas> XML file"));
+    return Logger::writeErrorLog(String("Couldn't locate the <Mapas> XML file"));
   
-  ///load the entire xml tree
+  //load the entire xml tree
   if (!xmlStack.loadXMLFile(verified))
-    std::cout << String("Invalid XML file -> ") + verified << std::endl;
-    //return Logger::writeErrorLog(String("Invalid XML file -> ") + verified);
+    return Logger::writeErrorLog(String("Invalid XML file -> ") + verified);
   
-  ///now browse through the loaded tree
+  //now browse through the loaded tree
   if (root = xmlStack.getChildByName("Mapas"))
   {
     for (unsigned int i = 0; i < root->getChildrenCount(); i++)
@@ -96,10 +95,10 @@ void NewMapScene::actionPerformed(GUIEvent &evt)
         return;
       }
       
-      /*if (callbackString == "Editor")
+      if (callbackString == "Editor")
       {
-        return;
-      }*/
+        m_pTerrainDatabase->LoadGameData(m_MapDescriptorList[currentItem]);
+      }
       
       m_SceneController.Execute(callbackString);
     }

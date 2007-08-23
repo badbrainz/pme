@@ -25,7 +25,6 @@ class EditorScene : public Scene
     virtual void  BeginScene();
     virtual void  Update(const FrameInfo &frameInfo);
     
-    void InitializeNewMap(const MapDescriptor& descriptor);
     void SetTerrainDatabase(TerrainDatabase* database){m_pTerrainDatabase = database;}
 
   private:
