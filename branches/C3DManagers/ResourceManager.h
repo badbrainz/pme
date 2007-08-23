@@ -1,14 +1,27 @@
 #ifndef RESOURCEMANAGER
 #define RESOURCEMANAGER
 
-#include "../C3DTools/VectorMemberPointer.h"
 #include "../C3DMemory/GenericPool.h"
+#include "../OC/ocarray.h"
+#include <iostream>
+
+class ManagedResource
+{
+  public:
+    virtual void Destroy() = 0;
+};
 
 template <class T, int size = 1e2, int min = 1e2> class ResourceManager///fuck
 {
   public:
-    ResourceManager(void) : m_Aquired(size), m_Cursor(0)
+    ResourceManager(void) : m_Aquired(size)
     {}
+    
+    ~ResourceManager(void)
+    {
+      FlushAllResources();
+      m_Pool.flush();
+    }
     
     T* Create(void)
     {
@@ -19,7 +32,11 @@ template <class T, int size = 1e2, int min = 1e2> class ResourceManager///fuck
     
     void Return(T* object)
     {
-      m_Pool.release(object);
+      if (object)
+      {
+        //object->Destroy();
+        m_Pool.release(object);
+      }
     }
     
     T* Clone(T* copy)
@@ -31,15 +48,11 @@ template <class T, int size = 1e2, int min = 1e2> class ResourceManager///fuck
     
     void FlushAllResources()
     {
-      for (unsigned int i = 0; i < m_Aquired.Size(); i++)
-      {
-        T* object = m_Aquired[i].Release();
-        
-        if (object)
-        {
-          m_Pool.release(object);
-        }
-      }
+      std::cout << "---------------------------" << std::endl;
+      std::cout << m_Aquired.length() << std::endl;
+      for (unsigned int i = 0; i < m_Aquired.length(); i++)
+        Return(m_Aquired[i]);
+      m_Aquired.clear();
     }
     
     void FlushUnusedResources(void)
@@ -49,15 +62,12 @@ template <class T, int size = 1e2, int min = 1e2> class ResourceManager///fuck
     
     void AddResource(T* object)
     {
-      if (m_Cursor >= m_Aquired.Size())
-        m_Aquired.Resize(m_Aquired.Size()*2);
-      m_Aquired[m_Cursor++].Reset(object);
+      m_Aquired.append(object);
     }
   
   private:
-    VectorMemberPointer <T>            m_Aquired;
-    GenericPool         <T, size, min> m_Pool;
-    unsigned int                       m_Cursor;
+    ArrayPtr    <T>            m_Aquired;
+    GenericPool <T, size, min> m_Pool;
 };
 
 #endif
