@@ -20,6 +20,8 @@ class PteObject
     
     unsigned int        GetTexturePageCount();
     unsigned int        GetTexturePageID(unsigned int page);
+    
+    void Flush();
 
   private:
     void          			ReadHeader(void);
