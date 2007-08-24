@@ -1,0 +1,7 @@
+<Configuration> 
+
+  <MediaFolder path = "Data/GUI/"       />
+  <MediaFolder path = "Data/Maps/"  		/>
+  <MediaFolder path = "Data/Textures/"  />
+  
+</Configuration>
