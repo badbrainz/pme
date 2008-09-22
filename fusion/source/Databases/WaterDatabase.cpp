@@ -18,17 +18,17 @@ WaterDatabase::WaterDatabase()
 
 bool WaterDatabase::initialize(const char* path)
 {
-	if (const char* inp = MediaPathManager::lookUpMediaPath("water_2_1.col"))
-	{
-		ifstream in(inp, ios_base::binary);
-		if (in.is_open())
-		{
-			watertexture.create2DShell("watertexture", 256, 256);
-			unsigned char* colsbuf = (unsigned char*) Gateway::aquireGeometryMemory(256 * 256 * 4);
-			in.read((char*)colsbuf, 256 * 256 * 4);
-			in.close();
-			unsigned int availableID;
-			glGenTextures(1, &availableID);
+  if (const char* inp = MediaPathManager::lookUpMediaPath("water_2_1.col"))
+  {
+    ifstream in(inp, ios_base::binary);
+    if (in.is_open())
+    {
+      watertexture.create2DShell("watertexture", 256, 256);
+      unsigned char* colsbuf = (unsigned char*) Gateway::aquireGeometryMemory(256 * 256 * 4);
+      in.read((char*)colsbuf, 256 * 256 * 4);
+      in.close();
+      unsigned int availableID;
+      glGenTextures(1, &availableID);
       glBindTexture(GL_TEXTURE_2D, availableID);
       glTexEnvf(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_MODULATE);
       glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
@@ -38,7 +38,7 @@ bool WaterDatabase::initialize(const char* path)
       glTexImage2D(GL_TEXTURE_2D, 0, 4, 256, 256, 0, GL_BGRA, GL_UNSIGNED_BYTE, colsbuf);
       gluBuild2DMipmaps(GL_TEXTURE_2D, 4, 256, 256, GL_BGRA, GL_UNSIGNED_BYTE, colsbuf);
       Gateway::releaseGeometryMemory(colsbuf);
-			
+      
       Tuple4i viewport;
       glGetIntegerv(GL_VIEWPORT, viewport);
       glViewport(0, 0, 256, 256);
@@ -58,9 +58,9 @@ bool WaterDatabase::initialize(const char* path)
       glDisable(GL_TEXTURE_2D);
       Renderer::exit2DMode();
       glViewport(0, 0, viewport.z, viewport.w);
-		}
-	}
-	
+    }
+  }
+  
   return true;
 }
 
@@ -181,7 +181,7 @@ void WaterDatabase::addWaterModel(Water* water)
 
 Texture& WaterDatabase::getWaterTexture()
 {
-	return watertexture;
+  return watertexture;
 }
 
 void WaterDatabase::addWaterModel(Model* model)

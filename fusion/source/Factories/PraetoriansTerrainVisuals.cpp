@@ -241,7 +241,7 @@ bool PraetoriansTerrainVisuals::loadPackedMedia(const char* path)
 
 bool PraetoriansTerrainVisuals::loadUnpackedPVE(const char* path)
 {
-  ifstream in(path, ios_base::cur);
+  ifstream in(path, ios_base::binary);
   if (!in.is_open())
     return Logger::writeErrorLog(String("Could not load -> ") + path);
     

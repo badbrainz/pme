@@ -3,6 +3,7 @@
 
 #include "../Math/Tuple4.h"
 #include "MapDescriptor.h"
+#include "Tile.h"
 
 namespace WorldObjectTypes
 {
@@ -48,7 +49,6 @@ struct WorldObject
   Tuple3f position;
   String name;
 };
-//unsigned int tileindices[10] = {4, 3, 0, 1, 2, 5, 8, 7, 6, 3};
 
 //------------
 ///world object flags (used by mob)
@@ -172,7 +172,8 @@ namespace BrushModes
     FLAG,
     POINTER,
     VERTEX,
-    TRIANGLE
+    TRIANGLE,
+    ADVANCED
   };
 }
 
@@ -203,6 +204,13 @@ namespace BrushLayers
     NONE
   };
 }
+
+struct BrushMatrixDescriptor
+{
+public:
+  Array <Tile> tileList;
+  Tuple2i dimensions;
+};
 
 //#define STR_ME( X ) ( # X )
 //

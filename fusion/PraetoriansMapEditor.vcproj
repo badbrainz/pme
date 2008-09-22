@@ -1594,6 +1594,14 @@
 			Name="scenes"
 			>
 			<File
+				RelativePath=".\source\Scenes\BrushLabScene.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\source\Scenes\BrushLabScene.h"
+				>
+			</File>
+			<File
 				RelativePath=".\source\Scenes\CharacterLabScene.cpp"
 				>
 			</File>

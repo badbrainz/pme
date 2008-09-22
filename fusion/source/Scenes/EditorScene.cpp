@@ -81,8 +81,8 @@ bool EditorScene::initialize()
   
   const Tuple2f& dim = memstatsSurface->getDimensions();
   memstats.create2DShell("memstats", (int)dim.x, (int)dim.y, GL_RGBA8, GL_RGBA, GL_CLAMP_TO_EDGE, GL_CLAMP_TO_EDGE);
-  offscreenTexture.create2DShell("TilesetPageTexture", 256, 256, GL_RGBA8, GL_RGBA, GL_CLAMP_TO_EDGE, GL_CLAMP_TO_EDGE);
-  currentPageTexture.create2DShell("TilesetCurrentTexture", 256, 256, GL_RGBA8, GL_RGBA, GL_CLAMP_TO_EDGE, GL_CLAMP_TO_EDGE);
+  offscreenTexture.create2DShell("TilesetPageTexture", 256, 256, GL_RGB8, GL_RGB, GL_CLAMP_TO_EDGE, GL_CLAMP_TO_EDGE);
+  currentPageTexture.create2DShell("TilesetCurrentTexture", 256, 256, GL_RGB8, GL_RGB, GL_CLAMP_TO_EDGE, GL_CLAMP_TO_EDGE);
   minimap.create2DShell("minimap", 256, 256, GL_RGBA8, GL_RGBA, GL_CLAMP_TO_EDGE, GL_CLAMP_TO_EDGE);
   finalmap.create2DShell("finalmap", 256, 256, GL_RGBA8, GL_RGBA, GL_CLAMP_TO_EDGE, GL_CLAMP_TO_EDGE);
   
@@ -1178,6 +1178,13 @@ void EditorScene::actionPerformed(GUIEvent &evt)
       {
         brush.setMode(BrushModes::FLAG);
         //cursor = &cursors[CursorTypes::TILE_FLAG];
+        return;
+      }
+      
+      if (item == "Advanced")
+      {
+        brush.setMode(BrushModes::ADVANCED);
+        //cursor = &cursors[CursorTypes::PAINT];
         return;
       }
     }

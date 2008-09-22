@@ -584,6 +584,26 @@ void TerrainBrush::editTiles()
         
         break;
         
+      case BrushModes::ADVANCED:
+      
+        if (verts[4].getDistance(cpoint) <= radius)
+        {
+          BrushMatrixDescriptor* descriptor = &Gateway::getBrushMatrixDescriptor();
+          if (!descriptor->tileList.isEmpty())
+          {
+            int col = tileiter.current() - int(tileiter.current()/area.y) * area.y;
+            int row = int(tileiter.current()/area.y);
+            int mx = col % descriptor->dimensions.x;
+            int my = row % descriptor->dimensions.y;
+            Tile *mtile = &descriptor->tileList(my * descriptor->dimensions.x + mx);
+            tdatabase->changeTileTexture(level, mtile->textureID[0], tileiter.current());
+            controller->clearFlags();
+            controller->setFlags(mtile->flags);
+          }
+        }
+        
+        break;
+        
       case BrushModes::POINTER:
         break;
         
