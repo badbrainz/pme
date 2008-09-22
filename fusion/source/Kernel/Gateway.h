@@ -154,9 +154,12 @@ class Gateway
     
     static void setMenuMusicPath(const char* path);
     static const char* getMenuMusicPath();
-		static void enableMenuMusic(bool enable);
-		static bool isMenuMusicEnabled();
+    static void enableMenuMusic(bool enable);
+    static bool isMenuMusicEnabled();
     static void update();
+    
+    static void setBrushMatrixDescriptor(const BrushMatrixDescriptor& descriptor);
+    static BrushMatrixDescriptor& getBrushMatrixDescriptor();
     
   public:
     static Dataset* dataset;
@@ -190,7 +193,9 @@ class Gateway
     
     static String exportPath;
     static String menuMusicPath;
-		static bool menuMusicEnabled;
+    static bool menuMusicEnabled;
+    
+    static BrushMatrixDescriptor brushMatrixDescriptor;
 };
 
 #endif

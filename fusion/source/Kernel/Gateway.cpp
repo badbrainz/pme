@@ -53,6 +53,8 @@ String Gateway::exportPath;
 String Gateway::menuMusicPath;
 bool Gateway::menuMusicEnabled = true;
 
+BrushMatrixDescriptor Gateway::brushMatrixDescriptor;
+
 bool Gateway::initialize()
 {
   bool succArray[12] = {false};
@@ -92,7 +94,7 @@ bool Gateway::initialize()
   succArray[5] = structureDatabase->initialize("Estructuras.xml");
   succArray[6] = characterDatabase->initialize("Unidades.xml");
   succArray[7] = critterDatabase->initialize("Critters.xml");
-	succArray[8] = waterDatabase->initialize("");
+  succArray[8] = waterDatabase->initialize("");
   
   succArray[9] = dataset->initialize();
   
@@ -243,7 +245,7 @@ bool Gateway::constructMap(const MapDescriptor& descriptor)
   structureDatabase->compile();
   natureDatabase->compile();
   critterDatabase->compile();
-	waterDatabase->compile();
+  waterDatabase->compile();
   
   spatialIndex->compute();
   
@@ -558,17 +560,27 @@ const char* Gateway::getMenuMusicPath()
 
 void Gateway::enableMenuMusic(bool enable)
 {
-	menuMusicEnabled = enable;
+  menuMusicEnabled = enable;
 }
 
 bool Gateway::isMenuMusicEnabled()
 {
-	return menuMusicEnabled;
+  return menuMusicEnabled;
 }
 
 void Gateway::update()
 {
   SoundManager::update();
+}
+
+void Gateway::setBrushMatrixDescriptor(const BrushMatrixDescriptor& descriptor)
+{
+  brushMatrixDescriptor = descriptor;
+}
+
+BrushMatrixDescriptor& Gateway::getBrushMatrixDescriptor()
+{
+  return brushMatrixDescriptor;
 }
 
 void Gateway::reset()

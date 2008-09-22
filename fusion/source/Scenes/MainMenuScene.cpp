@@ -12,7 +12,7 @@ void MainMenuScene::beginScene()
   Scene::beginScene();
   glClearColor(0,0,0,1);
   //mouseVisible = Gateway::getConfiguration().enableCursor;
-	const char* musicPath = Gateway::getMenuMusicPath();
+  const char* musicPath = Gateway::getMenuMusicPath();
   if (musicPath && Gateway::isMenuMusicEnabled())
     SoundManager::playSong(musicPath);
 }

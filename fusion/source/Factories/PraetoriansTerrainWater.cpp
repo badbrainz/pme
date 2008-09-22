@@ -54,25 +54,25 @@ bool PraetoriansTerrainWater::loadPackedMedia(const char* path)
   Tuple4ub* colors;
   Tuple2f* txcoords;
   ArchivedFile* file;
-	WaterDatabase* wdatabase;
-	
-	Transform3D transform;
-	transform.rotateY(-90*DEG2RAD);
-	transform.setScales(-1,1,1);
+  WaterDatabase* wdatabase;
+  
+  Transform3D transform;
+  transform.rotateY(-90*DEG2RAD);
+  transform.setScales(-1,1,1);
   
   if (!(file = FileSystem::checkOut(path)))
     return Logger::writeErrorLog(String("Could not load -> ") + path);
     
   wdatabase = Gateway::getWaterDatabase();
-	
+  
   file->read(&signature, 4);
   
   file->read(&chunkid, 2);
   file->read(&chunklength, 4);
   file->read(&texturescount, 4);
-	for (unsigned int i = 0; i < texturescount; i++)
-		file->seek((256 * 256 * 4) + 6, SEEKD);
-  
+  for (unsigned int i = 0; i < texturescount; i++)
+    file->seek((256 * 256 * 4) + 6, SEEKD);
+    
   file->read(&watercount, 4);
   for (unsigned int i = 0; i < watercount; i++)
   {
@@ -107,15 +107,15 @@ bool PraetoriansTerrainWater::loadPackedMedia(const char* path)
     Appearance* appearance = new Appearance();
     appearance->setBlendAttributes(BlendAttributes(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA));
     appearance->setTexture(0, wdatabase->getWaterTexture());
-
+    
     Model* model = new Model();
     model->setAppearance(appearance);
     model->setGeometry(geometry);
     
-		TransformGroup* group = new TransformGroup();
-		group->addChild(model);
-		group->setTransform(transform);
-		group->updateBoundsDescriptor();
+    TransformGroup* group = new TransformGroup();
+    group->addChild(model);
+    group->setTransform(transform);
+    group->updateBoundsDescriptor();
     wdatabase->addWaterModel(group);
     
     deleteArray(vertices);
@@ -143,27 +143,27 @@ bool PraetoriansTerrainWater::loadUnpackedMedia(const char* path)
   unsigned short* indices;
   Tuple4ub* colors;
   Tuple2f* txcoords;
-	
-	WaterDatabase* wdatabase;
-	
-	Transform3D transform;
-	transform.rotateY(-90*DEG2RAD);
-	transform.setScales(-1,1,1);
+  
+  WaterDatabase* wdatabase;
+  
+  Transform3D transform;
+  transform.rotateY(-90*DEG2RAD);
+  transform.setScales(-1,1,1);
   
   ifstream in(path, ios_base::binary);
   if (!in.is_open())
     return Logger::writeErrorLog(String("Could not load -> ") + path);
     
-	wdatabase = Gateway::getWaterDatabase();
-	
+  wdatabase = Gateway::getWaterDatabase();
+  
   in.read((char*)&signature, 4);
   
   in.read((char*)&chunkid, 2);
   in.read((char*)&chunklength, 4);
   in.read((char*)&texturescount, 4);
   for (unsigned int i = 0; i < texturescount; i++)
-		in.seekg((256 * 256 * 4) + 6, ios_base::cur);
-  
+    in.seekg((256 * 256 * 4) + 6, ios_base::cur);
+    
   in.read((char*)&watercount, 4);
   for (unsigned int i = 0; i < watercount; i++)
   {
@@ -201,10 +201,10 @@ bool PraetoriansTerrainWater::loadUnpackedMedia(const char* path)
     model->setAppearance(appearance);
     model->setGeometry(geometry);
     
-		TransformGroup* group = new TransformGroup();
-		group->addChild(model);
-		group->setTransform(transform);
-		group->updateBoundsDescriptor();
+    TransformGroup* group = new TransformGroup();
+    group->addChild(model);
+    group->setTransform(transform);
+    group->updateBoundsDescriptor();
     wdatabase->addWaterModel(group);
     
     deleteArray(vertices);

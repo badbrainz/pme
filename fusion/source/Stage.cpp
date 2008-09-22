@@ -7,6 +7,7 @@
 #include "Scenes/CritterLabScene.h"
 #include "Scenes/StructureLabScene.h"
 #include "Scenes/VillageLabScene.h"
+#include "Scenes/BrushLabScene.h"
 #include "Scenes/EditorScene.h"
 #include "Scenes/NewmapScene.h"
 #include "Managers/ManagersUtils.h"
@@ -42,9 +43,9 @@ bool Stage::initialize()
   
   bool succArray[14] = {false};
   
-  succArray[0 ] = FileSystem::initialize();
-  succArray[1 ] = Gateway::initialize();
-  succArray[11] = SoundManager::initialize();
+  succArray[0] = FileSystem::initialize();
+  succArray[1] = Gateway::initialize();
+  succArray[2] = SoundManager::initialize();
   
   MainMenuScene* mainMenuScene = new MainMenuScene();
   OptionsScene* optionsScene = new OptionsScene();
@@ -56,6 +57,7 @@ bool Stage::initialize()
   VillageLabScene* villageLabScene = new VillageLabScene();
   EditorScene* editorScene = new EditorScene();
   NewmapScene* newmapScene = new NewmapScene();
+  BrushLabScene* brushLabScene = new BrushLabScene();
   
   editorScene->setViewAngle(45.0f);
   natureLabScene->setViewAngle(90.0f);
@@ -82,16 +84,17 @@ bool Stage::initialize()
   //  Gateway::getConfiguration().enableCursor = false;
   //}
   
-  succArray[2] = SceneManager::addScene(mainMenuScene);
-  succArray[3] = SceneManager::addScene(optionsScene);
-  succArray[4] = SceneManager::addScene(loadmapScene);
-  succArray[5] = SceneManager::addScene(newmapScene);
-  succArray[6] = SceneManager::addScene(natureLabScene);
-  succArray[7] = SceneManager::addScene(characterLabScene);
-  succArray[7] = SceneManager::addScene(critterLabScene);
-  succArray[8] = SceneManager::addScene(structureLabScene);
-  succArray[9] = SceneManager::addScene(villageLabScene);
-  succArray[10] = SceneManager::addScene(editorScene);
+  succArray[3] = SceneManager::addScene(mainMenuScene);
+  succArray[4] = SceneManager::addScene(optionsScene);
+  succArray[5] = SceneManager::addScene(loadmapScene);
+  succArray[6] = SceneManager::addScene(newmapScene);
+  succArray[7] = SceneManager::addScene(natureLabScene);
+  succArray[8] = SceneManager::addScene(characterLabScene);
+  succArray[9] = SceneManager::addScene(critterLabScene);
+  succArray[10] = SceneManager::addScene(structureLabScene);
+  succArray[11] = SceneManager::addScene(villageLabScene);
+  succArray[12] = SceneManager::addScene(brushLabScene);
+  succArray[13] = SceneManager::addScene(editorScene);
   SceneManager::setStage(this);
   SceneManager::setScene(mainMenuScene);
   
@@ -102,8 +105,8 @@ bool Stage::initialize()
   
   if (!succArray[0]  || !succArray[1] || !succArray[2]  || !succArray[3] ||
       !succArray[4]  || !succArray[5] || !succArray[6]  || !succArray[7] ||
-      !succArray[8]  || !succArray[9] || !succArray[10] || !succArray[11]/*||
-      !succArray[12] || !succArray[13]*/)
+      !succArray[8]  || !succArray[9] || !succArray[10] || !succArray[11]||
+      !succArray[12] || !succArray[13])
     return false;
     
   window.setVisible(true);
@@ -136,14 +139,14 @@ bool Stage::loadXMLSettings(XMLElement *element)
     success = window.loadXMLSettings(child);
     
   if (child = element->getChildByName("MenuMusic"))
-	{
+  {
     if (attrib = child->getChildByName("path"))
       Gateway::setMenuMusicPath(attrib->getValuec());
-			
-		if (attrib = child->getChildByName("enabled"))
-      Gateway::enableMenuMusic(attrib->getValue() == "true");
-	}
       
+    if (attrib = child->getChildByName("enabled"))
+      Gateway::enableMenuMusic(attrib->getValue() == "true");
+  }
+  
   return success;
 }
 

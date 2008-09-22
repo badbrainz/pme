@@ -24,13 +24,13 @@ class WaterDatabase
     void addWaterModel(TransformGroup* group);
     unsigned int getWatersCount();
     TransformGroup* getRootGroup();
-		
-		Texture& getWaterTexture();
+    
+    Texture& getWaterTexture();
     
   protected:
     TransformGroup* rootGroup;
     ArrayPtr <Water> watersList;
-		Texture watertexture;
+    Texture watertexture;
 };
 
 #endif
