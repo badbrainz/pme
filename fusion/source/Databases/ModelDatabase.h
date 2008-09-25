@@ -38,6 +38,9 @@ class ModelDatabase : public NamedObject
     const Array <ICString>* getNamesList();
     
   protected:
+    virtual ModelController* createController(TransformGroup* group);
+    
+  protected:
     Array <ICString> registeredModelNames;
     ArrayPtr <ModelController> modelControllers;
     TransformGroup* rootGroup;

@@ -143,6 +143,14 @@ void NatureLabScene::actionPerformed(GUIEvent &evt)
       }
     }
   }
+
+  if (widgetType == SLIDER)
+  {
+    GUISlider* slider = (GUISlider*) sourceRectangle;
+
+    if (callbackString == "WindFactorSlider")
+      slider->setLabelString(String("Wind factor: ") + slider->getProgress());
+  }
   
   if (widgetType == BUTTON)
   {
@@ -180,6 +188,9 @@ void NatureLabScene::actionPerformed(GUIEvent &evt)
         {
           TransformGroup* rgroup = new TransformGroup();
           rgroup->addChild(new TransformGroup(*group));
+
+          if (GUISlider* slider = (GUISlider*) gui.getWidgetByCallbackString("WindFactorSlider"))
+            currentInfo.windFactor = slider->getProgress();
           Gateway::setActiveNatureElement(currentInfo);
           Gateway::setActiveNature(rgroup);
           sceneController.execute(callbackString);

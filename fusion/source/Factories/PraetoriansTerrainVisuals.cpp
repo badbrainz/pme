@@ -642,6 +642,7 @@ bool PraetoriansTerrainVisuals::exportPVEData(const char* fn)
   unsigned short mhex = 0x0000;
   unsigned int pixwidth = area.x * 2 + 1;
   unsigned int pixheight = area.y * 2 + 1;
+  unsigned int pixelindex;
   unsigned int size = pixwidth * pixheight;
   String path = Gateway::getExportPath();
   
@@ -676,14 +677,18 @@ bool PraetoriansTerrainVisuals::exportPVEData(const char* fn)
   
   for (unsigned int x = 0; x < pixwidth; x++)
   {
-    pColorMap[0 * pixwidth + x].set(0);
-    pColorMap[(pixheight - 1) * pixwidth + x].set(0);
+    pixelindex = 0 * pixwidth + x;
+    pColorMap[pixelindex].set(0,0,0,pColorMap[pixelindex].w);
+    pixelindex = (pixheight - 1) * pixwidth + x;
+    pColorMap[pixelindex].set(0,0,0,pColorMap[pixelindex].w);
   }
   
   for (unsigned int y = 0; y < pixheight; y++)
   {
-    pColorMap[y * pixwidth + 0].set(0);
-    pColorMap[y * pixwidth + (pixwidth - 1)].set(0);
+    pixelindex = y * pixwidth + 0;
+    pColorMap[pixelindex].set(0,0,0,pColorMap[pixelindex].w);
+    pixelindex = y * pixwidth + (pixwidth - 1);
+    pColorMap[pixelindex].set(0,0,0,pColorMap[pixelindex].w);
   }
   
   out.write((char*)&sig, 4);

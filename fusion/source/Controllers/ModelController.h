@@ -1,4 +1,4 @@
-#ifndef MODELCONTORLLER
+#ifndef MODELCONTROLLER
 #define MODELCONTROLLER
 
 #include "../Nodes/TransformGroupNode.h"
@@ -9,8 +9,9 @@ class TransformGroup;
 class ModelController
 {
   public:
+    ModelController();
     ModelController(TransformGroup* group);
-    ~ModelController();
+    virtual ~ModelController();
     
   public:
     TransformGroup* getTransformGroup();

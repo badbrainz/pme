@@ -3,7 +3,7 @@
 #include "TerrainVisuals.h"
 #include "WorldVisuals.h"
 #include "../Databases/ModelDatabase.h"
-#include "../Controllers/ModelController.h"
+#include "../Controllers/VillageModelController.h"
 #include "../Nodes/TransformGroup.h"
 
 PraetoriansMissionScript::PraetoriansMissionScript()
@@ -51,6 +51,7 @@ PraetoriansMissionScript::~PraetoriansMissionScript()
 
 bool PraetoriansMissionScript::exportData(const char* projectName)
 {
+  VillageModelController* villageController;
   ModelDatabase* mdatabase;
   WorldVisuals* wvisuals;
   WorldObject* wobject;
@@ -149,6 +150,7 @@ bool PraetoriansMissionScript::exportData(const char* projectName)
   mdatabase = Gateway::getVillageDatabase();
   for (unsigned int i = 0; i < mdatabase->getModelControllerCount(); i++)
   {
+    villageController = (VillageModelController*) mdatabase->getModelController(i);
     vpos = mdatabase->getModelController(i)->getPosition();
     vname = mdatabase->getModelController(i)->getTransformGroup()->getName();
     f << "  *ESTRUCTURA" << endl;
@@ -157,8 +159,8 @@ bool PraetoriansMissionScript::exportData(const char* projectName)
     f << (String("    *POSICION ") + vpos.z + " " + vpos.y + " " + vpos.x).getBytes() << endl;
     f << "    *ORIENTACION 0" << endl;
     f << string("    *VISUAL \"") + vname + "\"" << endl;
-    f << "    *HABITANTES 600" << endl;
-    f << "    *MAX_HABITANTES 600" << endl;
+    f << (String("    *HABITANTES ") + int(villageController->getPopulation())).getBytes() << endl;
+    f << (String("    *MAX_HABITANTES ") + int(villageController->getMaxPopulation())).getBytes() << endl;
     f << "  }" << endl;
   }
   
@@ -182,7 +184,6 @@ bool PraetoriansMissionScript::exportData(const char* projectName)
     f << string("    *TIPO \"") + critterType + "\"" << endl;
     f << (String("    *POSICION ") + vpos.z + " " + vpos.y + " " + vpos.x).getBytes() << endl;
     f << "    *ORIENTACION 0" << endl;
-    f << "  }" << endl;
     f << "  }" << endl;
   }
   

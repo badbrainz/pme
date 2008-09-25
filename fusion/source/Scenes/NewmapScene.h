@@ -25,7 +25,7 @@ class NewmapScene : public Scene
     void drawFullScreenQuad(int width, int height);
     void drawLoadingScreen(int randomNumber);
     bool isProjectNameValid(const char* str);
-    void handleAcceptionCallback();
+    void handleAcceptingCallback();
     
   private:
     GUIButton* buttonSurface;

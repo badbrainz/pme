@@ -2,6 +2,7 @@
 #include "../Nodes/TransformGroup.h"
 #include "../Managers/ManagersUtils.h"
 #include "../Parsers/XMLParser.h"
+#include "../Controllers/VillageModelController.h"
 
 VillageDatabase::VillageDatabase(const char* dbName) : ModelDatabase(dbName)
 {
@@ -63,6 +64,11 @@ TransformGroup* VillageDatabase::buildPrototype(const char* name)
   }
   
   return villageTG;
+}
+
+ModelController* VillageDatabase::createController(TransformGroup* group)
+{
+  return new VillageModelController(group);
 }
 
 VillageDatabase::~VillageDatabase()

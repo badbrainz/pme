@@ -12,6 +12,9 @@ struct GSElementInfo
     coords.set(0);
     index = 0;
     activeGroup = 0;
+    population = 400;
+    maxpopulation = 400;
+    windFactor = 0.79f;
   }
   
   GSElementInfo(const GSElementInfo& copy)
@@ -33,6 +36,9 @@ struct GSElementInfo
       coords  = right.coords;
       index   = right.index;
       activeGroup = right.activeGroup;
+      population = right.population;
+      maxpopulation = right.maxpopulation;
+      windFactor = right.windFactor;
     }
     return *this;
   }
@@ -44,6 +50,9 @@ struct GSElementInfo
     texture.destroy();
     index = 0;
     activeGroup = 0;
+    population = 0;
+    maxpopulation = 0;
+    windFactor = 0.79f;
   }
   
   String name;
@@ -51,6 +60,9 @@ struct GSElementInfo
   Texture texture;
   unsigned int index;
   TransformGroup* activeGroup;
+  unsigned int population;
+  unsigned int maxpopulation;
+  float windFactor;
 };
 
 class TSElementInfo

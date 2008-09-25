@@ -64,7 +64,7 @@ void ModelDatabase::compile()
     info->increaseUserCount();
     
     group = new TransformGroup(*proto);
-    group->getTransform().setTranslations(obj->position.z, obj->position.y, obj->position.x);
+    group->getTransform().setTranslations(obj->position.x, obj->position.y, obj->position.z);
     //group->getTransform().rotateY(90.0f * DEG2RAD);
     rootGroup->addChild(group);
   }
@@ -122,12 +122,17 @@ ModelController* ModelDatabase::instantiateModel(const char* modelName)
     return 0;
     
   instance = new TransformGroup(*proto);
-  controller = new ModelController(instance);
+  controller = createController(instance);//new ModelController(instance);
   modelControllers.append(controller);
   
   rootGroup->addChild(instance);
   
   return controller;
+}
+
+ModelController* ModelDatabase::createController(TransformGroup* group)
+{
+  return new ModelController(group);
 }
 
 TransformGroup* ModelDatabase::getRootGroup()

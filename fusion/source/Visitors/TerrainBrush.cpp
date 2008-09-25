@@ -11,7 +11,7 @@
 
 #include "../Managers/ManagersUtils.h"
 
-#include "../Controllers/ModelController.h"
+#include "../Controllers/VillageModelController.h"
 #include "../Controllers/TileController.h"
 
 #include "../Databases/TerrainDatabase.h"
@@ -206,8 +206,8 @@ void TerrainBrush::editModel()
         if (info->name)
         {
           ndatabase = Gateway::getNatureDatabase();
+          
           controller = ndatabase->instantiateModel(info->name);
-          //controller = ndatabase->getModelController(ctrlindex);
           controller->translateModel(cpoint.x, cpoint.y + 0.05f, cpoint.z);
           ///cannot subtract y because that would cause a problem with canopy models
           
@@ -218,7 +218,7 @@ void TerrainBrush::editModel()
           worldObject.type = WorldObjectTypes::NATURE;
           worldObject.orientation = 0.0f;
           worldObject.position.set(cpoint.x, cpoint.y + 0.05f, cpoint.z);
-          worldObject.windFactor = 0.79f;
+          worldObject.windFactor = info->windFactor;
           wVisuals->addObject(worldObject);
         }
       }
@@ -258,12 +258,12 @@ void TerrainBrush::editModel()
         if (info->name)
         {
           vdatabase = Gateway::getVillageDatabase();
-          controller = vdatabase->instantiateModel(info->name);
-          //controller = vdatabase->getModelController(ctrlindex);
-          
-          float y = controller->getTransformGroup()->getBoundsDescriptor().getMinEndAABB().y;
-          Tuple3f cen = controller->getTransformGroup()->getBoundsDescriptor().getCenterAABB();
-          controller->translateModel(cpoint.x - cen.x, cpoint.y + 0.05f - y, cpoint.z - cen.z);
+          VillageModelController* villageController = (VillageModelController*) vdatabase->instantiateModel(info->name);
+          villageController->setPopulation(info->population);
+          villageController->setMaxPopulation(info->maxpopulation);
+          float y = villageController->getTransformGroup()->getBoundsDescriptor().getMinEndAABB().y;
+          Tuple3f cen = villageController->getTransformGroup()->getBoundsDescriptor().getCenterAABB();
+          villageController->translateModel(cpoint.x - cen.x, cpoint.y + 0.05f - y, cpoint.z - cen.z);
         }
       }
       break;
@@ -626,7 +626,7 @@ void TerrainBrush::editGrass()
   if (layer != BrushLayers::GRASS && mode != BrushModes::LOGIC && type != BrushTypes::GRASS)
     return;
     
-  if (!meadowname.getLength())
+  if (meadowname.isBlank())
     return;
     
   Tuple3f *verts;
