@@ -248,7 +248,7 @@ bool PraetoriansTerrainWater::exportData(const char* projectName)
   unsigned char bullshit1[4] = {0x00};
   unsigned int vertcount;
   unsigned int idxcount;
-  Tuple4ub refcol;
+  //Tuple4ub refcol;
   Tuple3f refvert;
   String path = Gateway::getExportPath();
   
@@ -313,9 +313,9 @@ bool PraetoriansTerrainWater::exportData(const char* projectName)
       Swap(refvert.x, refvert.z);
       out.write((char*)&refvert, 12);
       
-      refcol = colors[j];
-      Swap(refcol.x, refcol.z);
-      out.write((char*)&refcol, 4);
+      //refcol = colors[j];
+      //Swap(refcol.x, refcol.z);
+      out.write((char*)&colors[j], 4);
       
       out.write((char*)&txcoords[j], 8);
     }
