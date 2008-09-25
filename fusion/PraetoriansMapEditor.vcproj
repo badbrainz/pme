@@ -1702,6 +1702,14 @@
 				>
 			</File>
 			<File
+				RelativePath=".\source\Controllers\NatureModelController.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\source\Controllers\NatureModelController.h"
+				>
+			</File>
+			<File
 				RelativePath=".\source\Controllers\SceneController.cpp"
 				>
 			</File>
@@ -1715,6 +1723,14 @@
 			</File>
 			<File
 				RelativePath=".\source\Controllers\TileController.h"
+				>
+			</File>
+			<File
+				RelativePath=".\source\Controllers\VillageModelController.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\source\Controllers\VillageModelController.h"
 				>
 			</File>
 		</Filter>

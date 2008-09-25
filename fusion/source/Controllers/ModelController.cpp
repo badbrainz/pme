@@ -1,6 +1,11 @@
 #include "ModelController.h"
 #include "../Nodes/TransformGroup.h"
 
+ModelController::ModelController()
+{
+  tgNode.setController(this);
+}
+
 ModelController::ModelController(TransformGroup* group)
 {
   controlledGroup = group;

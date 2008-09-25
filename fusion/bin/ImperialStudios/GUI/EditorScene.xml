@@ -30,6 +30,10 @@
               source = "Options"
               target = "OptionsScene"/>
     
+    <Command  type   = "switch"
+              source = "AdvancedBrushBTN"
+              target = "BrushLabScene"/>
+    
   </Controller>
 
   <Panel visible = "false" name = "Main Menu">

@@ -24,17 +24,29 @@
       
       <Panel name = "VillagePropsPanel" layout = "YAXIS">
         
-        <Interval x = "2" y = "2" />
+        <Interval x = "0" y = "0" />
         
-        <CheckBox callbackString = "PopulationCheckbox" checked = "false">
-          <Color x = "1" y = "1" z = "1" />
-          <Text string = "Population" />
-        </CheckBox>
+        <Panel name = "TopPopulationPanel" layout = "XAXIS" drawBounds = "false" drawBackground = "false">
+          <Label name = "Population">    
+            <Text string = "Population" />
+          </Label>
+
+          <TextBox callbackString = "PopulationTextbox">
+            <Dimensions x = "60" />
+            <Text string = "400" />
+          </TextBox>
+        </Panel>
         
-        <CheckBox callbackString = "MaxPopulationCheckbox" checked = "false">
-          <Color x = "1" y = "1" z = "1" />
-          <Text string = "Max population" />
-        </CheckBox>
+        <Panel name = "BottomPopulationPanel" layout = "XAXIS" drawBounds = "false" drawBackground = "false">
+          <Label name = "Max population">    
+            <Text string = "Max population" />
+          </Label>
+
+          <TextBox callbackString = "MaxPopulationTextbox">
+            <Dimensions x = "60" />
+            <Text string = "400" />
+          </TextBox>
+        </Panel>
         
       </Panel>
       

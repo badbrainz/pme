@@ -40,7 +40,9 @@ bool PraetoriansWorldVisuals::loadPackedMedia(const char* path)
     
     file->read(&object.flags, 4);
     file->read(objectname, 64);
-    file->read(object.position, 12);
+    file->read(&object.position.z, 4);
+    file->read(&object.position.y, 4);
+    file->read(&object.position.x, 4);
     file->read(&object.orientation, 4);
     file->read(&object.windFactor, 4);
     object.name = objectname;
@@ -75,7 +77,9 @@ bool PraetoriansWorldVisuals::loadUnpackedMedia(const char* path)
     
     in.read((char*)&object.flags, 4);
     in.read(objectname, 64);
-    in.read((char*)&object.position, 12);
+    in.read((char*)&object.position.z, 4);
+    in.read((char*)&object.position.y, 4);
+    in.read((char*)&object.position.x, 4);
     in.read((char*)&object.orientation, 4);
     in.read((char*)&object.windFactor, 4);
     object.name = objectname;

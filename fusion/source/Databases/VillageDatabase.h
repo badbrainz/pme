@@ -20,6 +20,9 @@ class VillageDatabase : public ModelDatabase
     
     TransformGroup* buildPrototype(const char* name);
     
+  protected:
+    ModelController* createController(TransformGroup* group);
+    
   private:
     XMLStack* xmlStack;
     AVLTree <XMLElement*> villageElementsAVLTree;

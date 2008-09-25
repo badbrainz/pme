@@ -123,7 +123,7 @@ void NewmapScene::actionPerformed(GUIEvent &evt)
       
       if (callbackString == "AcceptButton")
       {
-        handleAcceptionCallback();
+        handleAcceptingCallback();
         return;
       }
       
@@ -242,7 +242,7 @@ void NewmapScene::drawFullScreenQuad(int width, int height)
   glEnd();
 }
 
-void NewmapScene::handleAcceptionCallback()
+void NewmapScene::handleAcceptingCallback()
 {
   if (textbox)
   {
@@ -288,7 +288,7 @@ void NewmapScene::handleKeyEvent(KeyEvent evt, int extraInfo)
       switch (keyID)
       {
         case KEY_ENTER:
-          handleAcceptionCallback();
+          handleAcceptingCallback();
           break;
       }
   }

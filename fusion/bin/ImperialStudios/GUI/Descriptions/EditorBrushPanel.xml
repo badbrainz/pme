@@ -83,6 +83,11 @@
       <Text string  = "Tile flag" />
     </RadioButton>
     
+    <RadioButton callbackString = "Advanced" minAlpha = "0.35">
+      <Color x = "1"  y = "1"   z = "1" />
+      <Text string  = "Advanced" />
+    </RadioButton>
+    
   </Panel>
   
   <Separator ratio = "1.0" />

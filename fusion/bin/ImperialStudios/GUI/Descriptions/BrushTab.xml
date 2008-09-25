@@ -4,16 +4,12 @@
         drawBackground 	= "false"
         clipSize				= "0">
   
-  <Interval x="0" y="0" />
+  <Interval x="0" y="5" />
   
-  <Panel name = "BrushTypes" layout = "XAXIS">
-    
-    <CheckBox callbackString = "PickingCheckbox">
-      <Color x = "1"  y = "1" z = "1" />
-      <Text string = "Enable" />
-    </CheckBox>
-    
-  </Panel>
+  <CheckBox callbackString = "PickingCheckbox">
+    <Color x = "1"  y = "1" z = "1" />
+    <Text string = "Enable" />
+  </CheckBox>
   
   <Panel name = "BrushTip" layout = "YAXIS">
     
@@ -54,5 +50,13 @@
     </RadioButton>
     
   </Panel>
+  
+  <Button callbackString = "AdvancedBrushBTN" clipSize = "0" minAlpha = "1">
+    <TextureRectangle x = "1" y = "68" z = "123" w = "98" />
+    <Texture type = "TEXTURE_2D" path = "GUIElements.png"/>
+    <Color x = "1" y = "1" z = "1" />
+    <Dimensions x = "70" y = "25" />
+    <Text string = "Advanced" />
+  </Button>
 
 </Panel>

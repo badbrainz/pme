@@ -180,6 +180,27 @@ void VillageLabScene::actionPerformed(GUIEvent &evt)
         {
           TransformGroup* rgroup = new TransformGroup();
           rgroup->addChild(new TransformGroup(*group));
+          
+          if (GUITextBox* textbox = (GUITextBox*) gui.getWidgetByCallbackString("PopulationTextbox"))
+            if (const char* str = textbox->getLabelString())
+            {
+              String value(str);
+              value.trim();
+              if (!value.isBlank())
+                if (!value.containsDelimiters("abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ\t\v@$%^&;\"<>?/\\"))
+                  currentInfo.population = int(atoi(value));
+            }
+          
+          if (GUITextBox* textbox = (GUITextBox*) gui.getWidgetByCallbackString("MaxPopulationTextbox"))
+            if (const char* str = textbox->getLabelString())
+            {
+              String value(str);
+              value.trim();
+              if (!value.isBlank())
+                if (!value.containsDelimiters("abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ\t\v@$%^&;\"<>?/\\"))
+                  currentInfo.maxpopulation = int(atoi(value));
+            }
+          
           Gateway::setActiveVillageElement(currentInfo);
           Gateway::setActiveVillage(rgroup);
           sceneController.execute(callbackString);
