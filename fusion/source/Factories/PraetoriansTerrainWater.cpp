@@ -176,9 +176,7 @@ bool PraetoriansTerrainWater::loadUnpackedMedia(const char* path)
     txcoords = new Tuple2f[vertexcount];
     for (unsigned int j = 0; j < vertexcount; j++)
     {
-      in.read((char*)&vertices[j].z, 4);
-      in.read((char*)&vertices[j].y, 4);
-      in.read((char*)&vertices[j].x, 4);
+      in.read((char*)&vertices[j], 12);
       in.read((char*)&colors[j], 4);
       in.read((char*)&txcoords[j], 8);
     }
