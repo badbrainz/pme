@@ -252,6 +252,7 @@ void BrushLabScene::actionPerformed(GUIEvent &evt)
           glTranslatef(-pCoords[4].x, -pCoords[4].y, 0);
         }
         
+        glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
         currentTileInfo.texture->activate();
         glColor3f(1,1,1);
         drawFullScreenQuadInverse(256, 256);
@@ -354,9 +355,11 @@ void BrushLabScene::nextTileSet()
 void BrushLabScene::updateOffscreenTexture(Texture* targetTexture)
 {
   Tuple4i viewport;
+  
   glGetIntegerv(GL_VIEWPORT, viewport);
   glViewport(0, 0, 256, 256);
   Renderer::enter2DMode(256, 256);
+  glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
   glEnable(GL_TEXTURE_2D);
   glBindTexture(GL_TEXTURE_2D, textureHandles(currentIndex));
   glColor3f(1,1,1);
