@@ -56,10 +56,6 @@ bool PraetoriansTerrainWater::loadPackedMedia(const char* path)
   ArchivedFile* file;
   WaterDatabase* wdatabase;
   
-  Transform3D transform;
-  transform.rotateY(-90*DEG2RAD);
-  transform.setScales(-1,1,1);
-  
   if (!(file = FileSystem::checkOut(path)))
     return Logger::writeErrorLog(String("Could not load -> ") + path);
     
@@ -87,7 +83,9 @@ bool PraetoriansTerrainWater::loadPackedMedia(const char* path)
     for (unsigned int j = 0; j < vertexcount; j++)
     {
       file->read(vertices[j], 12);
+      Swap(vertices[j].x, vertices[j].z);
       file->read(colors[j], 4);
+      Swap(colors[j].x, colors[j].z);
       file->read(txcoords[j], 8);
     }
     
@@ -114,7 +112,6 @@ bool PraetoriansTerrainWater::loadPackedMedia(const char* path)
     
     TransformGroup* group = new TransformGroup();
     group->addChild(model);
-    group->setTransform(transform);
     group->updateBoundsDescriptor();
     wdatabase->addWaterModel(group);
     
@@ -146,10 +143,6 @@ bool PraetoriansTerrainWater::loadUnpackedMedia(const char* path)
   
   WaterDatabase* wdatabase;
   
-  Transform3D transform;
-  transform.rotateY(-90*DEG2RAD);
-  transform.setScales(-1,1,1);
-  
   ifstream in(path, ios_base::binary);
   if (!in.is_open())
     return Logger::writeErrorLog(String("Could not load -> ") + path);
@@ -177,7 +170,9 @@ bool PraetoriansTerrainWater::loadUnpackedMedia(const char* path)
     for (unsigned int j = 0; j < vertexcount; j++)
     {
       in.read((char*)&vertices[j], 12);
+      Swap(vertices[j].x, vertices[j].z);
       in.read((char*)&colors[j], 4);
+      Swap(colors[j].x, colors[j].z);
       in.read((char*)&txcoords[j], 8);
     }
     in.read((char*)&indexcount, 4);
@@ -203,7 +198,6 @@ bool PraetoriansTerrainWater::loadUnpackedMedia(const char* path)
     
     TransformGroup* group = new TransformGroup();
     group->addChild(model);
-    group->setTransform(transform);
     group->updateBoundsDescriptor();
     wdatabase->addWaterModel(group);
     
@@ -248,7 +242,7 @@ bool PraetoriansTerrainWater::exportData(const char* projectName)
   unsigned char bullshit1[4] = {0x00};
   unsigned int vertcount;
   unsigned int idxcount;
-  //Tuple4ub refcol;
+  Tuple4ub refcol;
   Tuple3f refvert;
   String path = Gateway::getExportPath();
   
@@ -313,9 +307,9 @@ bool PraetoriansTerrainWater::exportData(const char* projectName)
       Swap(refvert.x, refvert.z);
       out.write((char*)&refvert, 12);
       
-      //refcol = colors[j];
-      //Swap(refcol.x, refcol.z);
-      out.write((char*)&colors[j], 4);
+      refcol = colors[j];
+      Swap(refcol.x, refcol.z);
+      out.write((char*)&refcol, 4);
       
       out.write((char*)&txcoords[j], 8);
     }
