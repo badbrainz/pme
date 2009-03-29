@@ -9,5 +9,6 @@
 #include "WindowsManager.h"
 #include "SceneManager.h"
 #include "SoundManager.h"
+#include "FireCharManager.h"
 
 #endif

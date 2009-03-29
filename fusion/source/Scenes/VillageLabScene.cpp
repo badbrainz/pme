@@ -6,6 +6,7 @@
 #include "../Kernel/Gateway.h"
 #include "../Geometry/Model.h"
 #include "../Managers/ManagersUtils.h"
+#include "../Stage.h"
 
 VillageLabScene::VillageLabScene(const char* name) : Scene(name)
 {
@@ -106,6 +107,8 @@ void VillageLabScene::beginScene()
     
   drawBounds = false;
   drawAxis = false;
+  
+  SceneManager::getStage()->setCursor("Cursor.tga");
 }
 
 void VillageLabScene::endScene()
@@ -190,7 +193,7 @@ void VillageLabScene::actionPerformed(GUIEvent &evt)
                 if (!value.containsDelimiters("abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ\t\v@$%^&;\"<>?/\\"))
                   currentInfo.population = int(atoi(value));
             }
-          
+            
           if (GUITextBox* textbox = (GUITextBox*) gui.getWidgetByCallbackString("MaxPopulationTextbox"))
             if (const char* str = textbox->getLabelString())
             {
@@ -200,7 +203,7 @@ void VillageLabScene::actionPerformed(GUIEvent &evt)
                 if (!value.containsDelimiters("abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ\t\v@$%^&;\"<>?/\\"))
                   currentInfo.maxpopulation = int(atoi(value));
             }
-          
+            
           Gateway::setActiveVillageElement(currentInfo);
           Gateway::setActiveVillage(rgroup);
           sceneController.execute(callbackString);

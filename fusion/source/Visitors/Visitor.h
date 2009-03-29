@@ -8,7 +8,7 @@ class IndicesNode;
 //class FacegroupNode;
 //class AppearanceNode;
 class TextureCoordsNode;
-//class TransformGroupNode;
+class TransformGroupNode;
 class SpatialIndexNode;
 class SpatialIndexCell;
 class SpatialIndexBaseNode;

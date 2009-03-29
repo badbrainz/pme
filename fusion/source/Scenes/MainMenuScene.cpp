@@ -2,6 +2,7 @@
 #include "../Renderer/Renderer.h"
 #include "../Kernel/Gateway.h"
 #include "../Managers/ManagersUtils.h"
+#include "../Stage.h"
 
 MainMenuScene::MainMenuScene(const char* name) : Scene(name)
 {
@@ -10,11 +11,15 @@ MainMenuScene::MainMenuScene(const char* name) : Scene(name)
 void MainMenuScene::beginScene()
 {
   Scene::beginScene();
+  
   glClearColor(0,0,0,1);
-  //mouseVisible = Gateway::getConfiguration().enableCursor;
+  
   const char* musicPath = Gateway::getMenuMusicPath();
   if (musicPath && Gateway::isMenuMusicEnabled())
     SoundManager::playSong(musicPath);
+    
+  Gateway::bindBackground();
+  SceneManager::getStage()->setCursor("FlechaMenu.tga");
 }
 
 void MainMenuScene::endScene()
@@ -28,13 +33,12 @@ void MainMenuScene::update(const FrameInfo &frameInfo)
   glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
   
   Renderer::enter2DMode(info->m_Width, info->m_Height);
-  glEnable(GL_TEXTURE_2D);
   Gateway::bindBackground();
+  glEnable(GL_TEXTURE_2D);
   glColor3f(1,1,1);
   drawFullScreenQuad(info->m_Width, info->m_Height);
   glDisable(GL_TEXTURE_2D);
   gui.render(info->m_Interval);
-  drawCursor();
   Renderer::exit2DMode();
 }
 

@@ -108,6 +108,22 @@ TileController* TerrainDatabase::getController(unsigned int index)
   return tileControllers(index);
 }
 
+TileController* TerrainDatabase::getController(const Tuple2f& point)
+{
+  Tuple2i area;
+  Tuple2i offset;
+  float tilesize;
+  TerrainVisuals* visuals;
+  
+  visuals = Gateway::getTerrainVisuals();
+  area = visuals->getArea();
+  tilesize = visuals->getTileSize();
+  offset.x = (int)(floor(point.x/tilesize)*tilesize);
+  offset.y = (int)(floor(point.y/tilesize)*tilesize);
+  
+  return getController(offset.x * area.x + offset.y);
+}
+
 unsigned int TerrainDatabase::getControllerCount()
 {
   return tileControllers.length();

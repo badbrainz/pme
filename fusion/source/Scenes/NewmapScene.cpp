@@ -1,9 +1,9 @@
 #include "NewmapScene.h"
 #include "../Kernel/Gateway.h"
 #include "../Image/ImageExt.h"
-#include "../Tools/Timer.h"
 #include "../Renderer/Renderer.h"
 #include "../Managers/ManagersUtils.h"
+#include "../Stage.h"
 
 NewmapScene::NewmapScene(const char* name) : Scene(name)
 {
@@ -47,7 +47,6 @@ void NewmapScene::update(const FrameInfo &frameInfo)
   drawFullScreenQuad(info->m_Width, info->m_Height);
   glDisable(GL_TEXTURE_2D);
   gui.render(info->m_Interval);
-  drawCursor();
   Renderer::exit2DMode();
 }
 
@@ -252,10 +251,12 @@ void NewmapScene::handleAcceptingCallback()
       {
         SoundManager::stopSong();
         
+        SceneManager::getStage()->setCursorVisibility(false);
+        
         int randomNum = clamp(int(getNextRandom() * 8.0f), 1, 8);
         drawLoadingScreen(randomNum);
         
-        float loadLength, minLoadTime = 5.0f;
+        float loadLength, minLoadTime = 3.0f;
         __int64 start = Timer::getCurrentTime();
         
         MapDescriptor descriptor = mapDescriptorList(currentItem);
@@ -271,6 +272,8 @@ void NewmapScene::handleAcceptingCallback()
           while (Timer::getElapsedTimeSeconds(start) < (minLoadTime - loadLength))
             {}
         }
+        
+        SceneManager::getStage()->setCursorVisibility(true);
       }
     }
   }

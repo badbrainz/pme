@@ -3,6 +3,8 @@
 #include "../Renderer/Renderer.h"
 #include "../Factories/TerrainTextures.h"
 #include "../Containers/ocsort.h"
+#include "../Managers/SceneManager.h"
+#include "../Stage.h"
 
 BrushLabScene::BrushLabScene(const char* name) :
     Scene(name),
@@ -74,6 +76,7 @@ void BrushLabScene::beginScene()
 {
   Scene::beginScene();
   glClearColor(0,0,0,1);
+  SceneManager::getStage()->setCursor("Cursor.tga");
 }
 
 void BrushLabScene::endScene()

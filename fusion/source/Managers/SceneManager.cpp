@@ -44,6 +44,11 @@ void SceneManager::setStage(Stage *stage)
   currentStage = stage;
 }
 
+Stage* SceneManager::getStage()
+{
+  return currentStage;
+}
+
 void SceneManager::deactivateCurrentStage()
 {
   currentStage->setActive(false);

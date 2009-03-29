@@ -168,6 +168,9 @@ void TerrainBrush::editModel()
           cdatabase = Gateway::getCharacterDatabase();
           controller = cdatabase->instantiateModel(info->name);
           controller->translateModel(cpoint.x, cpoint.y + 0.05f, cpoint.z);
+          TransformGroupNode* tgnode = controller->getTGNode();
+          tgnode->attach(Gateway::getSpatialCell(cpoint));
+
           Gateway::getMapDescriptor().playerPositions.append(Tuple2f(cpoint.x, cpoint.z));
         }
       }
@@ -181,6 +184,8 @@ void TerrainBrush::editModel()
         {
           cdatabase = Gateway::getCritterDatabase();
           controller = cdatabase->instantiateModel(info->name);
+          TransformGroupNode* tgnode = controller->getTGNode();
+          tgnode->attach(Gateway::getSpatialCell(cpoint));
           
           float y = controller->getTransformGroup()->getBoundsDescriptor().getMinEndAABB().y;
           Tuple3f cen = controller->getTransformGroup()->getBoundsDescriptor().getCenterAABB();
@@ -209,6 +214,8 @@ void TerrainBrush::editModel()
           
           controller = ndatabase->instantiateModel(info->name);
           controller->translateModel(cpoint.x, cpoint.y + 0.05f, cpoint.z);
+          TransformGroupNode* tgnode = controller->getTGNode();
+          tgnode->attach(Gateway::getSpatialCell(cpoint));
           ///cannot subtract y because that would cause a problem with canopy models
           
           wVisuals = Gateway::getWorldVisuals();
@@ -216,7 +223,7 @@ void TerrainBrush::editModel()
           worldObject.flags = 0;
           worldObject.name = info->name;
           worldObject.type = WorldObjectTypes::NATURE;
-          worldObject.orientation = 0.0f;
+          worldObject.orientation = 0.79f;
           worldObject.position.set(cpoint.x, cpoint.y + 0.05f, cpoint.z);
           worldObject.windFactor = info->windFactor;
           wVisuals->addObject(worldObject);
@@ -232,7 +239,8 @@ void TerrainBrush::editModel()
         {
           sdatabase = Gateway::getStructureDatabase();
           controller = sdatabase->instantiateModel(info->name);
-          //controller = sdatabase->getModelController(ctrlindex);
+          TransformGroupNode* tgnode = controller->getTGNode();
+          tgnode->attach(Gateway::getSpatialCell(cpoint));
           
           float y = controller->getTransformGroup()->getBoundsDescriptor().getMinEndAABB().y;
           Tuple3f cen = controller->getTransformGroup()->getBoundsDescriptor().getCenterAABB();

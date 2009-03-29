@@ -16,7 +16,7 @@ class WaterDatabase
     
   public:
     bool initialize(const char* path);
-    void compile();
+    void compile() {}
     void reset();
     
     void addWaterModel(Water* water);

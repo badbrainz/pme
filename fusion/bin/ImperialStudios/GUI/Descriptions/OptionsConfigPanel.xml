@@ -129,7 +129,7 @@
             </Label>
             
             <Label name = "LBLabel">
-              <Text string = "B: 0.00">
+              <Text string = "B: 1.00">
                 <Color r = "0" g = "0" b = "255" />
               </Text>
             </Label>
@@ -171,7 +171,7 @@
           <Panel name = "FLCPPPanel" layout = "YAXIS">
             
             <Label name = "FLRLabel">
-              <Text string = "R: 0.00">
+              <Text string = "R: 1.00">
                 <Color r = "255" g = "0" b = "0" />
               </Text>
             </Label>

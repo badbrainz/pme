@@ -5,7 +5,6 @@ Scene::Scene(const char* name) : IOXMLObject(name)
 {
   initialized = false;
   viewAngle = 90.0f;
-  mouseVisible = true;
 }
 
 bool Scene::initialize()
@@ -62,31 +61,7 @@ void Scene::update(const FrameInfo &frameInfo)
   
   Renderer::enter2DMode(frameInfo.m_Width, frameInfo.m_Height);
   gui.render(frameInfo.m_Interval);
-  //drawCursor();
   Renderer::exit2DMode();
-}
-
-void Scene::drawCursor()
-{
-  if (!mouseVisible)
-  {
-    cursor->activate();
-    glEnable(GL_BLEND);
-    glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-    glBegin(GL_TRIANGLE_STRIP);
-    glColor3f(1,1,1);
-    glTexCoord2f(0.0f, 1.0f);
-    glVertex2i(cursorCoords.x, cursorCoords.y);
-    glTexCoord2f(0.0f, 0.0f);
-    glVertex2i(cursorCoords.x, cursorCoords.y+32);
-    glTexCoord2f(1.0f, 1.0f);
-    glVertex2i(cursorCoords.x+32, cursorCoords.y);
-    glTexCoord2f(1.0f, 0.0f);
-    glVertex2i(cursorCoords.x+32, cursorCoords.y+32);
-    glEnd();
-    glDisable(GL_BLEND);
-    cursor->deactivate();
-  }
 }
 
 void Scene::handleWindowEvent(WindowEvent evt, int extraInfo)
@@ -96,7 +71,6 @@ void Scene::handleWindowEvent(WindowEvent evt, int extraInfo)
 
 void Scene::handleMouseEvent(MouseEvent& evt, int extraInfo)
 {
-  cursorCoords.set(evt.getX(), evt.getY());
   gui.checkMouseEvents(evt, extraInfo);
 }
 
@@ -155,12 +129,6 @@ bool Scene::exportXMLSettings(ofstream &xmlFile)
 void Scene::setViewAngle(float angle)
 {
   viewAngle = angle;
-}
-
-void Scene::setDefaultCursorTexture(Texture *texture)
-{
-  cursor = texture;
-  mouseVisible = false;
 }
 
 void Scene::destroy()

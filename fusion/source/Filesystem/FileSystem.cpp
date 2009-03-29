@@ -20,7 +20,12 @@ bool FileSystem::initialize()
   DWORD               buffersize;
   char*               regval;
   
-  if (ERROR_SUCCESS == RegOpenKeyEx(HKEY_LOCAL_MACHINE, "SOFTWARE\\Pyro Studios\\Praetorians Game\\Paths", 0, KEY_READ, &hkey))
+  LONG success = RegOpenKeyEx(HKEY_LOCAL_MACHINE, "SOFTWARE\\Pyro Studios\\Praetorians Game\\Paths", 0, KEY_READ, &hkey);
+  
+  if (ERROR_SUCCESS != success)
+    success = RegOpenKeyEx(HKEY_CURRENT_USER, "SOFTWARE\\Pyro Studios\\Praetorians Game\\Paths", 0, KEY_READ, &hkey);
+    
+  if (ERROR_SUCCESS == success)
   {
     RegQueryValueEx(hkey, "Raiz", 0, 0, 0, &buffersize);
     regval = new char[buffersize];
@@ -29,6 +34,7 @@ bool FileSystem::initialize()
     strkey.convertChars('\\', '/');
     MediaPathManager::registerPath(strkey);
     deleteArray(regval);
+    RegCloseKey(hkey);
   }
   
   for (int i = 0; i < MediaPathManager::getPathCount(); i++)

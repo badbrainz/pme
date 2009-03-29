@@ -1,5 +1,7 @@
 #include "OptionsScene.h"
 #include "../Kernel/Gateway.h"
+#include "../Managers/SceneManager.h"
+#include "../Stage.h"
 
 OptionsScene::OptionsScene(const char* name) : Scene(name)
 {
@@ -7,7 +9,6 @@ OptionsScene::OptionsScene(const char* name) : Scene(name)
 
 bool OptionsScene::initialize()
 {
-  camDist = Gateway::getConfiguration().camRadius;
   return Scene::initialize();
 }
 
@@ -15,7 +16,7 @@ void OptionsScene::beginScene()
 {
   Scene::beginScene();
   glClearColor(0,0,0,1);
-  //mouseVisible = Gateway::getConfiguration().enableCursor;
+  SceneManager::getStage()->setCursor("FlechaMenu.tga");
 }
 
 void OptionsScene::actionPerformed(GUIEvent &evt)
@@ -32,7 +33,67 @@ void OptionsScene::actionPerformed(GUIEvent &evt)
     GUIButton *button = (GUIButton*) sourceRectangle;
     
     if (button->isClicked())
+    {
+      if (callbackString == "AcceptButton")
+      {
+        String item;
+        
+        GUIComboBox *combobox;
+        GUISlider *slider;
+        GUICheckBox* checkbox;
+        
+        combobox= (GUIComboBox*) gui.getWidgetByCallbackString("CellSizes");
+        item = combobox->getSelectedItem();
+        Gateway::setCellSize((item == "4") ? 4 : (item == "8") ? 8 : (item == "16") ? 16 : 8);
+        
+        combobox = (GUIComboBox*) gui.getWidgetByCallbackString("BranchSizes");
+        item = combobox->getSelectedItem();
+        Gateway::setBranchSize((item == "2") ? 2 : (item == "4") ? 4 : 2);
+        
+        slider = (GUISlider*) gui.getWidgetByCallbackString("CameraSpeed");
+        Gateway::getConfiguration().camSpeed = slider->getProgress();
+        
+        slider = (GUISlider*) gui.getWidgetByCallbackString("FogDensitySlider");
+        Gateway::getConfiguration().fogDensity = slider->getProgress() / 10.0f;
+        
+        slider = (GUISlider*) gui.getWidgetByCallbackString("FogRedSlider");
+        Gateway::getConfiguration().fogColor.x = slider->getProgress();
+        
+        slider = (GUISlider*) gui.getWidgetByCallbackString("FogGreenSlider");
+        Gateway::getConfiguration().fogColor.y = slider->getProgress();
+        
+        slider = (GUISlider*) gui.getWidgetByCallbackString("FogBlueSlider");
+        Gateway::getConfiguration().fogColor.z = slider->getProgress();
+        
+        slider = (GUISlider*) gui.getWidgetByCallbackString("LogicRedSlider");
+        Gateway::getConfiguration().logicColor.x = slider->getProgress();
+        
+        slider = (GUISlider*) gui.getWidgetByCallbackString("LogicGreenSlider");
+        Gateway::getConfiguration().logicColor.y = slider->getProgress();
+        
+        slider = (GUISlider*) gui.getWidgetByCallbackString("LogicBlueSlider");
+        Gateway::getConfiguration().logicColor.z = slider->getProgress();
+        
+        slider = (GUISlider*) gui.getWidgetByCallbackString("FlagRedSlider");
+        Gateway::getConfiguration().flagColor.x = slider->getProgress();
+        
+        slider = (GUISlider*) gui.getWidgetByCallbackString("FlagGreenSlider");
+        Gateway::getConfiguration().flagColor.y = slider->getProgress();
+        
+        slider = (GUISlider*) gui.getWidgetByCallbackString("FlagBlueSlider");
+        Gateway::getConfiguration().flagColor.z = slider->getProgress();
+        
+        checkbox = (GUICheckBox*) gui.getWidgetByCallbackString("DensityCheckbox");
+        Gateway::getConfiguration().enableFog = checkbox->isChecked();
+        
+        checkbox = (GUICheckBox*) gui.getWidgetByCallbackString("InfiniteViewCheckbox");
+        Gateway::getConfiguration().infiniteView = checkbox->isChecked() ? 1000.0f : 0.0f;
+        slider = (GUISlider*) gui.getWidgetByCallbackString("CameraRadius");
+        Gateway::getConfiguration().camRadius = slider->getProgress() * 100.0f + Gateway::getConfiguration().infiniteView;
+      }
+      
       sceneController.execute(callbackString);
+    }
   }
   
   //
@@ -44,28 +105,23 @@ void OptionsScene::actionPerformed(GUIEvent &evt)
     
     if (slider->isPressed())
     {
+      float cs = slider->getProgress();
+      
       if (callbackString == "CameraSpeed")
       {
-        float cs = slider->getProgress();
-        Gateway::getConfiguration().camSpeed = cs;
         slider->setLabelString(String("Speed: ") + cs + " * 100 units/s");
         return;
       }
       
       if (callbackString == "CameraRadius")
       {
-        float u = slider->getProgress();
-        camDist = u * 100.0f;
-        Gateway::getConfiguration().camRadius = camDist + Gateway::getConfiguration().infiniteView;
-        slider->setLabelString(String("View distance: ") + u + " * 100 units");
+        slider->setLabelString(String("View distance: ") + cs + " * 100 units");
         return;
       }
       
       if (callbackString == "FogDensitySlider")
       {
-        float f = slider->getProgress();
-        Gateway::getConfiguration().fogDensity = f/10.0f;
-        slider->setLabelString(String("Density: f = 1/10^((") + f + " * 0.1 * z)^2)");
+        slider->setLabelString(String("Density: f = 1/10^((") + cs + " * 0.1 * z)^2)");
         return;
       }
       
@@ -74,11 +130,9 @@ void OptionsScene::actionPerformed(GUIEvent &evt)
         GUIButton* btn = (GUIButton*) gui.getWidgetByCallbackString("FogColorPreview");
         GUILabel* lbl = (GUILabel*) gui.getWidgetByCallbackString("FGRLabel");
         Tuple4f btncolor = btn->getColor();
-        btncolor.x = slider->getProgress();
-        btn->setColor(btncolor.x, btncolor.y, btncolor.z);
-        Gateway::getConfiguration().fogColor.x = btncolor.x;
-        slider->setLabelString(String("Red: ") + slider->getProgress());
-        lbl->setLabelString(String("R: ") + slider->getProgress());
+        btn->setColor(cs, btncolor.y, btncolor.z);
+        slider->setLabelString(String("Red: ") + cs);
+        lbl->setLabelString(String("R: ") + cs);
         return;
       }
       
@@ -87,11 +141,9 @@ void OptionsScene::actionPerformed(GUIEvent &evt)
         GUIButton* btn = (GUIButton*) gui.getWidgetByCallbackString("FogColorPreview");
         GUILabel* lbl = (GUILabel*) gui.getWidgetByCallbackString("FGGLabel");
         Tuple4f btncolor = btn->getColor();
-        btncolor.y = slider->getProgress();
-        btn->setColor(btncolor.x, btncolor.y, btncolor.z);
-        Gateway::getConfiguration().fogColor.y = btncolor.y;
-        slider->setLabelString(String("Green: ") + slider->getProgress());
-        lbl->setLabelString(String("G: ") + slider->getProgress());
+        btn->setColor(btncolor.x, cs, btncolor.z);
+        slider->setLabelString(String("Green: ") + cs);
+        lbl->setLabelString(String("G: ") + cs);
         return;
       }
       
@@ -100,11 +152,9 @@ void OptionsScene::actionPerformed(GUIEvent &evt)
         GUIButton* btn = (GUIButton*) gui.getWidgetByCallbackString("FogColorPreview");
         GUILabel* lbl = (GUILabel*) gui.getWidgetByCallbackString("FGBLabel");
         Tuple4f btncolor = btn->getColor();
-        btncolor.z = slider->getProgress();
-        btn->setColor(btncolor.x, btncolor.y, btncolor.z);
-        Gateway::getConfiguration().fogColor.z = btncolor.z;
-        slider->setLabelString(String("Blue: ") + slider->getProgress());
-        lbl->setLabelString(String("B: ") + slider->getProgress());
+        btn->setColor(btncolor.x, btncolor.y, cs);
+        slider->setLabelString(String("Blue: ") + cs);
+        lbl->setLabelString(String("B: ") + cs);
         return;
       }
       
@@ -113,11 +163,9 @@ void OptionsScene::actionPerformed(GUIEvent &evt)
         GUIButton* btn = (GUIButton*) gui.getWidgetByCallbackString("LogicColorPreview");
         GUILabel* lbl = (GUILabel*) gui.getWidgetByCallbackString("LRLabel");
         Tuple4f btncolor = btn->getColor();
-        btncolor.x = slider->getProgress();
-        btn->setColor(btncolor.x, btncolor.y, btncolor.z);
-        Gateway::getConfiguration().logicColor.x = btncolor.x;
-        slider->setLabelString(String("Red: ") + slider->getProgress());
-        lbl->setLabelString(String("R: ") + slider->getProgress());
+        btn->setColor(cs, btncolor.y, btncolor.z);
+        slider->setLabelString(String("Red: ") + cs);
+        lbl->setLabelString(String("R: ") + cs);
         return;
       }
       
@@ -126,11 +174,9 @@ void OptionsScene::actionPerformed(GUIEvent &evt)
         GUIButton* btn = (GUIButton*) gui.getWidgetByCallbackString("LogicColorPreview");
         GUILabel* lbl = (GUILabel*) gui.getWidgetByCallbackString("LGLabel");
         Tuple4f btncolor = btn->getColor();
-        btncolor.y = slider->getProgress();
-        btn->setColor(btncolor.x, btncolor.y, btncolor.z);
-        Gateway::getConfiguration().logicColor.y = btncolor.y;
-        slider->setLabelString(String("Green: ") + slider->getProgress());
-        lbl->setLabelString(String("G: ") + slider->getProgress());
+        btn->setColor(btncolor.x, cs, btncolor.z);
+        slider->setLabelString(String("Green: ") + cs);
+        lbl->setLabelString(String("G: ") + cs);
         return;
       }
       
@@ -139,11 +185,9 @@ void OptionsScene::actionPerformed(GUIEvent &evt)
         GUIButton* btn = (GUIButton*) gui.getWidgetByCallbackString("LogicColorPreview");
         GUILabel* lbl = (GUILabel*) gui.getWidgetByCallbackString("LBLabel");
         Tuple4f btncolor = btn->getColor();
-        btncolor.z = slider->getProgress();
-        btn->setColor(btncolor.x, btncolor.y, btncolor.z);
-        Gateway::getConfiguration().logicColor.z = btncolor.z;
-        slider->setLabelString(String("Blue: ") + slider->getProgress());
-        lbl->setLabelString(String("B: ") + slider->getProgress());
+        btn->setColor(btncolor.x, btncolor.y, cs);
+        slider->setLabelString(String("Blue: ") + cs);
+        lbl->setLabelString(String("B: ") + cs);
         return;
       }
       
@@ -152,11 +196,9 @@ void OptionsScene::actionPerformed(GUIEvent &evt)
         GUIButton* btn = (GUIButton*) gui.getWidgetByCallbackString("FlagColorPreview");
         GUILabel* lbl = (GUILabel*) gui.getWidgetByCallbackString("FLRLabel");
         Tuple4f btncolor = btn->getColor();
-        btncolor.x = slider->getProgress();
-        btn->setColor(btncolor.x, btncolor.y, btncolor.z);
-        Gateway::getConfiguration().flagColor.x = btncolor.x;
-        slider->setLabelString(String("Red: ") + slider->getProgress());
-        lbl->setLabelString(String("R: ") + slider->getProgress());
+        btn->setColor(cs, btncolor.y, btncolor.z);
+        slider->setLabelString(String("Red: ") + cs);
+        lbl->setLabelString(String("R: ") + cs);
         return;
       }
       
@@ -165,11 +207,9 @@ void OptionsScene::actionPerformed(GUIEvent &evt)
         GUIButton* btn = (GUIButton*) gui.getWidgetByCallbackString("FlagColorPreview");
         GUILabel* lbl = (GUILabel*) gui.getWidgetByCallbackString("FLGLabel");
         Tuple4f btncolor = btn->getColor();
-        btncolor.y = slider->getProgress();
-        btn->setColor(btncolor.x, btncolor.y, btncolor.z);
-        Gateway::getConfiguration().flagColor.y = btncolor.y;
-        slider->setLabelString(String("Green: ") + slider->getProgress());
-        lbl->setLabelString(String("G: ") + slider->getProgress());
+        btn->setColor(btncolor.x, cs, btncolor.z);
+        slider->setLabelString(String("Green: ") + cs);
+        lbl->setLabelString(String("G: ") + cs);
         return;
       }
       
@@ -178,44 +218,9 @@ void OptionsScene::actionPerformed(GUIEvent &evt)
         GUIButton* btn = (GUIButton*) gui.getWidgetByCallbackString("FlagColorPreview");
         GUILabel* lbl = (GUILabel*) gui.getWidgetByCallbackString("FLBLabel");
         Tuple4f btncolor = btn->getColor();
-        btncolor.z = slider->getProgress();
-        btn->setColor(btncolor.x, btncolor.y, btncolor.z);
-        Gateway::getConfiguration().flagColor.z = btncolor.z;
-        slider->setLabelString(String("Blue: ") + slider->getProgress());
-        lbl->setLabelString(String("B: ") + slider->getProgress());
-        return;
-      }
-    }
-  }
-  
-  //------------------------
-  ///GUICheckBox
-  //------------------------
-  if (widgetType == CHECK_BOX)
-  {
-    GUICheckBox *checkBox = (GUICheckBox*) sourceRectangle;
-    
-    if (checkBox->isClicked())
-    {
-      //if (callbackString == "CursorCheckbox")
-      //{
-      //  Gateway::getConfiguration().enableCursor = checkBox->isChecked();
-      //  mouseVisible = checkBox->isChecked();
-      //  ShowCursor(mouseVisible ? false : true);
-      //  return;
-      //}
-      
-      if (callbackString == "DensityCheckbox")
-      {
-        Gateway::getConfiguration().enableFog = checkBox->isChecked();
-        return;
-      }
-      
-      if (callbackString == "InfiniteViewCheckbox")
-      {
-        float v = checkBox->isChecked() ? 1000.0f : 0.0f;
-        Gateway::getConfiguration().infiniteView = v;
-        Gateway::getConfiguration().camRadius = camDist + v;
+        btn->setColor(btncolor.x, btncolor.y, cs);
+        slider->setLabelString(String("Blue: ") + cs);
+        lbl->setLabelString(String("B: ") + cs);
         return;
       }
     }

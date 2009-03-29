@@ -42,10 +42,14 @@ class Stage : public InputEventListener, public IOXMLObject
     
     void forceUpdate(bool winupdate = false);
     
+    void setCursor(const char* path);
+    void setCursorVisibility(bool visible);
+    
   private:
     Benchmark benchmark;
     Window window;
     bool activeState;
+    bool enableCursor;
     String menuMusicPath;
     //Texture   cursor;
 };

@@ -12,25 +12,31 @@ FMOD::Channel *SoundManager::channel = 0;
 bool SoundManager::initialize()
 {
   unsigned int version;
+  int numdrivers;
   
   if (!SoundManager::errorCheck(FMOD::System_Create(&soundSystem)))
-    return false;
+    Logger::writeWarningLog("Could not create FMOD sound system");
     
-  if (!SoundManager::errorCheck(soundSystem->getVersion(&version)))
-    return false;
-    
+  SoundManager::errorCheck(soundSystem->getVersion(&version));
   if (version < FMOD_VERSION)
   {
     char strbuff[256] = {0};
-    sprintf_s(strbuff, 256, "you are using an old version of FMOD %08x. This program requires %08x\n", version, FMOD_VERSION);
+    sprintf_s(strbuff, 256, "You are using an old version of FMOD %08x. This program requires %08x\n", version, FMOD_VERSION);
     return Logger::writeErrorLog(String("FMOD error: ") + strbuff);
   }
   
+  SoundManager::errorCheck(soundSystem->getNumDrivers(&numdrivers));
+  if (numdrivers == 0)
+  {
+    SoundManager::errorCheck(soundSystem->setOutput(FMOD_OUTPUTTYPE_NOSOUND));
+    Logger::writeWarningLog("No sound card device found - sound system will not function properly");
+  }
+  
   if (!SoundManager::errorCheck(soundSystem->init(100, FMOD_INIT_NORMAL, 0)))
-    return Logger::writeErrorLog("Could not initialize FMOD sound system");
+    return false;
     
   if (!SoundManager::errorCheck(soundSystem->setFileSystem(SoundManager::fileOpen, SoundManager::fileClose, SoundManager::fileRead, SoundManager::fileSeek, 2048)))
-    return Logger::writeErrorLog("Could not apply FMOD file system settings");
+    return false;
     
   return true;
 }
