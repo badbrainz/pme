@@ -10,12 +10,14 @@
 #include "Scenes/BrushLabScene.h"
 #include "Scenes/EditorScene.h"
 #include "Scenes/NewmapScene.h"
+#include "Scenes/CreditsScene.h"
 #include "Managers/ManagersUtils.h"
 #include "FileSystem/FileSystem.h"
 #include "Databases/VillageDatabase.h"
 #include "Nodes/TransformGroup.h"
 #include "Kernel/Gateway.h"
 #include "Image/ImageExt.h"
+#include "Factories/FactoryUtils.h"
 
 #include "fmod/inc/fmod.hpp"
 #include "fmod/inc/fmod_errors.h"
@@ -28,6 +30,7 @@ Stage::Stage(HINSTANCE instance) : IOXMLObject("Stage")
   window.setAppInstance(instance);
   window.setInputEventListener(this);
   activeState = true;
+  enableCursor = true;
 }
 
 bool Stage::initialize()
@@ -41,12 +44,15 @@ bool Stage::initialize()
   Logger::writeInfoLog(String("Version:  ") + (char*)glGetString(GL_VERSION));
   Logger::writeInfoLog(String("Vendor:   ") + (char*)glGetString(GL_VENDOR));
   
-  bool succArray[14] = {false};
+  bool succArray[16] = {false};
   
   succArray[0] = FileSystem::initialize();
   succArray[1] = Gateway::initialize();
   succArray[2] = SoundManager::initialize();
   
+  if (!succArray[0] || !succArray[1] || !succArray[2])
+    return false;
+    
   MainMenuScene* mainMenuScene = new MainMenuScene();
   OptionsScene* optionsScene = new OptionsScene();
   LoadmapScene* loadmapScene = new LoadmapScene();
@@ -58,31 +64,14 @@ bool Stage::initialize()
   EditorScene* editorScene = new EditorScene();
   NewmapScene* newmapScene = new NewmapScene();
   BrushLabScene* brushLabScene = new BrushLabScene();
+  CreditsScene* creditsScene = new CreditsScene();
   
   editorScene->setViewAngle(45.0f);
   natureLabScene->setViewAngle(90.0f);
   characterLabScene->setViewAngle(90.0f);
   structureLabScene->setViewAngle(90.0f);
   villageLabScene->setViewAngle(90.0f);
-  
-  //if (window.isFullscreen())
-  //{
-  //  ImageExt im;
-  //  im.load("FlechaMenu.tga");
-  //  cursor.load2DImage(im);
-  //  mainMenuScene->setDefaultCursorTexture(&cursor);
-  //  optionsScene->setDefaultCursorTexture(&cursor);
-  //  loadmapScene->setDefaultCursorTexture(&cursor);
-  //  natureLabScene->setDefaultCursorTexture(&cursor);
-  //  characterLabScene->setDefaultCursorTexture(&cursor);
-  //  critterLabScene->setDefaultCursorTexture(&cursor);
-  //  structureLabScene->setDefaultCursorTexture(&cursor);
-  //  villageLabScene->setDefaultCursorTexture(&cursor);
-  //  editorScene->setDefaultCursorTexture(&cursor);
-  //  newmapScene->setDefaultCursorTexture(&cursor);
-  //  ShowCursor(-1);
-  //  Gateway::getConfiguration().enableCursor = false;
-  //}
+  creditsScene->setViewAngle(90.0f);
   
   succArray[3] = SceneManager::addScene(mainMenuScene);
   succArray[4] = SceneManager::addScene(optionsScene);
@@ -95,6 +84,7 @@ bool Stage::initialize()
   succArray[11] = SceneManager::addScene(villageLabScene);
   succArray[12] = SceneManager::addScene(brushLabScene);
   succArray[13] = SceneManager::addScene(editorScene);
+  succArray[14] = SceneManager::addScene(creditsScene);
   SceneManager::setStage(this);
   SceneManager::setScene(mainMenuScene);
   
@@ -103,10 +93,12 @@ bool Stage::initialize()
   //succArray[12] = newmapScene->initialize();
   //succArray[13] = optionsScene->initialize();
   
-  if (!succArray[0]  || !succArray[1] || !succArray[2]  || !succArray[3] ||
-      !succArray[4]  || !succArray[5] || !succArray[6]  || !succArray[7] ||
-      !succArray[8]  || !succArray[9] || !succArray[10] || !succArray[11]||
-      !succArray[12] || !succArray[13])
+  succArray[15] = FireCharManager::loadXMLSettings("FireCharSettings.xml");
+
+  if (!succArray[3]  || !succArray[4]  || !succArray[5]  || !succArray[6]  ||
+      !succArray[7]  || !succArray[8]  || !succArray[9]  || !succArray[10] ||
+      !succArray[11] || !succArray[12] || !succArray[13] || !succArray[14] ||
+      !succArray[15])
     return false;
     
   window.setVisible(true);
@@ -145,6 +137,12 @@ bool Stage::loadXMLSettings(XMLElement *element)
       
     if (attrib = child->getChildByName("enabled"))
       Gateway::enableMenuMusic(attrib->getValue() == "true");
+  }
+  
+  if (child = element->getChildByName("CustomHardwareCursor"))
+  {
+    if (attrib = child->getChildByName("enabled"))
+      enableCursor = (attrib->getValue() == "true");
   }
   
   return success;
@@ -264,11 +262,75 @@ bool Stage::exportXMLSettings(ofstream &xmlFile)
   return true;
 }
 
+void Stage::setCursor(const char* path)
+{
+  if (!enableCursor)
+    return;
+    
+  ImageExt curimg;
+  if (!curimg.load(path))
+    return;
+    
+  if (curimg.getWidth() > 32 && curimg.getHeight() > 32 && curimg.getComponentsCount() != 4)
+    return;
+    
+  DWORD dwWidth, dwHeight;
+  BITMAPV5HEADER bi;
+  HBITMAP hBitmap, hMonoBitmap;
+  ICONINFO ii;
+  void *lpBits;
+  
+  dwWidth  = curimg.getWidth();
+  dwHeight = curimg.getHeight();
+  
+  ZeroMemory(&bi, sizeof(BITMAPV5HEADER));
+  bi.bV5Size        = sizeof(BITMAPV5HEADER);
+  bi.bV5Width       = dwWidth;
+  bi.bV5Height      = dwHeight;
+  bi.bV5Planes      = 1;
+  bi.bV5BitCount    = 32;
+  bi.bV5Compression = BI_BITFIELDS;
+  bi.bV5RedMask     = 0x00FF0000;
+  bi.bV5GreenMask   = 0x0000FF00;
+  bi.bV5BlueMask    = 0x000000FF;
+  bi.bV5AlphaMask   = 0xFF000000;
+  
+  HDC hdc;
+  hdc = GetDC(NULL);
+  
+  hBitmap = CreateDIBSection(hdc, (BITMAPINFO*)&bi, DIB_RGB_COLORS, (void**)&lpBits, NULL, (DWORD)0);
+  ReleaseDC(NULL, hdc);
+  hMonoBitmap = CreateBitmap(dwWidth, dwHeight, 1, 1, NULL);
+  memcpy(lpBits, curimg.getDataBuffer(), dwWidth * dwHeight * 4);
+  
+  ii.fIcon    = false;
+  ii.xHotspot = 0;
+  ii.yHotspot = 0;
+  ii.hbmMask  = hMonoBitmap;
+  ii.hbmColor = hBitmap;
+  
+  SetClassLong(window.getHandle(), GCL_HCURSOR, (LONG)CreateIconIndirect(&ii));
+  
+  DeleteObject(hBitmap);
+  DeleteObject(hMonoBitmap);
+}
+
+void Stage::setCursorVisibility(bool visible)
+{
+  if (visible)
+    while (ShowCursor(true) <= 0)
+      {}
+  else
+    while (ShowCursor(false) >= 0)
+      {}
+}
+
 void Stage::destroy()
 {
   if (benchmark.isEnabled())
     benchmark.exportResults();
     
+  FireCharManager::flushAll();
   SceneManager::destroy();
   FileSystem::destroy();
   Gateway::destroy();

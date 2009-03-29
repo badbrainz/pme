@@ -5,6 +5,7 @@
 #include "../Kernel/Gateway.h"
 #include "../Geometry/Model.h"
 #include "../Managers/ManagersUtils.h"
+#include "../Stage.h"
 
 StructureLabScene::StructureLabScene(const char* name) : Scene(name)
 {
@@ -106,6 +107,8 @@ void StructureLabScene::beginScene()
     
   drawBounds = false;
   drawAxis = false;
+  
+  SceneManager::getStage()->setCursor("Cursor.tga");
 }
 
 void StructureLabScene::endScene()

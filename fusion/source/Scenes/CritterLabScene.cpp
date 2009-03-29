@@ -5,6 +5,7 @@
 #include "../Kernel/Gateway.h"
 #include "../Geometry/Model.h"
 #include "../Managers/ManagersUtils.h"
+#include "../Stage.h"
 
 CritterLabScene::CritterLabScene(const char* name) : Scene(name)
 {
@@ -105,6 +106,8 @@ void CritterLabScene::beginScene()
     
   drawBounds = false;
   drawAxis = false;
+  
+  SceneManager::getStage()->setCursor("Cursor.tga");
 }
 
 void CritterLabScene::endScene()

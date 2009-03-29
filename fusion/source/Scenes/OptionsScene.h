@@ -13,9 +13,6 @@ class OptionsScene : public Scene
     bool initialize();
     void beginScene();
     void actionPerformed(GUIEvent &evt);
-    
-  private:
-    float camDist;
 };
 
 #endif

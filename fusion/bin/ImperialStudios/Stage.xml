@@ -1,17 +1,18 @@
 <Stage> 
   
-  <Export path = "C:\\Program Files\\Eidos Interactive\\Pyro Studios\\Praetorians\\DATA\\" />
+  <Export path = "ImperialStudios/Export/" />
   
-  <MenuMusic path = "To Victory.mp3" />
+  <MenuMusic path = "To Victory.mp3" enabled = "false" />
+  
+  <CustomHardwareCursor enabled = "true" />
   
   <MediaSource>
+    <MediaFolder path = "Data/" />
     <MediaFolder path = "ImperialStudios/GUI/" />
     <MediaFolder path = "ImperialStudios/GUI/Descriptions/" />
     <MediaFolder path = "ImperialStudios/Textures/" />
-    <MediaFolder path = "ImperialStudios/Textures/Cursors/" />
     <MediaFolder path = "ImperialStudios/Definitions/" />
     <MediaFolder path = "ImperialStudios/Sounds/" />
-    
     <MediaFolder path = "ImperialStudios/Export/" />
     <MediaFolder path = "ImperialStudios/Export/Misiones/" />
     <MediaFolder path = "ImperialStudios/Export/Mapas/" />
@@ -27,10 +28,10 @@
 
     <DisplayMode  colorDepth  =    "32"
                   colorBits   =    "24"
-                  fullscreen  =  "true"
+                  fullscreen  =  "false"
                   centered    =  "true"
-                  width       =  "1024"
-                  height      =   "768"
+                  width       =  "800"
+                  height      =   "600"
                   x           =     "0"
                   y           =     "0" />
     

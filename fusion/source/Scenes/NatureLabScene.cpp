@@ -5,6 +5,7 @@
 #include "../Kernel/Gateway.h"
 #include "../Geometry/Model.h"
 #include "../Managers/ManagersUtils.h"
+#include "../Stage.h"
 
 NatureLabScene::NatureLabScene(const char* name) : Scene(name)
 {
@@ -106,6 +107,8 @@ void NatureLabScene::beginScene()
     
   drawBounds = false;
   drawAxis = false;
+  
+  SceneManager::getStage()->setCursor("Cursor.tga");
 }
 
 void NatureLabScene::endScene()
@@ -143,11 +146,11 @@ void NatureLabScene::actionPerformed(GUIEvent &evt)
       }
     }
   }
-
+  
   if (widgetType == SLIDER)
   {
     GUISlider* slider = (GUISlider*) sourceRectangle;
-
+    
     if (callbackString == "WindFactorSlider")
       slider->setLabelString(String("Wind factor: ") + slider->getProgress());
   }
@@ -188,7 +191,7 @@ void NatureLabScene::actionPerformed(GUIEvent &evt)
         {
           TransformGroup* rgroup = new TransformGroup();
           rgroup->addChild(new TransformGroup(*group));
-
+          
           if (GUISlider* slider = (GUISlider*) gui.getWidgetByCallbackString("WindFactorSlider"))
             currentInfo.windFactor = slider->getProgress();
           Gateway::setActiveNatureElement(currentInfo);

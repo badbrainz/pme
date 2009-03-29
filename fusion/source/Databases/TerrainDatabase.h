@@ -24,6 +24,7 @@ class TerrainDatabase
     void controllerVisibility(unsigned int index, bool visible);
     
     TileController* getController(unsigned int index);
+    TileController* getController(const Tuple2f& point);
     unsigned int getControllerCount();
     
     void changeTileTexture(unsigned int level, int index, unsigned int contrIndex, bool visible = false);

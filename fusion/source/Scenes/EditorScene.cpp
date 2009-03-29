@@ -13,6 +13,7 @@
 #include "../Visitors/FlagViewer.h"
 #include "../Visitors/TerrainBrush.h"
 
+#include "../Factories/FactoryUtils.h"
 #include "../Factories/WorldVisuals.h"
 #include "../Factories/TerrainVisuals.h"
 #include "../Factories/TerrainTextures.h"
@@ -25,6 +26,8 @@
 #include "../Databases/ModelDatabase.h"
 #include "../Databases/DatabaseResources.h"
 #include "../Databases/WaterDatabase.h"
+
+#include "../Stage.h"
 
 TerrainBrush brush;
 TileGraphRenderer renderer;
@@ -58,6 +61,8 @@ EditorScene::EditorScene(const char* name) :
 bool EditorScene::initialize()
 {
   Scene::initialize();
+  
+  swcurstr = dbcurstr = "Cursor.tga";
   
   natureGroup    = Gateway::getNatureDatabase()->getRootGroup();
   structureGroup = Gateway::getStructureDatabase()->getRootGroup();
@@ -198,7 +203,11 @@ void EditorScene::beginScene()
     Tuple2i gridArea = Gateway::getTerrainVisuals()->getArea();
     float s = gridArea.x > gridArea.y ? (float)gridArea.x : (float)gridArea.y;
     grid.setup(1, (float)round(s/4) * 4 , 4);
+    
+    swcurstr = dbcurstr = "Cursor.tga";
   }
+  
+  SceneManager::getStage()->setCursor(swcurstr);
   
   GUIButton* structureBtn = (GUIButton*) gui.getWidgetByCallbackString("StructureTexture");
   GUIButton* natureBtn = (GUIButton*) gui.getWidgetByCallbackString("NatureTexture");
@@ -356,23 +365,11 @@ void EditorScene::update(const FrameInfo &frameInfo)
   if (drawFlags)
     Gateway::inspectSpatialIndex(&flagViewer);
     
-  if (drawVillages)
-    villageGroup->render(FRONT_TO_BACK|SORTED_BY_TEXTURE|ALL_EFFECTS, &frustum);
-    
-  if (drawStructures)
-    structureGroup->render(FRONT_TO_BACK|SORTED_BY_TEXTURE|ALL_EFFECTS, &frustum);
-    
-  if (drawNature)
-    natureGroup->render(FRONT_TO_BACK|SORTED_BY_TEXTURE|ALL_EFFECTS, &frustum);
-    
   if (drawCharacters)
     characterGroup->render(FRONT_TO_BACK|SORTED_BY_TEXTURE|ALL_EFFECTS, &frustum);
     
   if (drawCritters)
     critterGroup->render(FRONT_TO_BACK|SORTED_BY_TEXTURE|ALL_EFFECTS, &frustum);
-    
-  if (drawCollMark)
-    drawCollisionMark();
     
   if (drawWater)
   {
@@ -385,12 +382,23 @@ void EditorScene::update(const FrameInfo &frameInfo)
       currentWater->draw(Water::FILL | Water::WIRE);
   }
   
+  if (drawStructures)
+    structureGroup->render(FRONT_TO_BACK|SORTED_BY_TEXTURE|ALL_EFFECTS, &frustum);
+    
+  if (drawVillages)
+    villageGroup->render(FRONT_TO_BACK|SORTED_BY_TEXTURE|ALL_EFFECTS, &frustum);
+    
+  if (drawNature)
+    natureGroup->render(FRONT_TO_BACK|SORTED_BY_TEXTURE|ALL_EFFECTS, &frustum);
+    
+  if (drawCollMark)
+    drawCollisionMark();
+    
   if (fpsCounter)
     fpsCounter->setLabelString(String("FPS: ") + int(info->m_Fps));
     
   Renderer::enter2DMode(info->m_Width, info->m_Height);
   gui.render(info->m_Interval);
-  drawCursor();
   Renderer::exit2DMode();
 }
 
@@ -974,6 +982,8 @@ void EditorScene::actionPerformed(GUIEvent &evt)
       {
         brush.setPaintLayer(0);
         brush.setLayer(BrushLayers::TILE);
+        SceneManager::getStage()->setCursor(dbcurstr);
+        swcurstr = dbcurstr;
         //cursor = &cursors[CursorTypes::POINTER];
         return;
       }
@@ -982,6 +992,8 @@ void EditorScene::actionPerformed(GUIEvent &evt)
       {
         brush.setPaintLayer(1);
         brush.setLayer(BrushLayers::TILE);
+        SceneManager::getStage()->setCursor(dbcurstr);
+        swcurstr = dbcurstr;
         //cursor = &cursors[CursorTypes::POINTER];
         return;
       }
@@ -989,6 +1001,8 @@ void EditorScene::actionPerformed(GUIEvent &evt)
       if (callbackString == "NatureLayerSelection")
       {
         brush.setLayer(BrushLayers::NATURE);
+        SceneManager::getStage()->setCursor("Nature.tga");
+        swcurstr = "Nature.tga";
         //cursor = &cursors[CursorTypes::NATURE];
         return;
       }
@@ -996,6 +1010,8 @@ void EditorScene::actionPerformed(GUIEvent &evt)
       if (callbackString == "StructureLayerSelection")
       {
         brush.setLayer(BrushLayers::STRUCTURE);
+        SceneManager::getStage()->setCursor("Structure.tga");
+        swcurstr = "Structure.tga";
         //cursor = &cursors[CursorTypes::STRUCTURE];
         return;
       }
@@ -1003,6 +1019,8 @@ void EditorScene::actionPerformed(GUIEvent &evt)
       if (callbackString == "VillageLayerSelection")
       {
         brush.setLayer(BrushLayers::VILLAGE);
+        SceneManager::getStage()->setCursor("Village.tga");
+        swcurstr = "Village.tga";
         //cursor = &cursors[CursorTypes::VILLAGE];
         return;
       }
@@ -1010,6 +1028,8 @@ void EditorScene::actionPerformed(GUIEvent &evt)
       if (callbackString == "CharacterLayerSelection")
       {
         brush.setLayer(BrushLayers::CHARACTER);
+        SceneManager::getStage()->setCursor("Character.tga");
+        swcurstr = "Character.tga";
         //cursor = &cursors[CursorTypes::CHARACTER];
         return;
       }
@@ -1017,6 +1037,8 @@ void EditorScene::actionPerformed(GUIEvent &evt)
       if (callbackString == "CritterLayerSelection")
       {
         brush.setLayer(BrushLayers::CRITTER);
+        SceneManager::getStage()->setCursor("Critter.tga");
+        swcurstr = "Critter.tga";
         //cursor = &cursors[CursorTypes::CRITTER];
         return;
       }
@@ -1024,6 +1046,8 @@ void EditorScene::actionPerformed(GUIEvent &evt)
       if (callbackString == "GrassLayerSelection")
       {
         brush.setLayer(BrushLayers::GRASS);
+        SceneManager::getStage()->setCursor("Grass.tga");
+        swcurstr = "Grass.tga";
         //cursor = &cursors[CursorTypes::GRASS];
         return;
       }
@@ -1031,6 +1055,8 @@ void EditorScene::actionPerformed(GUIEvent &evt)
       if (callbackString == "WaterLayerSelection")
       {
         brush.setLayer(BrushLayers::WATER);
+        SceneManager::getStage()->setCursor("Water.tga");
+        swcurstr = "Water.tga";
         //cursor = &cursors[CursorTypes::WATER];
         return;
       }
@@ -1077,9 +1103,15 @@ void EditorScene::actionPerformed(GUIEvent &evt)
     //
     if (callbackString == "BrushTypesCB")
     {
-      if (item == "Pointer")
+      if (item == "Arrow")
       {
         brush.setMode(BrushModes::POINTER);
+        dbcurstr = "Cursor.tga";
+        if (brush.getLayer() == BrushLayers::TILE)
+        {
+          swcurstr = "Cursor.tga";
+          SceneManager::getStage()->setCursor("Cursor.tga");
+        }
         //cursor = &cursors[CursorTypes::POINTER];
         return;
       }
@@ -1087,6 +1119,12 @@ void EditorScene::actionPerformed(GUIEvent &evt)
       if (item == "Paint")
       {
         brush.setMode(BrushModes::PAINT);
+        dbcurstr = "Paint.tga";
+        if (brush.getLayer() == BrushLayers::TILE)
+        {
+          swcurstr = "Paint.tga";
+          SceneManager::getStage()->setCursor("Paint.tga");
+        }
         //cursor = &cursors[CursorTypes::PAINT];
         return;
       }
@@ -1094,6 +1132,12 @@ void EditorScene::actionPerformed(GUIEvent &evt)
       if (item == "Fill")
       {
         brush.setMode(BrushModes::FILL);
+        dbcurstr = "Fill.tga";
+        if (brush.getLayer() == BrushLayers::TILE)
+        {
+          swcurstr = "Fill.tga";
+          SceneManager::getStage()->setCursor("Fill.tga");
+        }
         //cursor = &cursors[CursorTypes::FILL];
         return;
       }
@@ -1101,6 +1145,12 @@ void EditorScene::actionPerformed(GUIEvent &evt)
       if (item == "Marker")
       {
         brush.setMode(BrushModes::MARKER);
+        dbcurstr = "Marker.tga";
+        if (brush.getLayer() == BrushLayers::TILE)
+        {
+          swcurstr = "Marker.tga";
+          SceneManager::getStage()->setCursor("Marker.tga");
+        }
         //cursor = &cursors[CursorTypes::MARKER];
         return;
       }
@@ -1108,6 +1158,12 @@ void EditorScene::actionPerformed(GUIEvent &evt)
       if (item == "Pastel")
       {
         brush.setMode(BrushModes::PASTEL);
+        dbcurstr = "Pastel.tga";
+        if (brush.getLayer() == BrushLayers::TILE)
+        {
+          swcurstr = "Pastel.tga";
+          SceneManager::getStage()->setCursor("Pastel.tga");
+        }
         //cursor = &cursors[CursorTypes::PASTEL];
         return;
       }
@@ -1115,6 +1171,12 @@ void EditorScene::actionPerformed(GUIEvent &evt)
       if (item == "Raise")
       {
         brush.setMode(BrushModes::RAISE);
+        dbcurstr = "Raise.tga";
+        if (brush.getLayer() == BrushLayers::TILE)
+        {
+          swcurstr = "Raise.tga";
+          SceneManager::getStage()->setCursor("Raise.tga");
+        }
         //cursor = &cursors[CursorTypes::RAISE];
         GUISlider* bslider = (GUISlider*) gui.getWidgetByCallbackString("BrushStrength");
         if (bslider)
@@ -1125,6 +1187,12 @@ void EditorScene::actionPerformed(GUIEvent &evt)
       if (item == "Lower")
       {
         brush.setMode(BrushModes::LOWER);
+        dbcurstr = "Lower.tga";
+        if (brush.getLayer() == BrushLayers::TILE)
+        {
+          swcurstr = "Lower.tga";
+          SceneManager::getStage()->setCursor("Lower.tga");
+        }
         //cursor = &cursors[CursorTypes::LOWER];
         GUISlider* bslider = (GUISlider*) gui.getWidgetByCallbackString("BrushStrength");
         if (bslider)
@@ -1135,6 +1203,12 @@ void EditorScene::actionPerformed(GUIEvent &evt)
       if (item == "Erase")
       {
         brush.setMode(BrushModes::ERASE);
+        dbcurstr = "Erase.tga";
+        if (brush.getLayer() == BrushLayers::TILE)
+        {
+          swcurstr = "Erase.tga";
+          SceneManager::getStage()->setCursor("Erase.tga");
+        }
         //cursor = &cursors[CursorTypes::ERASE];
         return;
       }
@@ -1142,6 +1216,12 @@ void EditorScene::actionPerformed(GUIEvent &evt)
       if (item == "Restore")
       {
         brush.setMode(BrushModes::RESTORE);
+        dbcurstr = "Restore.tga";
+        if (brush.getLayer() == BrushLayers::TILE)
+        {
+          swcurstr = "Restore.tga";
+          SceneManager::getStage()->setCursor("Restore.tga");
+        }
         //cursor = &cursors[CursorTypes::RESTORE];
         return;
       }
@@ -1149,6 +1229,12 @@ void EditorScene::actionPerformed(GUIEvent &evt)
       if (item == "Burn")
       {
         brush.setMode(BrushModes::BURN);
+        dbcurstr = "Flame.tga";
+        if (brush.getLayer() == BrushLayers::TILE)
+        {
+          swcurstr = "Flame.tga";
+          SceneManager::getStage()->setCursor("Flame.tga");
+        }
         //cursor = &cursors[CursorTypes::BURN];
         return;
       }
@@ -1156,6 +1242,12 @@ void EditorScene::actionPerformed(GUIEvent &evt)
       if (item == "Heal")
       {
         brush.setMode(BrushModes::HEAL);
+        dbcurstr = "Cure.tga";
+        if (brush.getLayer() == BrushLayers::TILE)
+        {
+          swcurstr = "Cure.tga";
+          SceneManager::getStage()->setCursor("Cure.tga");
+        }
         //cursor = &cursors[CursorTypes::HEAL];
         return;
       }
@@ -1163,6 +1255,12 @@ void EditorScene::actionPerformed(GUIEvent &evt)
       if (item == "Tile erase")
       {
         brush.setMode(BrushModes::ERASETILE);
+        dbcurstr = "Cursor.tga";
+        if (brush.getLayer() == BrushLayers::TILE)
+        {
+          swcurstr = "Cursor.tga";
+          SceneManager::getStage()->setCursor("Cursor.tga");
+        }
         //cursor = &cursors[CursorTypes::ERASE];
         return;
       }
@@ -1170,6 +1268,12 @@ void EditorScene::actionPerformed(GUIEvent &evt)
       if (item == "Tile logic")
       {
         brush.setMode(BrushModes::LOGIC);
+        dbcurstr = "Cursor.tga";
+        if (brush.getLayer() == BrushLayers::TILE)
+        {
+          swcurstr = "Cursor.tga";
+          SceneManager::getStage()->setCursor("Cursor.tga");
+        }
         //cursor = &cursors[CursorTypes::TILE_LOGIC];
         return;
       }
@@ -1177,6 +1281,12 @@ void EditorScene::actionPerformed(GUIEvent &evt)
       if (item == "Tile flag")
       {
         brush.setMode(BrushModes::FLAG);
+        dbcurstr = "Cursor.tga";
+        if (brush.getLayer() == BrushLayers::TILE)
+        {
+          swcurstr = "Cursor.tga";
+          SceneManager::getStage()->setCursor("Cursor.tga");
+        }
         //cursor = &cursors[CursorTypes::TILE_FLAG];
         return;
       }
@@ -1184,6 +1294,12 @@ void EditorScene::actionPerformed(GUIEvent &evt)
       if (item == "Advanced")
       {
         brush.setMode(BrushModes::ADVANCED);
+        dbcurstr = "Cursor.tga";
+        if (brush.getLayer() == BrushLayers::TILE)
+        {
+          swcurstr = "Cursor.tga";
+          SceneManager::getStage()->setCursor("Cursor.tga");
+        }
         //cursor = &cursors[CursorTypes::PAINT];
         return;
       }
@@ -1401,6 +1517,12 @@ void EditorScene::actionPerformed(GUIEvent &evt)
       if (item == "Rotate 90")
       {
         brush.setMode(BrushModes::ROTATE90);
+        dbcurstr = "Rotate.tga";
+        if (brush.getLayer() == BrushLayers::TILE)
+        {
+          swcurstr = "Rotate.tga";
+          SceneManager::getStage()->setCursor("Rotate.tga");
+        }
         //cursor = &cursors[CursorTypes::TILE_ROTATE];
         return;
       }
@@ -1408,6 +1530,12 @@ void EditorScene::actionPerformed(GUIEvent &evt)
       if (item == "Rotate 180")
       {
         brush.setMode(BrushModes::ROTATE180);
+        dbcurstr = "Rotate.tga";
+        if (brush.getLayer() == BrushLayers::TILE)
+        {
+          swcurstr = "Rotate.tga";
+          SceneManager::getStage()->setCursor("Rotate.tga");
+        }
         //cursor = &cursors[CursorTypes::TILE_ROTATE];
         return;
       }
@@ -1415,6 +1543,12 @@ void EditorScene::actionPerformed(GUIEvent &evt)
       if (item == "Rotate 270")
       {
         brush.setMode(BrushModes::ROTATE270);
+        dbcurstr = "Rotate.tga";
+        if (brush.getLayer() == BrushLayers::TILE)
+        {
+          swcurstr = "Rotate.tga";
+          SceneManager::getStage()->setCursor("Rotate.tga");
+        }
         //cursor = &cursors[CursorTypes::TILE_ROTATE];
         return;
       }
@@ -1425,6 +1559,12 @@ void EditorScene::actionPerformed(GUIEvent &evt)
       if (item == "Mirror X")
       {
         brush.setMode(BrushModes::MIRRORX);
+        dbcurstr = "Mirror.tga";
+        if (brush.getLayer() == BrushLayers::TILE)
+        {
+          swcurstr = "Mirror.tga";
+          SceneManager::getStage()->setCursor("Mirror.tga");
+        }
         //cursor = &cursors[CursorTypes::TILE_MIRROR];
         return;
       }
@@ -1432,6 +1572,12 @@ void EditorScene::actionPerformed(GUIEvent &evt)
       if (item == "Mirror Y")
       {
         brush.setMode(BrushModes::MIRRORY);
+        dbcurstr = "Mirror.tga";
+        if (brush.getLayer() == BrushLayers::TILE)
+        {
+          swcurstr = "Mirror.tga";
+          SceneManager::getStage()->setCursor("Mirror.tga");
+        }
         //cursor = &cursors[CursorTypes::TILE_MIRROR];
         return;
       }

@@ -212,6 +212,35 @@ public:
   Tuple2i dimensions;
 };
 
+namespace CursorTypes
+{
+  enum Enum
+  {
+    POINTER,
+    PAINT,
+    FILL,
+    MARKER,
+    PASTEL,
+    RAISE,
+    LOWER,
+    ERASE,
+    RESTORE,
+    BURN,
+    HEAL,
+    TILE_ROTATE,
+    TILE_MIRROR,
+    TILE_ERASE,
+    TILE_LOGIC,
+    TILE_FLAG,
+    NATURE,
+    VILLAGE,
+    STRUCTURE,
+    CHARACTER,
+    CRITTER,
+    GRASS
+  };
+}
+
 //#define STR_ME( X ) ( # X )
 //
 //namespace GameFlowType

@@ -27,6 +27,7 @@ class SceneManager
   public:
     static void       updateStage(bool winUpdate = false);
     static void       setStage(Stage *stage);
+    static Stage*     getStage();
     static void       deactivateCurrentStage();
     
     static void       destroy();

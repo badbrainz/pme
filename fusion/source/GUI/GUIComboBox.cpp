@@ -178,8 +178,7 @@ void GUIComboBox::actionPerformed(GUIEvent &evt)
     if (newSelection->isMouseOver())
       scrollingRectangle = newSelection->getWindowBounds();
       
-    if (newSelection->isClicked() &&
-        strcmp(newSelection->getLabelString(), currentSelection->getLabelString()))
+    if (newSelection->isClicked() /*&& strcmp(newSelection->getLabelString(), currentSelection->getLabelString())*/)
     {
       currentSelection->setLabelString(newSelection->getLabelString());
       selectionIndex = getItemIndex(newSelection->getLabelString());

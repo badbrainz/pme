@@ -5,6 +5,7 @@
 #include "../Databases/DatabaseResources.h"
 
 class SpatialIndex;
+class SpatialIndexBaseNode;
 class TerrainTextures;
 class TerrainVisuals;
 class TerrainLogic;
@@ -120,6 +121,9 @@ class Gateway
     
     ///spatial index
     static SpatialIndex* getSpatialIndex();
+    static SpatialIndexBaseNode* getSpatialCell(const Tuple3f& point);
+    static void setCellSize(unsigned int size);
+    static void setBranchSize(unsigned int size);
     static void inspectSpatialIndex(Visitor* visitor);
     static void updateSpatialIndex(const Tuple3f &point, float radius);
     

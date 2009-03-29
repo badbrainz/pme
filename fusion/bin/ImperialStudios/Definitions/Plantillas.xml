@@ -1,22 +1,18 @@
 <Plantillas>
   
-  <Plantilla name = "KWANTUM">
-    <Mode       name = "1v1"               />
-    <Texturas   name = "MP_2_3.PTE"        />
-		<Visual   	name = "kwantum.PVE" 			 />
-    <Size       x = "100" y = "50"         />
-    <MaxPlayers x = "2"                    />
-  </Plantilla>
-  
-  <Plantilla name = "kwantum's map">
-    <Mode     name = "2v2"        />
+  <Plantilla name = "basic template">
+    <Mode name = "2v2" />
     <Texturas name = "MP_4_3.PTE" />
-		<Elevation  max = "2.98" min = "-0.75" />
-    <Size     x = "130" y = "130" />
+    <Size x = "100" y = "100" />
     <MaxPlayers x = "4" />
+    <Elevation  max = "2.98" min = "-0.75" />
+		<Camara>
+      <Posicion x = "50.0" y = "10.0" z = "50.0" />
+      <Mira     x = "58.0" y = "0.0"  z = "58.0" />
+    </Camara>
   </Plantilla>
   
-  <Plantilla name = "BMP template">
+  <Plantilla name = "bmp template">
     <Minimap  name = "bitmaptemplate.tga"       />
     <Texturas name = "MP_4_1.PTE"               />
     <Visual   name = "bitmaptemplate.bmp"       />
@@ -26,8 +22,8 @@
     <MaxPlayers x = "4" />
   </Plantilla>
   
-  <Plantilla name = "KWANTUM">
-    <Minimap  name = "MP_4_1.tga" />
+  <Plantilla name = "pyros template">
+    <Minimap  name = "MP_4_1.TGA" />
     <Logica   name = "MP_4_1.MLG" />
     <Texturas name = "MP_4_1.PTE" />
     <Visual   name = "MP_4_1.PVE" />

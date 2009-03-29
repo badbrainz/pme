@@ -64,10 +64,6 @@ bool WaterDatabase::initialize(const char* path)
   return true;
 }
 
-void WaterDatabase::compile()
-{
-}
-
 void WaterDatabase::addWaterModel(Water* water)
 {
   Tuple3f *vertices;

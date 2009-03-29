@@ -18,7 +18,7 @@
 	<Configurations>
 		<Configuration
 			Name="Debug|Win32"
-			OutputDirectory=".\bin"
+			OutputDirectory="$(SolutionDir)bin"
 			IntermediateDirectory="$(ConfigurationName)"
 			ConfigurationType="1"
 			CharacterSet="2"
@@ -61,7 +61,7 @@
 			<Tool
 				Name="VCLinkerTool"
 				AdditionalDependencies="opengl32.lib glu32.lib glpngd.lib fmodex_vc.lib"
-				OutputFile="&quot;C:\Documents and Settings\euclid\Desktop\Praetorians_Map_Editor\PME.exe&quot;"
+				OutputFile="$(OutDir)/$(ProjectName).exe"
 				LinkIncremental="2"
 				AdditionalLibraryDirectories="source\lib;source\fmod\lib"
 				GenerateDebugInformation="true"
@@ -92,7 +92,7 @@
 		</Configuration>
 		<Configuration
 			Name="Release|Win32"
-			OutputDirectory=".\bin"
+			OutputDirectory="$(SolutionDir)bin"
 			IntermediateDirectory="$(ConfigurationName)"
 			ConfigurationType="1"
 			CharacterSet="2"
@@ -137,7 +137,7 @@
 			<Tool
 				Name="VCLinkerTool"
 				AdditionalDependencies="opengl32.lib glu32.lib glpng.lib fmodex_vc.lib"
-				OutputFile="&quot;C:\Documents and Settings\euclid\Desktop\Praetorians_Map_Editor\PME.exe&quot;"
+				OutputFile="$(OutDir)/PME.exe"
 				LinkIncremental="1"
 				AdditionalLibraryDirectories="source\lib;source\fmod\lib"
 				GenerateDebugInformation="false"
@@ -170,7 +170,7 @@
 		</Configuration>
 		<Configuration
 			Name="No Opt|Win32"
-			OutputDirectory=".\bin"
+			OutputDirectory="$(SolutionDir)bin"
 			IntermediateDirectory="$(ConfigurationName)"
 			ConfigurationType="1"
 			CharacterSet="2"
@@ -215,7 +215,7 @@
 			<Tool
 				Name="VCLinkerTool"
 				AdditionalDependencies="opengl32.lib glu32.lib glpng.lib fmodex_vc.lib"
-				OutputFile="&quot;C:\Documents and Settings\euclid\Desktop\Praetorians_Map_Editor\PME.exe&quot;"
+				OutputFile="$(OutDir)/$(ProjectName).exe"
 				LinkIncremental="1"
 				AdditionalLibraryDirectories="source\lib;source\fmod\lib"
 				GenerateDebugInformation="false"
@@ -530,6 +530,14 @@
 				>
 			</File>
 			<File
+				RelativePath=".\source\Managers\FireCharManager.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\source\Managers\FireCharManager.h"
+				>
+			</File>
+			<File
 				RelativePath=".\source\managers\GeometryManager.cpp"
 				>
 			</File>
@@ -798,6 +806,30 @@
 				>
 			</File>
 			<File
+				RelativePath=".\source\Tools\FireChar.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\source\Tools\FireChar.h"
+				>
+			</File>
+			<File
+				RelativePath=".\source\Tools\FireString.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\source\Tools\FireString.h"
+				>
+			</File>
+			<File
+				RelativePath=".\source\Tools\FireStringDB.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\source\Tools\FireTextUtils.h"
+				>
+			</File>
+			<File
 				RelativePath=".\source\tools\Font.cpp"
 				>
 			</File>
@@ -815,6 +847,10 @@
 			</File>
 			<File
 				RelativePath=".\source\Tools\FrameInfo.h"
+				>
+			</File>
+			<File
+				RelativePath=".\source\Tools\FSGIterator.cpp"
 				>
 			</File>
 			<File
@@ -1607,6 +1643,14 @@
 			</File>
 			<File
 				RelativePath=".\source\Scenes\CharacterLabScene.h"
+				>
+			</File>
+			<File
+				RelativePath=".\source\Scenes\CreditsScene.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\source\Scenes\CreditsScene.h"
 				>
 			</File>
 			<File

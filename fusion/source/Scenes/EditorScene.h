@@ -12,35 +12,6 @@
 
 class Water;
 
-namespace CursorTypes
-{
-  enum Enum
-  {
-    POINTER,
-    PAINT,
-    FILL,
-    MARKER,
-    PASTEL,
-    RAISE,
-    LOWER,
-    ERASE,
-    RESTORE,
-    BURN,
-    HEAL,
-    TILE_ROTATE,
-    TILE_MIRROR,
-    TILE_ERASE,
-    TILE_LOGIC,
-    TILE_FLAG,
-    NATURE,
-    VILLAGE,
-    STRUCTURE,
-    CHARACTER,
-    CRITTER,
-    GRASS
-  };
-}
-
 class EditorScene : public Scene
 {
   public:
@@ -120,8 +91,6 @@ class EditorScene : public Scene
     Tuple4i scrcoords;
     Texture memstats;
     
-    //Texture cursors[22];
-    
     Grid grid;
     Axis axis;
     Ray3D ray;
@@ -153,6 +122,8 @@ class EditorScene : public Scene
     Tuple4f fogColor;
     
     float tickCounter;
+    
+    String dbcurstr, swcurstr;
     
     AVLTreeT <String, TSElementInfo, 4> elementInfoAVLTree;
     Array <unsigned int> textureHandles;

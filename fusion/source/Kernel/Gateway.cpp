@@ -323,7 +323,7 @@ void Gateway::updateSpatialIndex(const Tuple3f &point, float radius)
   Tuple2i tilearea;
   unsigned int cellsize;
   SpatialBoundsUpdater bUpdater;
-  //YFieldUpdater yUpdater;
+  YFieldUpdater yUpdater;
   
   cellarea = spatialIndex->getArea();
   cellsize = spatialIndex->getCellSize();
@@ -344,7 +344,7 @@ void Gateway::updateSpatialIndex(const Tuple3f &point, float radius)
     {
       index = x * cellarea.x + y;
       spatialIndex->getCell(index)->accept(&bUpdater);
-      //spatialIndex->getCell(index)->accept(&yUpdater);
+      spatialIndex->getCell(index)->accept(&yUpdater);
       bUpdater.reset();
     }
 }
@@ -515,9 +515,34 @@ MemoryProfile Gateway::getMemoryProfile()
 //
 ///spatial index
 //
+void Gateway::setBranchSize(unsigned int size)
+{
+  spatialIndex->setBranchSize(size);
+}
+
+void Gateway::setCellSize(unsigned int size)
+{
+  spatialIndex->setCellSize(size);
+}
+
 SpatialIndex* Gateway::getSpatialIndex()
 {
   return spatialIndex;
+}
+
+SpatialIndexBaseNode* Gateway::getSpatialCell(const Tuple3f& point)
+{
+  unsigned int cellsize  = spatialIndex->getCellSize();
+  unsigned int cx = spatialIndex->getArea().x;
+  Tuple2i tgrid = dataset->createTerrainVisuals()->getArea();
+  
+  unsigned int xOff = clamp(int(point.x), 0, tgrid.y-1);
+  unsigned int yOff = clamp(int(point.z), 0, tgrid.x-1);
+  
+  unsigned int yratio = (unsigned int) floor((float)yOff/cellsize);
+  unsigned int xratio = (unsigned int) floor((float)xOff/cellsize);
+  
+  return spatialIndex->getCell(xratio * cx + yratio);
 }
 
 void Gateway::loadBackground(const char* path)

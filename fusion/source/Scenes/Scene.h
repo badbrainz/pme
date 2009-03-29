@@ -36,22 +36,15 @@ class Scene : public GUIEventListener, public IOXMLObject
     
     bool isInitialized();
     
-    void setDefaultCursorTexture(Texture *texture);
-    
     void setViewAngle(float angle);
     
   protected:
-    void drawCursor();
     void setPerspective(WindowEvent evt, bool wEvt = false);
     
   protected:
     GUIFrame gui;
     bool initialized;
-    bool showMouse;
     SceneController sceneController;
-    Texture *cursor;
-    Tuple2i cursorCoords;
-    bool mouseVisible;
     float viewAngle;
 };
 

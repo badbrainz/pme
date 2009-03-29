@@ -1,0 +1,14 @@
+<CreditsScene>
+  
+  <Panel visible = "false" name = "Credits Panel">
+    
+    <Texture description = "GUIElements.xml" />
+    <Font path = "ArialSmall.tga" />
+    
+    <Label name = "HelloLabel" >
+      <Text string = "Hello" />
+    </Label>
+    
+  </Panel>
+  
+</CreditsScene>

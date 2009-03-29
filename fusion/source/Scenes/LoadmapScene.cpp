@@ -1,9 +1,9 @@
 #include "LoadmapScene.h"
 #include "../Kernel/Gateway.h"
 #include "../Image/ImageExt.h"
-#include "../Tools/Timer.h"
 #include "../Renderer/Renderer.h"
 #include "../Managers/ManagersUtils.h"
+#include "../Stage.h"
 
 LoadmapScene::LoadmapScene(const char* name) : Scene(name)
 {
@@ -43,7 +43,6 @@ void LoadmapScene::update(const FrameInfo &frameInfo)
   drawFullScreenQuad(info->m_Width, info->m_Height);
   glDisable(GL_TEXTURE_2D);
   gui.render(info->m_Interval);
-  drawCursor();
   Renderer::exit2DMode();
 }
 
@@ -111,6 +110,8 @@ void LoadmapScene::actionPerformed(GUIEvent &evt)
         {
           SoundManager::stopSong();
           
+          SceneManager::getStage()->setCursorVisibility(false);
+          
           int randomNum = clamp(int(getNextRandom() * 8.0f), 1, 8);
           drawLoadingScreen(randomNum);
           
@@ -127,6 +128,8 @@ void LoadmapScene::actionPerformed(GUIEvent &evt)
             while (Timer::getElapsedTimeSeconds(start) < (minLoadTime - loadLength))
               {}
           }
+          
+          SceneManager::getStage()->setCursorVisibility(true);
         }
         
         return;
