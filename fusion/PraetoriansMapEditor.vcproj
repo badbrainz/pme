@@ -61,7 +61,7 @@
 			<Tool
 				Name="VCLinkerTool"
 				AdditionalDependencies="opengl32.lib glu32.lib glpngd.lib fmodex_vc.lib"
-				OutputFile="$(OutDir)/$(ProjectName).exe"
+				OutputFile="$(OutDir)/PME.exe"
 				LinkIncremental="2"
 				AdditionalLibraryDirectories="source\lib;source\fmod\lib"
 				GenerateDebugInformation="true"
@@ -136,7 +136,7 @@
 			/>
 			<Tool
 				Name="VCLinkerTool"
-				AdditionalDependencies="opengl32.lib glu32.lib glpng.lib fmodex_vc.lib"
+				AdditionalDependencies="opengl32.lib glu32.lib glpng.lib fmodex_vc.lib "
 				OutputFile="$(OutDir)/PME.exe"
 				LinkIncremental="1"
 				AdditionalLibraryDirectories="source\lib;source\fmod\lib"
@@ -214,8 +214,8 @@
 			/>
 			<Tool
 				Name="VCLinkerTool"
-				AdditionalDependencies="opengl32.lib glu32.lib glpng.lib fmodex_vc.lib"
-				OutputFile="$(OutDir)/$(ProjectName).exe"
+				AdditionalDependencies="opengl32.lib glu32.lib glpng.lib fmodex_vc.lib "
+				OutputFile="$(OutDir)/PME.exe"
 				LinkIncremental="1"
 				AdditionalLibraryDirectories="source\lib;source\fmod\lib"
 				GenerateDebugInformation="false"
@@ -974,19 +974,7 @@
 				>
 			</File>
 			<File
-				RelativePath=".\source\zlib\infblock.c"
-				>
-			</File>
-			<File
-				RelativePath=".\source\zlib\infblock.h"
-				>
-			</File>
-			<File
-				RelativePath=".\source\zlib\infcodes.c"
-				>
-			</File>
-			<File
-				RelativePath=".\source\zlib\infcodes.h"
+				RelativePath=".\source\zlib\crc32.h"
 				>
 			</File>
 			<File
@@ -1006,6 +994,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\source\zlib\inflate.h"
+				>
+			</File>
+			<File
 				RelativePath=".\source\zlib\inftrees.c"
 				>
 			</File>
@@ -1014,11 +1006,7 @@
 				>
 			</File>
 			<File
-				RelativePath=".\source\zlib\infutil.c"
-				>
-			</File>
-			<File
-				RelativePath=".\source\zlib\infutil.h"
+				RelativePath=".\source\zlib\uncompr.c"
 				>
 			</File>
 			<File

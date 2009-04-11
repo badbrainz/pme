@@ -40,6 +40,8 @@ void Grid::drawMinorGridLines()
 void Grid::drawMajorGridLines()
 {
   float i;
+	glPushAttrib(GL_DEPTH_BUFFER_BIT);
+	glDisable(GL_DEPTH_TEST);
   glBegin(GL_LINES);
   glColor3ub(255, 162, 0);
   for (i = 0; i <= gridSize; i += stepSize * majorSize)
@@ -53,6 +55,7 @@ void Grid::drawMajorGridLines()
     glVertex3f(0, yOffset, i);
   }
   glEnd();
+	glPopAttrib();
 }
 
 void Grid::setOffsetY(float value)

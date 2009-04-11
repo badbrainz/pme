@@ -84,7 +84,7 @@ bool loadPBA(TransformGroup* parent, const char* filename)
   bool success = false;
   bool byref = false;
   
-  if (!(file = FileSystem::checkOut(String(filename) + ".pba")))
+  if (!(file = FileSystem::checkOut(String(filename) + ".pba", ArchFileOrder::NEWEST_MODIFIED)))
     return Logger::writeErrorLog(String("Could not check out archived item -> ") + filename + ".pba");
     
   ///header
