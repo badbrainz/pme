@@ -8,6 +8,17 @@
 class Archive;
 class ArchivedFile;
 
+namespace ArchFileOrder
+{
+	enum Enum
+	{
+		FIRST_FOUND,
+		LAST_FOUND,
+		NEWEST_MODIFIED,
+		OLDEST_MODIFIED
+	};
+}
+
 class FileSystem
 {
   public:
@@ -16,7 +27,7 @@ class FileSystem
     static void destroy();
     
     static bool registerArchive(const char* path);
-    static ArchivedFile* checkOut(const char* name);
+		static ArchivedFile* checkOut(const char* name, unsigned int order = ArchFileOrder::FIRST_FOUND);
     static void checkIn(ArchivedFile* file);
     static bool fileExist(const char* name);
     
@@ -25,7 +36,9 @@ class FileSystem
     static void printAllRegisteredNames();
     
   private:
-    static bool checkOut(const char* name, ArchivedFile* file);
+    static bool checkOutItem(const char* name, ArchivedFile* file);
+		static bool checkOutNewestItem(const char* name, ArchivedFile* file);
+		static bool checkOutOldestItem(const char* name, ArchivedFile* file);
     static bool checkForRepeat(const char* path);
     
   private:

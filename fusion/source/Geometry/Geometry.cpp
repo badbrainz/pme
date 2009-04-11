@@ -205,31 +205,6 @@ void Geometry::destroy()
       return;
   }
   
-  /*if (byReference[0])
-    Gateway::releaseGeometryMemory(colors);
-  else
-    deleteArray(colors);
-  
-  if (byReference[1])
-    Gateway::releaseGeometryMemory(colors);
-  else
-    deleteArray(vertices);
-  
-  if (byReference[2])
-    Gateway::releaseGeometryMemory(normals);
-  else
-    deleteArray(normals);
-  
-  if (byReference[3])
-    Gateway::releaseGeometryMemory(indices);
-  else
-    deleteArray(indices);
-  
-  if (byReference[4])
-    Gateway::releaseGeometryMemory(textureCoords);
-  else
-    deleteArray(textureCoords);*/
-  
   if (!byReference[0])
     deleteArray(colors);
     
