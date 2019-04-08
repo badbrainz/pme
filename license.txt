@@ -1,8 +1,8 @@
   DO WHAT THE FUCK YOU TO WANT PUBLIC LICENSE
   Version 2, December 2004
 
-  Copyright (C) 2009 kwantum
-  
+  Copyright (C) 2009 badbrainz
+
   This program is free software. It comes without any warranty, to
   the extent permitted by applicable law. You can redistribute it
   and/or modify it under the terms of the DO WHAT THE FUCK YOU WANT
