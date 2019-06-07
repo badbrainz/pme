@@ -11,3 +11,6 @@ _Desert biome_ <br>
 
 _Alpine biome_ <br>
 ![alpine biome](https://user-images.githubusercontent.com/10160581/55694078-322fae80-5967-11e9-806f-6cc56d1a65cc.jpeg)
+
+## Acknowledgments
+Portions of this source code were derived from _SXMLEngine_ by [Abdul Bezrati (@JavaCoolDude)](https://twitter.com/javacooldude). Some are implementations of algorithms provided by [Paul Bourke](http://paulbourke.net/papers/).
