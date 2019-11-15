@@ -1,7 +1,7 @@
-**pme**: a map editor for _Praetorians_, an RTS game by Pyro Studios.
+**pme**: a map editor for [Praetorians](https://en.wikipedia.org/wiki/Praetorians_(video_game)), an RTS video game by Pyro Studios.
 
 The editor uses original game assets, which are not included. To use, you must
-have _Praetorians_ installed.
+have [Praetorians](https://en.wikipedia.org/wiki/Praetorians_(video_game)) installed.
 
 _Taiga biome_ <br>
 ![tiaga biome](https://user-images.githubusercontent.com/10160581/55694076-322fae80-5967-11e9-98c9-a256c801ab88.jpeg)
